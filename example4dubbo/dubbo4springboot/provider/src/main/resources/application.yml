@@ -1,0 +1,12 @@
+server:
+  port: 8083
+dubbo:
+  application:
+    name: user-service-provider
+  registry:
+    address: 127.0.0.1:2181
+    protocol: zookeeper
+  protocol:
+    name: dubbo
+    port: 20880
+

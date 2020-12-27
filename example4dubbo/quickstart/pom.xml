@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.tiger.dubbo</groupId>
+    <artifactId>quickstart</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>provider</module>
+        <module>consumer</module>
+        <module>commons</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
+
+        <!-- 2.6.x版本使用alibaba dubbo， 2.7及以后使用apache dubbo-->
+        <!--<dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.7.7</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+        <!--
+            由于使用的是zookeeper注册中心，需要操作zookeeper
+            dubbo 2.6以前引入zkclientzookeeper
+            dubbo 2.6及以后引入curator-client操作zookeeper
+            二者选其一即可
+          -->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>2.12.0</version>
+            <!--<exclusions>
+                    &lt;!&ndash;curator-framework的版本是4.0+版本，在它的官网中说使用4.0在支持ZooKeeper 3.4.x集合
+                    需要排除依赖ZooKeeper. http://curator.apache.org/zk-compatibility.html&ndash;&gt;
+                <exclusion>
+                    <groupId>org.apache.zookeeper</groupId>
+                    <artifactId>zookeeper</artifactId>
+                </exclusion>
+            </exclusions>-->
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>0.10</version>
+        </dependency>
+        -->
+    </dependencies>
+
+
+</project>
