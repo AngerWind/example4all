@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="95f59de3-706c-4c74-b17f-b0fb4d3851de" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/scala/com/tiger/Element.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scala/com/tiger/FileMatcher.scala" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="JupyterTrust" id="a9002fd1-c551-45ad-ba75-03f48cae0a6f" />
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="D:\IntelliJ IDEA 2020.2\plugins\maven\lib\maven3" />
+        <option name="userSettingsFile" value="D:\apache-maven-3.6.3-bin\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="downloadSourcesAutomatically" value="true" />
+        <option name="jdkForImporter" value="1.8" />
+        <option name="vmOptionsForImporter" value="-Xms1024m -Xmx2048m" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1m5q8jHqettmZ8pjrB6CpeSk4K3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="D:/scala/scala-2.13.4/scala-2.13.4/src" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.48067862" />
+    <property name="settings.editor.selected.configurable" value="ScalaSmartKeys" />
+  </component>
+  <component name="RebelAgentSelection">
+    <selection>jr</selection>
+  </component>
+  <component name="RunManager" selected="Application.InnerClassDriver">
+    <configuration name="Element" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.tiger.Element" />
+      <module name="scalatest1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tiger.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InnerClassDriver" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.tiger.InnerClassDriver" />
+      <module name="scalatest1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tiger.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Rational" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.tiger.Rational" />
+      <module name="scalatest1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tiger.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.tiger.Test" />
+      <module name="scalatest1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tiger.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="World" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="World" />
+      <module name="scalatest1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.InnerClassDriver" />
+        <item itemvalue="Application.Element" />
+        <item itemvalue="Application.Test" />
+        <item itemvalue="Application.Rational" />
+        <item itemvalue="Application.World" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="95f59de3-706c-4c74-b17f-b0fb4d3851de" name="Default Changelist" comment="" />
+      <created>1608793642326</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1608793642326</updated>
+      <workItem from="1608793643867" duration="11446000" />
+      <workItem from="1608860163014" duration="30259000" />
+      <workItem from="1609224626571" duration="6087000" />
+      <workItem from="1609295079161" duration="15694000" />
+      <workItem from="1609385271324" duration="11325000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TerminalProjectNonSharedOptionsProvider">
+    <option name="shellPath" value="D:\Git\bin\bash.exe" />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="440" y="94" key="#Project_Structure" timestamp="1608793674970">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="440" y="94" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1608793674970" />
+    <state x="488" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1608801384373">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="488" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1608801384373" />
+    <state x="758" y="434" key="#com.intellij.framework.addSupport.AddSupportForSingleFrameworkDialog" timestamp="1608793813114">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="758" y="434" key="#com.intellij.framework.addSupport.AddSupportForSingleFrameworkDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1608793813114" />
+    <state x="1244" y="218" key="#com.intellij.ide.util.MemberChooser" timestamp="1609415597425">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1244" y="218" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1609415597425" />
+    <state x="737" y="389" key="DetectedRootsChooserDialog" timestamp="1609416570505">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="737" y="389" key="DetectedRootsChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1609416570505" />
+    <state x="963" y="322" key="FileChooserDialogImpl" timestamp="1609416566958">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="963" y="322" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1609416566958" />
+    <state width="1139" height="175" key="GridCell.Tab.0.bottom" timestamp="1609421934528">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1139" height="175" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1609421934528" />
+    <state width="1139" height="175" key="GridCell.Tab.0.center" timestamp="1609421934528">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1139" height="175" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1609421934528" />
+    <state width="1139" height="175" key="GridCell.Tab.0.left" timestamp="1609421934528">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1139" height="175" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1609421934528" />
+    <state width="1139" height="175" key="GridCell.Tab.0.right" timestamp="1609421934528">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1139" height="175" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1609421934528" />
+    <state x="440" y="94" key="SettingsEditor" timestamp="1609416587014">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="440" y="94" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1609416587014" />
+    <state x="852" y="333" width="672" height="678" key="search.everywhere.popup" timestamp="1608870940303">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="852" y="333" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1608870940303" />
+  </component>
+</project>
