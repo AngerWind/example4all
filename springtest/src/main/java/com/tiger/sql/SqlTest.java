@@ -94,6 +94,7 @@ import java.util.Random;
  *   PRIMARY KEY (`id`)
  * ) ENGINE=InnoDB AUTO_INCREMENT=2271133 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='escheduler流程实例表';
  */
+
 public class SqlTest {
 
     private static final Random RANDOM = new Random();
@@ -116,6 +117,7 @@ public class SqlTest {
         "(''{0}'', ''{1}'', {2, number,#}, ''{3}'', {4},{5}, {6}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
 
 
+    @Test
     public void insertProject() throws Exception {
 
 
@@ -160,14 +162,14 @@ public class SqlTest {
         Statement statement = connection.createStatement();
         for (int j = 0; j < 10; j++) {
             StringBuilder sb = new StringBuilder(500000);
-            sb.append("INSERT INTO dag_process_definition" +
+            sb.append("INSERT INTO definition" +
                     "(app_id, name, code, version, release_state, project_id, user_id, " +
                     "global_params, flag, locations, connects," +
                     "timeout, is_major) VALUES");
             for (int i = 0; i < 1000; i++) {
                 sb.append(
                         messageFormat.format(new Object[] {appId(), name(), code(), releaseState(),
-                                random100(), random100(), // project_id, userid
+                                random100()+1, random100()+1, // project_id, userid
                                 randomAlphanumeric(), // global_param
                                 projectFlag(), // flag
                                 randomAlphanumeric(), // location
@@ -196,13 +198,13 @@ public class SqlTest {
         Statement statement = connection.createStatement();
         for (int j = 0,  count = 0; j < 1000; j++) {
             StringBuilder sb = new StringBuilder(500000);
-            sb.append("INSERT INTO dag_process_instance\n" +
+            sb.append("INSERT INTO instance\n" +
                     "(app_id, name, process_definition_id, state, start_time, end_time, run_times, command_type, " +
                     "global_params, flag, is_sub_process, timeout) VALUES");
             for (int i = 0; i < 2000; i++) {
                 Date[] dates = startEndTime();
                 sb.append(
-                        messageFormat.format(new Object[] {appId(), name(), RANDOM.nextInt(10000),
+                        messageFormat.format(new Object[] {appId(), name(), RANDOM.nextInt(10000)+1,
                                 state(),
                                 dates[0], dates[1],
                                 RANDOM.nextInt(5) + 1, //run times

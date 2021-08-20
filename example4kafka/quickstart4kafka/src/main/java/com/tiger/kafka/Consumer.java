@@ -13,8 +13,8 @@ public class Consumer {
 
 
 
-    private static final String TOPIC = "test.tiger";
-    private static final String BROKER_LIST = "10.2.0.211:9092,10.2.0.212:9092,10.2.0.214:9092";
+    private static final String TOPIC = "defend_calc_data_test";
+    private static final String BROKER_LIST = "10.2.0.213:9092,10.2.0.212:9092,10.2.0.214:9092";
     private static KafkaConsumer<String, String> consumer = null;
 
     static {
@@ -27,12 +27,21 @@ public class Consumer {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", BROKER_LIST);
         //
-        properties.put("group.id", "4512");
+        properties.put("group.id", "16514654165");
 
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        /**
+         * auto.offset.reset :
+         * earliest
+         * 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费
+         * latest
+         * 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+         * none
+         * topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
+         */
 //        properties.setProperty("enable.auto.commit", "true");
-//        properties.setProperty("auto.offset.reset", "earliest");
+        properties.setProperty("auto.offset.reset", "earliest");
         return properties;
     }
 

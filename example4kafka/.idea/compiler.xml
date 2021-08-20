@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="example4kafka" />
+        <module name="quickstart4kafka" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />
