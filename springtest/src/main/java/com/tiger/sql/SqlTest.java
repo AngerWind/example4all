@@ -196,7 +196,7 @@ public class SqlTest {
                 "{2, number, ###################}, {3}, ''{4, date, yyyy-MM-dd HH:mm:ss.SSS }'', ''{5, date, yyyy-MM-dd HH:mm:ss.SSS}''," +
                 "{6}, {7}, ''{8}'', {9}, {10}, {11})");
         Statement statement = connection.createStatement();
-        for (int j = 0,  count = 0; j < 1000; j++) {
+        for (int j = 0,  count = 0; j < 2000; j++) {
             StringBuilder sb = new StringBuilder(500000);
             sb.append("INSERT INTO instance\n" +
                     "(app_id, name, process_definition_id, state, start_time, end_time, run_times, command_type, " +
@@ -324,22 +324,21 @@ public class SqlTest {
         }
     }
 
+    // 2021-06-23 14:43:03 -> 1624430583000ms
+    // 2021-08-23 14:43:03 -> 1629700983000ms
     public static Date[] startEndTime(){
 
 
-        long time1 = (long)(RANDOM.nextInt(31536000) + 1597567699) * 1000;
-        long time2 = (long)(RANDOM.nextInt(31536) + 1597567699) * 1000;
+        long time1 = (long)(RANDOM.nextInt(5270400) + 1624430583) * 1000;
+        long time2 = RANDOM.nextInt(3600000) + time1;
 
         Date date1 = new Date(time1);
         Date date2 = new Date(time2);
         Date[] dates = new Date[2];
-        if (time1 >= time2) {
-            dates[0] = date2;
-            dates[1] = date1;
-        } else {
-            dates[0] = date1;
-            dates[1] = date2;
-        }
+
+        dates[0] = date1;
+        dates[1] = date2;
+
         return dates;
     }
 
