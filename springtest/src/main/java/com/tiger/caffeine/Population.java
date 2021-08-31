@@ -57,6 +57,7 @@ public class Population {
                     @Nullable
                     @Override
                     public String load(@NonNull String key) throws Exception {
+                        // 通过key计算value
                         return key + "hello world";
                     }
 
@@ -139,10 +140,6 @@ public class Population {
                         return null;
                     }
                 });
-
-
-
-
     }
 
 
