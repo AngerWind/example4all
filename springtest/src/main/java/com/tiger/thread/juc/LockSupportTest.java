@@ -1,5 +1,6 @@
 package com.tiger.thread.juc;
 
+import cn.hutool.core.collection.SpliteratorUtil;
 import lombok.SneakyThrows;
 import org.junit.Test;
 
@@ -111,5 +112,24 @@ public class LockSupportTest {
         t2.start();
 
         fifoMutex.unlock();
+    }
+
+
+    @Test
+    public void test1(){
+        Thread thread = new Thread(() -> {
+            System.out.println();
+            LockSupport.park(this);
+            if (Thread.currentThread().isInterrupted()) {
+                System.out.println("interrupt");
+            } else {
+                System.out.println("not");
+            }
+        });
+        thread.start();
+        // 被park的线程会被interrupte中断
+        thread.interrupt();
+
+        System.out.println("he");
     }
 }

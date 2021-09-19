@@ -23,11 +23,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="21665aba-b738-4a7b-9c8a-f3104ba4f302" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/caffeine/Refresh.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/caffeine/Removal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/kafka/Consumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/quickstart4kafka/src/main/java/com/tiger/kafka/Consumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/quickstart4kafka/src/main/java/com/tiger/kafka/Consumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quickstart4kafka/src/main/java/com/tiger/kafka/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/quickstart4kafka/src/main/java/com/tiger/kafka/Producer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/quickstart4kafka/target/classes/com/tiger/kafka/Consumer.class" beforeDir="false" afterPath="$PROJECT_DIR$/quickstart4kafka/target/classes/com/tiger/kafka/Consumer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quickstart4kafka/target/classes/com/tiger/kafka/Producer.class" beforeDir="false" afterPath="$PROJECT_DIR$/quickstart4kafka/target/classes/com/tiger/kafka/Producer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../example4quartz/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../example4quartz/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flink-atguigu/FlinkTutorial" beforeDir="false" afterPath="$PROJECT_DIR$/../flink-atguigu/FlinkTutorial" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springtest/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../springtest/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/caffeine/Eviction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/caffeine/Eviction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/hook/HookTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/kill/ShutdownTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/shutdown_hook/ShutdownTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +61,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
-  <component name="JupyterTrust" id="dc8192d2-195d-424a-855d-291c8b96f860" />
+  <component name="JupyterTrust" id="b0241305-b642-45ef-9576-f8a65fceeb46" />
+  <component name="KonanWorkspace">
+    <executables />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -141,6 +151,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <option name="TEST_OBJECT" value="class" />
       <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
@@ -199,6 +220,8 @@
       <workItem from="1625659035669" duration="2214000" />
       <workItem from="1626252221112" duration="1376000" />
       <workItem from="1628218317092" duration="1448000" />
+      <workItem from="1630379108102" duration="601000" />
+      <workItem from="1630393614345" duration="1129000" />
     </task>
     <servers />
   </component>
@@ -218,42 +241,38 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1621586039315">
+    <state width="1877" height="292" key="GridCell.Tab.0.bottom" timestamp="1630662047215">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1621586039315" />
-    <state width="1877" height="292" key="GridCell.Tab.0.bottom" timestamp="1628732578258">
+    <state width="1877" height="292" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1630662047215" />
+    <state width="1877" height="292" key="GridCell.Tab.0.center" timestamp="1630662047215">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1628732578258" />
-    <state width="1877" height="292" key="GridCell.Tab.0.center" timestamp="1628732578258">
+    <state width="1877" height="292" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1630662047215" />
+    <state width="1877" height="292" key="GridCell.Tab.0.left" timestamp="1630662047215">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1628732578258" />
-    <state width="1877" height="292" key="GridCell.Tab.0.left" timestamp="1628732578258">
+    <state width="1877" height="292" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1630662047215" />
+    <state width="1877" height="292" key="GridCell.Tab.0.right" timestamp="1630662047215">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1628732578258" />
-    <state width="1877" height="292" key="GridCell.Tab.0.right" timestamp="1628732578258">
+    <state width="1877" height="292" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1630662047215" />
+    <state width="1877" height="292" key="GridCell.Tab.1.bottom" timestamp="1630662047216">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1628732578258" />
-    <state width="1877" height="292" key="GridCell.Tab.1.bottom" timestamp="1628732578259">
+    <state width="1877" height="292" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1630662047216" />
+    <state width="1877" height="292" key="GridCell.Tab.1.center" timestamp="1630662047216">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1628732578259" />
-    <state width="1877" height="292" key="GridCell.Tab.1.center" timestamp="1628732578259">
+    <state width="1877" height="292" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1630662047216" />
+    <state width="1877" height="292" key="GridCell.Tab.1.left" timestamp="1630662047216">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1628732578259" />
-    <state width="1877" height="292" key="GridCell.Tab.1.left" timestamp="1628732578259">
+    <state width="1877" height="292" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1630662047216" />
+    <state width="1877" height="292" key="GridCell.Tab.1.right" timestamp="1630662047216">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1628732578259" />
-    <state width="1877" height="292" key="GridCell.Tab.1.right" timestamp="1628732578259">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1877" height="292" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1628732578259" />
+    <state width="1877" height="292" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1630662047216" />
     <state x="334" y="180" key="new project wizard" timestamp="1622012385004">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

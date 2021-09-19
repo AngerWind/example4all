@@ -1,19 +1,27 @@
 package com.tiger.kafka;
 
-
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Properties;
 
+/**
+ * @author tiger.shen
+ * @version v1.0
+ * @Title Consumer
+ * @date 2021/8/31 10:57
+ * @description
+ */
 public class Consumer {
 
 
 
-    private static final String TOPIC = "etl.kudu_analysis.welab_loan_applications.10";
+    private static final String TOPIC = "defend_calc_data_test";
     private static final String BROKER_LIST = "10.2.0.213:9092,10.2.0.212:9092,10.2.0.214:9092";
     private static KafkaConsumer<String, String> consumer = null;
 
@@ -21,13 +29,16 @@ public class Consumer {
         Properties configs = initConfig();
         consumer = new KafkaConsumer<String, String>(configs);
         consumer.subscribe(Arrays.asList(TOPIC));
+
+        LoggerContext lc = (LoggerContext)LoggerFactory.getILoggerFactory();
+        lc.getLogger("org.apache.kafka").setLevel(Level.INFO);
     }
 
     private static Properties initConfig() {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", BROKER_LIST);
         //
-        properties.put("group.id", "45616516");
+        properties.put("group.id", "165464165114445");
 
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -47,10 +58,17 @@ public class Consumer {
 
     public static void main(String[] args) {
         while (true) {
+            int count = 0;
             ConsumerRecords<String, String> records = consumer.poll(100);
             for (ConsumerRecord<String, String> record : records) {
-                System.out.print(record.value());
-                System.out.println();
+                if (record.value().contains("$")) {
+                    System.out.println(record.value());
+                    count++;
+                }
+                if (count == 2000) {
+                    System.out.println("2000");
+                    count = 0;
+                }
             }
         }
     }

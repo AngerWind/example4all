@@ -14,9 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Shen
  * @version v1.0
- * @Title Eviction
  * @date 2021/8/31 22:09
- * @description
  */
 public class Eviction {
 
@@ -83,16 +81,19 @@ public class Eviction {
         LoadingCache<String, String> graphs = Caffeine.newBuilder()
                 .expireAfter(new Expiry<String, String>() {
                     // 创建之后多久过期
+                    @Override
                     public long expireAfterCreate(String key, String graph, long currentTime) {
                         return 0;
                     }
 
                     // 更新之后多久过期
+                    @Override
                     public long expireAfterUpdate(String key, String graph, long currentTime, long currentDuration) {
                         return 0;
                     }
 
                     // 读取之后多久过期
+                    @Override
                     public long expireAfterRead(String key, String graph, long currentTime, long currentDuration) {
                         return 0;
                     }
@@ -101,6 +102,7 @@ public class Eviction {
 
         /**
          * 基于时间的过期策略的执行，都是在缓存的写和少量的读期间完成的（意思就是依赖缓存的活动，只要不读写，就不会执行过期策略）
+         * （如果在）
          * 可以使用Caffeine.scheduler(Scheduler)来指定一个调度的线程
          * java9+ 可以使用Scheduler.systemScheduler()来利用专门的，系统范围的调度线程
          *

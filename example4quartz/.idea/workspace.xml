@@ -23,10 +23,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3d1be85-f3be-4ae3-8d51-f58f840f615e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/tiger/quartz/quackstart/SimpleJob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../scalatest1/src/scala/com/tiger/Element.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../scalatest1/src/scala/com/tiger/FileMatcher.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/caffeine/Refresh.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/caffeine/Removal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/kafka/Consumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../example4kafka/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../example4kafka/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../example4kafka/quickstart4kafka/src/main/java/com/tiger/kafka/Consumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../example4kafka/quickstart4kafka/src/main/java/com/tiger/kafka/Consumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../example4kafka/quickstart4kafka/target/classes/com/tiger/kafka/Consumer.class" beforeDir="false" afterPath="$PROJECT_DIR$/../example4kafka/quickstart4kafka/target/classes/com/tiger/kafka/Consumer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../flink-atguigu/FlinkTutorial" beforeDir="false" afterPath="$PROJECT_DIR$/../flink-atguigu/FlinkTutorial" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springtest/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../springtest/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/caffeine/Eviction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/caffeine/Eviction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/hook/HookTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/kill/ShutdownTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../springtest/src/main/java/com/tiger/shutdown_hook/ShutdownTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +54,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="JupyterTrust" id="a9002fd1-c551-45ad-ba75-03f48cae0a6f" />
+  <component name="JupyterTrust" id="b0241305-b642-45ef-9576-f8a65fceeb46" />
+  <component name="KonanWorkspace">
+    <executables />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -97,17 +108,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.SimpleJob" />
@@ -123,6 +123,7 @@
       <option name="presentableId" value="Default" />
       <updated>1611468757258</updated>
       <workItem from="1611468759031" duration="7644000" />
+      <workItem from="1630636199615" duration="1445000" />
     </task>
     <servers />
   </component>
@@ -139,6 +140,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="440" y="94" key="#Project_Structure" timestamp="1611469124458">

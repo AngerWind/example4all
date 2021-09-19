@@ -1,5 +1,7 @@
 package com.tiger.cglib;
 
+import com.tiger.cglib.dao.Dao;
+import com.tiger.cglib.dao.DaoImpl;
 import lombok.SneakyThrows;
 import net.sf.cglib.core.DebuggingClassWriter;
 import net.sf.cglib.proxy.Callback;
@@ -18,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -29,46 +32,14 @@ import java.lang.reflect.Method;
  */
 public class EverythingTest {
 
-    public static class Dao {
-        public void update() {
-            System.out.println("Dao.update()");
-            System.out.println(this);
-        }
-    }
-
-    public static class DaoImpl extends Dao{
-        @Override
-        public void update() {
-            System.out.println("DaoImpl.update");
-            System.out.println(this);
-        }
-    }
-
     @Before
     public void before(){
         // 该设置用于输出cglib动态代理产生的类
-        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "C:\\Users\\Tiger.Shen\\Desktop\\springtest");
+        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "C:\\Users\\Tiger.Shen\\Desktop\\example4all\\springtest");
         // 该设置用于输出jdk动态代理产生的类
         System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
-
     }
 
-    @Test
-    public void test() {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(Dao.class);
-        enhancer.setCallback(new MethodInterceptor() {
-            @Override
-            public Object intercept(Object object, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-                System.out.println("Before Method Invoke");
-                methodProxy.invokeSuper(object, objects);
-                System.out.println("After Method Invoke");
-                return object;
-            }
-        });
-        Dao dao = (Dao)enhancer.create();
-        dao.update();
-    }
 
     @SneakyThrows
     @Test
@@ -196,4 +167,6 @@ public class EverythingTest {
         o.update();
 
     }
+
+
 }
