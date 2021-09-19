@@ -17,6 +17,14 @@ import java.lang.reflect.Method;
  */
 public class MethodInterceptorTest {
 
+    static {
+        // 该设置用于输出cglib动态代理产生的类
+        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "C:\\Users\\Tiger.Shen\\Desktop\\example4all\\springtest");
+        // 该设置用于输出jdk动态代理产生的类
+        System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
+    }
+
+
     /**
      * MethodInterceptor能够代理Object中的toString, hashCode, equals, finalize, clone
      * 以及所有的非final方法。
@@ -34,9 +42,13 @@ public class MethodInterceptorTest {
             // 调用原始方法
             Object result = methodProxy.invokeSuper(object, args);
             System.out.println("After Method Invoke");
+
             // 以下两种方法都将调用被代理后的方法， 导致递归调用， 抛出异常
             // method.invoke(object, method);
             // method.invoke(object, args);
+
+            // 返回值类型一定要与原始方法兼容， 否则会强转失败
+            // 当MethodInterceptor代理多个方法时， 需要根据代理方法返回的类型进行相应的判断
             return result;
         }
     };
@@ -55,13 +67,6 @@ public class MethodInterceptorTest {
     };
 
 
-     static {
-        // 该设置用于输出cglib动态代理产生的类
-        System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "C:\\Users\\Tiger.Shen\\Desktop\\example4all\\springtest");
-        // 该设置用于输出jdk动态代理产生的类
-        System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
-    }
-
     @Test
     public void test() {
 
@@ -72,14 +77,14 @@ public class MethodInterceptorTest {
         dao.update();
     }
 
-//    @Test
-//    public void test7(){
-//
-//        Enhancer enhancer = new Enhancer();
-//        enhancer.setSuperclass(Dao.class);
-//        enhancer.setCallbackFilter(callbackHelper);
-//        enhancer.setCallbacks(callbackHelper.getCallbacks());
-//        Dao dao = (Dao)enhancer.create();
-//        dao.update();
-//    }
+    @Test
+    public void test7(){
+
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(Dao.class);
+        enhancer.setCallbackFilter(callbackHelper);
+        enhancer.setCallbacks(callbackHelper.getCallbacks());
+        Dao dao = (Dao)enhancer.create();
+        dao.update();
+    }
 }

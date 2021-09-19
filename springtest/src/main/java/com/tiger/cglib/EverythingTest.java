@@ -41,20 +41,6 @@ public class EverythingTest {
     }
 
 
-    @SneakyThrows
-    @Test
-    public void test1() {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(Dao.class);
-        enhancer.setCallback(new FixedValue() {
-            @Override
-            public Object loadObject() throws Exception {
-                return "hello world";
-            }
-        });
-        Dao dao = (Dao)enhancer.create();
-        dao.update();
-    }
 
     @SneakyThrows
     @Test
@@ -70,70 +56,17 @@ public class EverythingTest {
     @SneakyThrows
     @Test
     public void test3() {
-        /**
-         * 返回固定的值
-         * 调用代理类的增强方法，将直接转变为调用loadObject()方法并返回
-         * 高度定制
-         */
-        FixedValue fixedValue = new FixedValue() {
-            @Override
-            public Object loadObject() throws Exception {
-                return "this is fixedValue";
-            }
-        };
-        MethodInterceptor methodInterceptor = new MethodInterceptor() {
-            @Override
-            public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-                return new Object();
-            }
-        };
-        /**
-         * Dispatches方法将在任何增强方法调用前被调用
-         * 该对象将取代代理类作为实际的方法调用类
-         * 所以该类必须是superClass和superInterface的子类
-         * 否则将类型转换失败
-         *
-         * 一下代码每次调用都返回一个新的DaoImpl
-         * 所以每次调用增强方法都是新的DaoImpl
-         */
-        Dispatcher dispatcher = new Dispatcher() {
-            @Override
-            public Object loadObject() throws Exception {
-                return new DaoImpl();
-            }
-        };
-        InvocationHandler invocationHandler = new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                return new Object();
-            }
-        };
-        /**
-         * 与Dispatcher相同， 但是LazyLoader返回的对象将被代理类保存起来
-         * 该对象将取代代理类作为实际的方法调用类
-         * 所以该类必须是superClass和superInterface的子类
-         * 否则将类型转换失败
-         */
-        LazyLoader lazyLoader = new LazyLoader() {
-            @Override
-            public Object loadObject() throws Exception {
-                return new DaoImpl();
-            }
-        };
+
+
+
+
+
         /**
          * 空操作
          */
         NoOp noOp = NoOp.INSTANCE;
 
-        /**
-         * 与Dispatcher相同，只是多了一个额外的参数。
-         */
-        ProxyRefDispatcher proxyRefDispatcher = new ProxyRefDispatcher() {
-            @Override
-            public Object loadObject(Object proxy) throws Exception {
-                return new DaoImpl();
-            }
-        };
+
         /**
          * 根据Method返回一个索引， 该索引从0开始， 对应setCallbacks()的参数。
          * 根据返回的索引指示该Method应该被哪个Callback增强
@@ -157,8 +90,7 @@ public class EverythingTest {
 
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(Dao.class);
-        enhancer.setCallbacks(new Callback[]{dispatcher, fixedValue,
-                invocationHandler, lazyLoader, methodInterceptor, noOp, proxyRefDispatcher});
+        enhancer.setCallbacks(new Callback[]{noOp});
         enhancer.setCallbackFilter(callbackFilter);
         enhancer.setSerialVersionUID(34108341341093L);
         enhancer.setInterceptDuringConstruction(false);
