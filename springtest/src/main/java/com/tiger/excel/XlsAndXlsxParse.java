@@ -17,45 +17,50 @@ import java.io.FileInputStream;
  * @date 2021/9/8 18:26
  * @description
  */
-public class XlsAndXlsxParse{
+public class XlsAndXlsxParse {
 
-    public void test(){
+    public void test() {
 
-        String excelPath = "E:\\readExcelMaven\\test.xlsx";
+        String excelPath = "C:\\Users\\Tiger.Shen\\Desktop\\tableconvert_excel_s1axw3.xlsx";
 
         try {
             //String encoding = "GBK";
             File excel = new File(excelPath);
-            if (excel.isFile() && excel.exists()) {   //判断文件是否存在
+            if (excel.isFile() && excel.exists()) {
 
-                String[] split = excel.getName().split("\\.");  //.是特殊字符，需要转义！！！！！
+                //.是特殊字符，需要转义！！！！！
+                String[] split = excel.getName().split("\\.");
                 Workbook wb;
                 //根据文件后缀（xls/xlsx）进行判断
-                if ( "xls".equals(split[1])){
-                    FileInputStream fis = new FileInputStream(excel);   //文件流对象
-                    wb = new HSSFWorkbook(fis);
-                }else if ("xlsx".equals(split[1])){
-                    wb = new XSSFWorkbook(excel);
-                }else {
-                    System.out.println("文件类型错误!");
-                    return;
+                try (FileInputStream fis = new FileInputStream(excel);) {
+                    if ("xls".equals(split[1])) {
+                        wb = new HSSFWorkbook(fis);
+                    } else if ("xlsx".equals(split[1])) {
+                        wb = new XSSFWorkbook(fis);
+                    } else {
+                        System.out.println("文件类型错误!");
+                        return;
+                    }
                 }
 
-                //开始解析
-                Sheet sheet = wb.getSheetAt(0);     //读取sheet 0
+                //读取sheet 0
+                Sheet sheet = wb.getSheetAt(0);
 
-                int firstRowIndex = sheet.getFirstRowNum()+1;   //第一行是列名，所以不读
+                // 获取行数
+                int firstRowIndex = sheet.getFirstRowNum();
                 int lastRowIndex = sheet.getLastRowNum();
-                System.out.println("firstRowIndex: "+firstRowIndex);
-                System.out.println("lastRowIndex: "+lastRowIndex);
+                System.out.println("firstRowIndex: " + firstRowIndex);
+                System.out.println("lastRowIndex: " + lastRowIndex);
 
-                for(int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {   //遍历行
+                // 遍历行
+                for (int rIndex = firstRowIndex; rIndex <= lastRowIndex; rIndex++) {
                     System.out.println("rIndex: " + rIndex);
                     Row row = sheet.getRow(rIndex);
                     if (row != null) {
                         int firstCellIndex = row.getFirstCellNum();
                         int lastCellIndex = row.getLastCellNum();
-                        for (int cIndex = firstCellIndex; cIndex < lastCellIndex; cIndex++) {   //遍历列
+                        // 遍历列
+                        for (int cIndex = firstCellIndex; cIndex < lastCellIndex; cIndex++) {
                             Cell cell = row.getCell(cIndex);
                             if (cell != null) {
                                 System.out.println(cell.toString());

@@ -1,4 +1,4 @@
-package com.tiger.other;
+package com.tiger.stopWatch;
 
 import lombok.SneakyThrows;
 import org.springframework.util.StopWatch;

@@ -1,10 +1,7 @@
 package com.tiger.thread.juc;
 
-import cn.hutool.core.collection.SpliteratorUtil;
 import lombok.SneakyThrows;
 import org.junit.Test;
-
-import java.time.LocalDate;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
