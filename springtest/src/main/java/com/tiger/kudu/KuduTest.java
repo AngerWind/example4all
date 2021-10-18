@@ -2,17 +2,18 @@ package com.tiger.kudu;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kudu.client.KuduClient;
-import org.apache.kudu.client.KuduException;
-import org.apache.kudu.client.KuduScanner;
-import org.apache.kudu.client.RowResult;
-import org.apache.kudu.client.RowResultIterator;
+import org.apache.kudu.ColumnSchema;
+import org.apache.kudu.Type;
+import org.apache.kudu.client.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,19 +31,29 @@ public class KuduTest {
      */
     private KuduClient kuduClient;
     private String tableName = "tbl";
+    private KuduSession session;
 
 
     @Before
     public void init() {
         //初始化操作
-        String kuduMaster = "10.2.0.241:7051";
+        String kuduMaster = "10.2.0.242:7051";
         KuduClient.KuduClientBuilder kuduClientBuilder = new
                 KuduClient.KuduClientBuilder(kuduMaster);
         kuduClientBuilder.defaultOperationTimeoutMs(1800000);
 
         kuduClient = kuduClientBuilder.build();
+        // 创建写session,kudu必须通过session写入
+        session = kuduClient.newSession();
 
         log.info("服务器地址#{}:客户端#{} 初始化成功...", kuduMaster, kuduClient);
+    }
+
+    @After
+    @SneakyThrows
+    public void close(){
+        session.close();
+        kuduClient.close();
     }
 
     @SneakyThrows
@@ -50,6 +61,37 @@ public class KuduTest {
     public void test1(){
         List<String> tablesList = kuduClient.getTablesList().getTablesList();
         System.out.println(tablesList);
+    }
+
+    @Test
+    @SneakyThrows
+    public void insert(){
+        // 打开表
+
+        KuduTable kuduTable = kuduClient.openTable("impala::kudu_analysis.sophia_test1014");
+        List<ColumnSchema> columns = kuduTable.getSchema().getColumns();
+
+
+        // 采取Flush方式 手动刷新
+        session.setFlushMode(SessionConfiguration.FlushMode.MANUAL_FLUSH);
+        session.setMutationBufferSpace(3000);
+        for (int j = 0; j < 1; j++) {
+            Insert insert = kuduTable.newInsert();
+            for (ColumnSchema column : columns) {
+                Type type = column.getType();
+                if (type == Type.INT64) {
+                    insert.getRow().addLong(column.getName(), 1L);
+                } else if (type == Type.INT32) {
+                    insert.getRow().addInt(column.getName(), 1);
+                } else if (type == Type.STRING) {
+                    insert.getRow().addString(column.getName(), "hello world");
+                } else if (type == Type.UNIXTIME_MICROS) {
+                    insert.getRow().addTimestamp(column.getName(), new Timestamp(System.currentTimeMillis()));
+                }
+            }
+            session.apply(insert);
+        }
+        session.flush();
     }
 
     /**
@@ -82,7 +124,7 @@ public class KuduTest {
         }
     }
 
-    public static void main(String[] args) {
+    public  void test() {
 
         Logger aaa = LoggerFactory.getLogger("aaa");
         //初始化操作
@@ -118,6 +160,12 @@ public class KuduTest {
             }
         }
 
+    }
+
+    public static void main(String[] args) {
+        Integer i = Integer.MAX_VALUE;
+        int j = i + 1;
+        System.out.println(j);
     }
 
 }

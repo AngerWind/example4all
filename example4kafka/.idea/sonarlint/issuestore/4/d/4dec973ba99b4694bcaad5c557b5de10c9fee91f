@@ -1,0 +1,9 @@
+
+L	java:S106"9Replace this use of System.out or System.err by a logger.(ªÂ›´
+Q	java:S106"9Replace this use of System.out or System.err by a logger.(®Í¦Âÿÿÿÿÿ
+Q	java:S106"9Replace this use of System.out or System.err by a logger.(á€‹âÿÿÿÿÿ
+Q	java:S106"9Replace this use of System.out or System.err by a logger.(ÞÉí©þÿÿÿÿ
+_
+java:S1192"FDefine a constant instead of duplicating this literal "topic" 4 times.(éŠò´ùÿÿÿÿ
+a
+java:S1192"HDefine a constant instead of duplicating this literal "message" 4 times.(éŠò´ùÿÿÿÿ

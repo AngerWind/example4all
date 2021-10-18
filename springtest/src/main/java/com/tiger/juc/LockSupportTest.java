@@ -1,4 +1,4 @@
-package com.tiger.thread.juc;
+package com.tiger.juc;
 
 import lombok.SneakyThrows;
 import org.junit.Test;
@@ -124,7 +124,7 @@ public class LockSupportTest {
             }
         });
         thread.start();
-        // 被park的线程会被interrupte中断
+        // 被park的线程会被interrupt中断
         thread.interrupt();
 
         System.out.println("he");
