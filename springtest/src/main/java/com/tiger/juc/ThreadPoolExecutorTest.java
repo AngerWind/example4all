@@ -1,4 +1,4 @@
-package com.tiger.thread;
+package com.tiger.juc;
 
 import org.junit.Test;
 
@@ -36,33 +36,36 @@ public class ThreadPoolExecutorTest {
 
     @Test
     public void test(){
-        int corePoolSize = 3;
-        int maximunPoolSize = 5;
+        int corePoolSize = 1;
+        int maximumPoolSize = 4;
         long keepAliveTime = 10;
         TimeUnit unit = TimeUnit.SECONDS;
-        BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
+        BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>(2);
         ThreadFactory threadFactory = new SimpleThreadFactory();
         RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
 
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximunPoolSize, keepAliveTime,
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime,
                 unit, queue, threadFactory, handler);
 
         List<Future<?>> futures = new ArrayList<>();
 
-        for (int i = 0; i < 3; i++) {
-            Future<?> future = threadPoolExecutor.submit(() -> {
-                System.out.println("Thread: " + Thread.currentThread().getName() + "start to sleep, time is " + System.currentTimeMillis());
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("Thread: " + Thread.currentThread().getName() + "weak up, time is " + System.currentTimeMillis());
-                return null;
-            });
-            futures.add(future);
+        for (int i = 0; i < 5; i++) {
+            new Thread(() -> {
+                Future future = threadPoolExecutor.submit(() -> {
+                    System.out.println("Thread: " + Thread.currentThread().getName() + "start to sleep, time is " + System.currentTimeMillis());
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Thread: " + Thread.currentThread().getName() + "weak up, time is " + System.currentTimeMillis());
+                    return null;
+                });
+                futures.add(future);
+            }).start();
+
         }
-        threadPoolExecutor.shutdown();
+        threadPoolExecutor.shutdownNow();
         // while (true) {
         //     for (Future<?> future : futures) {
         //         try {

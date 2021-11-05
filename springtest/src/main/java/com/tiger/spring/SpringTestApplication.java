@@ -1,5 +1,6 @@
 package com.tiger.spring;
 
+import com.tiger.os.SysInfoAcquirerService;
 import com.tiger.springtest.SpringtestApplication;
 import com.tiger.springtest.other.SimpleBeanNameGenerator;
 import com.tiger.springtest.pojo.Student1;
@@ -47,9 +48,11 @@ public class SpringTestApplication implements BeanNameAware, Serializable {
         System.out.println("this bean name is " + name);
     }
 
+
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(new Class[]{SpringtestApplication.class}, args);
-        AnnotationConfigApplicationContext context1 = new AnnotationConfigApplicationContext();
+//        AnnotationConfigApplicationContext context1 = new AnnotationConfigApplicationContext();
+
         // context1.register(SpringTestApplication.class);
         // context1.refresh();
         // SpringtestApplication springtestApplication = context.getBean(SpringtestApplication.class);

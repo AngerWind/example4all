@@ -32,4 +32,13 @@ public class SemaphoreTest {
             }).start();
         }
     }
+
+
+    @Test
+    @SneakyThrows
+    public void test1(){
+        Semaphore semaphore = new Semaphore(1);
+        semaphore.release(5);
+        System.out.println(semaphore.availablePermits());
+    }
 }

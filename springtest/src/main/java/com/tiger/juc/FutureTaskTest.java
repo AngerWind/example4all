@@ -1,4 +1,4 @@
-package com.tiger.thread;
+package com.tiger.juc;
 
 import org.junit.Test;
 
@@ -22,4 +22,6 @@ public class FutureTaskTest {
         FutureTask<Void> futureTask = new FutureTask<>(callable);
         new Thread(futureTask).start();
     }
+
+
 }
