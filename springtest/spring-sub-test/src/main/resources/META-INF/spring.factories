@@ -1,0 +1,3 @@
+org.springframework.boot.Bootstrapper=\
+com.tiger.spring_sub_test.SubTestBootstrap,\
+com.tiger.spring_sub_test.SubTestBootstrap2
