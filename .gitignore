@@ -67,3 +67,4 @@ fabric.properties
 
 **/*.class
 **/.idea/*
+**/.gradle/*
