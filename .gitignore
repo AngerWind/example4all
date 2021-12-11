@@ -68,10 +68,15 @@ fabric.properties
 
 
 
-target/**
-.idea/**
+target/
+.idea/
 *.class
 *.iml
-.gradle/**
-.mvn/**
+.gradle/
+.mvn/
+mvnw
+mvnw.cmd
+classes/
+out/
+
 
