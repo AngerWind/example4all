@@ -21,7 +21,7 @@ public class Consumer {
 
 
 
-    private static final String TOPIC = "defend_calc_data_test";
+    private static final String TOPIC = "alarm_center_dev";
     private static final String BROKER_LIST = "10.2.0.213:9092,10.2.0.212:9092,10.2.0.214:9092";
     private static KafkaConsumer<String, String> consumer = null;
 
@@ -38,7 +38,7 @@ public class Consumer {
         Properties properties = new Properties();
         properties.put("bootstrap.servers", BROKER_LIST);
         //
-        properties.put("group.id", "165464165114445");
+        properties.put("group.id", "1521562116516523");
 
         properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -52,7 +52,7 @@ public class Consumer {
          * topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
          */
 //        properties.setProperty("enable.auto.commit", "true");
-        properties.setProperty("auto.offset.reset", "earliest");
+        properties.setProperty("auto.offset.reset", "latest");
         return properties;
     }
 

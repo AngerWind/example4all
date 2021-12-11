@@ -1,0 +1,22 @@
+import org.gradle.api.initialization.resolve.DependencyResolutionManagement
+import org.gradle.api.initialization.resolve.RepositoriesMode
+
+rootProject.name = 'dubbo-example'
+include 'dubbo-xml'
+include 'dubbo-boot'
+
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+        maven { url 'https://maven.aliyun.com/repository/central' }
+    }
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+}
+
+// allprojects {
+//    repositories {
+//        mavenLocal()
+//        maven { url 'https://maven.aliyun.com/repository/central' }
+//    }
+// }
+
