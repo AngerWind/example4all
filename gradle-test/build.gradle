@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+
+
+group 'com.tiger'
+version '1.0-SNAPSHOT'
+
+/**
+ * 指定使用的仓库， mavenCentral()表示使用中央仓库
+ */
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://github.com/'
+        content {
+            includeGroup 'a'
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                url 'https://github.com/'
+            }
+        }
+        filter {
+            includeGroup 'aaa.a'
+        }
+    }
+}
+
+/**
+ * gradle的依赖， group，name，version
+ * testCompile: 依赖的作用域，添加依赖时都要带上
+ */
+dependencies {
+    implementation group: 'org.springframework', name: 'spring-core', version: '5.3.13'
+    implementation gradleApi()
+    implementation localGroovy()
+}
