@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @description
  */
 public class LeaderSelectorTest {
-    static int CLINET_COUNT = 10;
+    static int CLINET_COUNT = 5;
     static String LOCK_PATH = "/leader_selector";
 
     public static void main(String[] args) throws Exception {
