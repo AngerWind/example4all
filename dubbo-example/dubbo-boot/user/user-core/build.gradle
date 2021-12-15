@@ -2,9 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'org.tiger'
-version '1.0-SNAPSHOT'
-
 dependencies {
+    implementation files("../../order/order-core")
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }

@@ -1,0 +1,4 @@
+apply from: "../allsettings.gradle"
+include 'user-api'
+include 'user-core'
+

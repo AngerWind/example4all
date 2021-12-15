@@ -1,0 +1,5 @@
+apply from: "../allsettings.gradle"
+
+include 'order-api'
+include 'order-core'
+
