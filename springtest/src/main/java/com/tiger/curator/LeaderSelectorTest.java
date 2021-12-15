@@ -1,51 +1,68 @@
 package com.tiger.curator;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.leader.LeaderSelector;
 import org.apache.curator.framework.recipes.leader.LeaderSelectorListenerAdapter;
 import org.apache.curator.retry.ExponentialBackoffRetry;
-
+import org.junit.Before;
+import org.junit.Test;
+import org.slf4j.LoggerFactory;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * @author tiger.shen
- * @version v1.0
- * @Title LeaderSelectorTest
- * @date 2021/12/8 19:45
- * @description
- */
+@Slf4j
 public class LeaderSelectorTest {
-    static int CLINET_COUNT = 10;
+    static int CLINET_COUNT = 5;
     static String LOCK_PATH = "/leader_selector";
 
-    public static void main(String[] args) throws Exception {
+    @Before
+    public void before() {
+        LoggerContext lc = (LoggerContext)LoggerFactory.getILoggerFactory();
+        lc.getLogger("org").setLevel(Level.ERROR);
+    }
+
+    /**
+     * 5个LeaderSelector竞选，当选两次后退出竞选
+     */
+    @Test
+    public void test() throws Exception {
+
         List<CuratorFramework> clientsList = Lists.newArrayListWithCapacity(CLINET_COUNT);
         //启动10个zk客户端，每几秒进行一次leader选举
         for (int i = 0; i < CLINET_COUNT; i++) {
-            CuratorFramework client = getZkClient();
-            clientsList.add(client);
-            ExampleClient exampleClient = new ExampleClient(client, LOCK_PATH, "client_" + i);
+            ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(1000, 3, 5000);
+            CuratorFramework zkClient = CuratorFrameworkFactory.builder()
+                .connectString("127.0.0.1:2181")
+                .sessionTimeoutMs(5000)
+                .connectionTimeoutMs(5000)
+                .retryPolicy(retryPolicy)
+                .build();
+            zkClient.start();
+            zkClient.blockUntilConnected();
+            SimpleLeaderSelector exampleClient = new SimpleLeaderSelector(zkClient, LOCK_PATH, "client_" + i);
+
+            clientsList.add(zkClient);
             exampleClient.start();
         }
-        //sleep 以观察抢主过程
-        Thread.sleep(Integer.MAX_VALUE);
+
+        System.in.read();
+        clientsList.forEach(CuratorFramework::close);
     }
 
-    static class ExampleClient extends LeaderSelectorListenerAdapter implements Closeable {
-        private final String name;
+    static class SimpleLeaderSelector extends LeaderSelectorListenerAdapter implements Closeable {
         private final LeaderSelector leaderSelector;
-        private final AtomicInteger leaderCount = new AtomicInteger();
+        private final AtomicInteger leaderCount = new AtomicInteger(0);
 
-        public ExampleClient(CuratorFramework client, String path, String name) {
-            this.name = name;
-
+        public SimpleLeaderSelector(CuratorFramework client, String path, String name) {
             leaderSelector = new LeaderSelector(client, path, this);
+            leaderSelector.setId(name);
 
             // 该方法能让客户端在释放leader权限后 重新加入leader权限的争夺中
             leaderSelector.autoRequeue();
@@ -62,34 +79,15 @@ public class LeaderSelectorTest {
 
         @Override
         public void takeLeadership(CuratorFramework client) throws Exception {
-            // 抢到leader权限后sleep一段时间，并释放leader权限
-            final int waitSeconds = (int) (5 * Math.random()) + 1;
-
-            System.out.println(name + " is now the leader. Waiting " + waitSeconds + " seconds...");
-            System.out.println(name + " has been leader " + leaderCount.getAndIncrement() + " time(s) before.");
-            try {
-                Thread.sleep(TimeUnit.SECONDS.toMillis(waitSeconds));
-            } catch (InterruptedException e) {
-                System.err.println(name + " was interrupted.");
-                Thread.currentThread().interrupt();
-            } finally {
-                System.out.println(name + " relinquishing leadership.\n");
+            leaderCount.incrementAndGet();
+            log.info("{} 竞选成功, 当前当选次数：{}", this.leaderSelector.getId(), this.leaderCount.get());
+            log.info("当前leader和所有竞选者：{}", leaderSelector.getParticipants());
+            if (leaderCount.get() == 2) {
+                log.info("{} 退出选举", this.leaderSelector.getId());
+                leaderSelector.close();
             }
+            log.info("{} 完成操作，释放leader\n", this.leaderSelector.getId());
         }
     }
-
-    private static CuratorFramework getZkClient() {
-        String zkServerAddress = "127.0.0.1:2181";
-        ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(1000, 3, 5000);
-        CuratorFramework zkClient = CuratorFrameworkFactory.builder()
-            .connectString(zkServerAddress)
-            .sessionTimeoutMs(5000)
-            .connectionTimeoutMs(5000)
-            .retryPolicy(retryPolicy)
-            .build();
-        zkClient.start();
-        return zkClient;
-    }
-
 }
 
