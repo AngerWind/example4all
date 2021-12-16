@@ -35,6 +35,7 @@ public class LeaderSelectorTest {
     public void test() throws Exception {
 
         List<CuratorFramework> clientsList = Lists.newArrayListWithCapacity(CLINET_COUNT);
+        List<LeaderSelector> leaderSelectors = Lists.newArrayList();
         //启动10个zk客户端，每几秒进行一次leader选举
         for (int i = 0; i < CLINET_COUNT; i++) {
             ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(1000, 3, 5000);
@@ -47,9 +48,10 @@ public class LeaderSelectorTest {
             zkClient.start();
             zkClient.blockUntilConnected();
             SimpleLeaderSelector exampleClient = new SimpleLeaderSelector(zkClient, LOCK_PATH, "client_" + i);
+            exampleClient.start();
 
             clientsList.add(zkClient);
-            exampleClient.start();
+            leaderSelectors.add(exampleClient.leaderSelector);
         }
 
         System.in.read();

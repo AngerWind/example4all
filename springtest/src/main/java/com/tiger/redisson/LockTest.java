@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import org.junit.Test;
 import org.redisson.Redisson;
+import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 
@@ -22,5 +23,8 @@ public class LockTest {
         Config config = new Config();
         config.useClusterServers().setNodeAddresses(Lists.newArrayList("127.0.0.1:6379"));
         RedissonClient redisson = Redisson.create(config);
+        RLock lock = redisson.getLock("/lock");
+        lock.lock();
+        lock.unlock();
     }
 }
