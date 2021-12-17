@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author tiger.shen
@@ -18,9 +19,9 @@ public class SimpleRedisLock  {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    private ThreadLocal<String> uuidLocal = new ThreadLocal<>();
+    private String uuid;
 
-    private ThreadLocal<Integer> lockCount = new ThreadLocal<>();
+    private AtomicInteger lockCount = new AtomicInteger();
 
     private String lockKey;
 
@@ -37,9 +38,12 @@ public class SimpleRedisLock  {
             String uuid = UUID.randomUUID().toString();
             boolean isLocked = stringRedisTemplate.opsForValue().setIfAbsent(lockKey, uuid, timeout, unit);
             if (isLocked) {
-                exclusiveOwnerThread = Thread.currentThread();
-                lock = true;
-                uuidLocal.set(uuid);
+                synchronized (this) {
+                    exclusiveOwnerThread = Thread.currentThread();
+                    lock = true;
+                    this.uuid = uuid;
+                    lockCount.incrementAndGet();
+                }
             }
             return false;
         } else if (exclusiveOwnerThread == Thread.currentThread()) {
@@ -75,23 +79,42 @@ public class SimpleRedisLock  {
         // return isLocked;
     }
 
-    public void releaseLock(String key) {
-        // 判断当前线程所对应的uuid是否与Redis对应的uuid相同，再执行删除锁操作
-        if (threadLocal.get().equals(stringRedisTemplate.opsForValue().get(key))) {
-            Integer count = threadLocalInteger.get();
-            // 计数器减为0时才能释放锁
-            if (count == null || --count <= 0) {
-                stringRedisTemplate.delete(key);
-                // 获取更新锁超时时间的线程并中断
-                long threadId = stringRedisTemplate.opsForValue().get(uuid);
-                Thread updateLockTimeoutThread = ThreadUtils.getThreadByThreadId(threadId);
-                if (updateLockTimeoutThread != null) {
-                    // 中断更新锁超时时间的线程
-                    updateLockTimeoutThread.interrupt();
-                    stringRedisTemplate.delete(uuid);
-                }
-            }
+    public synchronized boolean tryRelease(String key) {
+        if (!lock) {
+            return false;
         }
+        if (!Thread.currentThread().equals(exclusiveOwnerThread)) {
+            throw new IllegalMonitorStateException();
+        }
+        int c = lockCount.decrementAndGet();
+        boolean free = false;
+        if (c == 0) {
+            stringRedisTemplate.delete(key);
+            free = true;
+            this.exclusiveOwnerThread = null;
+            uuid = null;
+            lock = false;
+        }
+        return free;
+
+
+
+        // 判断当前线程所对应的uuid是否与Redis对应的uuid相同，再执行删除锁操作
+        // if (threadLocal.get().equals(stringRedisTemplate.opsForValue().get(key))) {
+        //     Integer count = threadLocalInteger.get();
+        //     // 计数器减为0时才能释放锁
+        //     if (count == null || --count <= 0) {
+        //         stringRedisTemplate.delete(key);
+        //         // 获取更新锁超时时间的线程并中断
+        //         long threadId = stringRedisTemplate.opsForValue().get(uuid);
+        //         Thread updateLockTimeoutThread = ThreadUtils.getThreadByThreadId(threadId);
+        //         if (updateLockTimeoutThread != null) {
+        //             // 中断更新锁超时时间的线程
+        //             updateLockTimeoutThread.interrupt();
+        //             stringRedisTemplate.delete(uuid);
+        //         }
+        //     }
+        // }
     }
 
     public class UpdateLockTimeoutTask implements Runnable {
@@ -108,10 +131,12 @@ public class SimpleRedisLock  {
 
         @Override
         public void run() {
-            // 将以uuid为Key，当前线程Id为Value的键值对保存到Redis中
-            stringRedisTemplate.opsForValue().set(uuid, Thread.currentThread().getId());
+
             // 定期更新锁的过期时间
             while (true) {
+                if (Thread.currentThread().isInterrupted()) {
+                    return;
+                }
                 stringRedisTemplate.expire(key, 10, TimeUnit.SECONDS);
                 try{
                     // 每隔3秒执行一次
