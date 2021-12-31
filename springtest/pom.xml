@@ -27,13 +27,15 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-<<<<<<< HEAD
 
-=======
->>>>>>> beea80d2ff96c3436b8646a4a0bb2395caf85039
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
         <dependency>
@@ -152,11 +154,11 @@
             <version>2.6.0</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.tiger</groupId>-->
-<!--            <artifactId>spring-sub-test</artifactId>-->
-<!--            <version>0.0.1-SNAPSHOT</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.tiger</groupId>
+            <artifactId>spring-sub-test</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>redis.clients</groupId>
@@ -177,6 +179,21 @@
 
 
     </dependencies>
+
+
+    <distributionManagement>
+        <repository>
+            <id>local-nexus-releases</id>
+            <name>maven-releases</name>
+            <url>http://localhost:12345/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>local-nexus-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>http://localhost:12345/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
     <build>
         <plugins>

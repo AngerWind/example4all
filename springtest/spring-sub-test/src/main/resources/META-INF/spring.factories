@@ -1,3 +1,9 @@
 org.springframework.boot.Bootstrapper=\
-com.tiger.spring_sub_test.SubTestBootstrap,\
-com.tiger.spring_sub_test.SubTestBootstrap2
+com.tiger.spring_sub_test.SubTestBootstrap
+
+org.springframework.boot.SpringApplicationRunListener=\
+  com.tiger.spring_sub_test.SimpleSpringApplicationRunListener
+
+org.springframework.boot.ApplicationRunner=\
+  com.tiger.spring_sub_test.SimpleApplicationListener
+

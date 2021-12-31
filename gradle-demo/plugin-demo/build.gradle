@@ -1,0 +1,36 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+group 'org.tiger'
+version '1.0-SNAPSHOT'
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'com.tiger.plugin.simple'
+            implementationClass = 'com.tiger.plugin.SimplePlugin'
+        }
+    }
+}
+
+publishing {
+    publications {
+        myLibrary(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+
+        maven {
+            allowInsecureProtocol = true
+            url 'http://localhost:12345/repository/maven-snapshots/'
+            credentials {
+                username "admin"
+                password "admin123"
+            }
+        }
+    }
+}
+

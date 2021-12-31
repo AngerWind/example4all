@@ -1,4 +1,16 @@
 rootProject.name = 'gradle-demo'
 include 'api'
 include 'core'
+include 'plugin-demo'
+
+
+
+class SettingsPlugin implements Plugin<Settings> {
+    void apply(Settings settings) {
+        println settings.settingsDir
+    }
+}
+
+apply plugin:SettingsPlugin
+
 

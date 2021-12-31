@@ -7,6 +7,54 @@ group 'org.tiger'
 version '1.0-SNAPSHOT'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
+
+configurations {
+    smokeTest.extendsFrom testImplementation
+}
+dependencies {
+
+}
+
+class Student{
+    String name;
+    String age;
+}
+class Car{
+    def color;
+    def num;
+}
+
+class GreetingPlugin implements Plugin<Project> {
+
+
+    void apply(Project project) {
+        // Add the 'greeting' extension object
+        def student = project.extensions.create('student', Student)
+        def car = new Car();
+        project.extensions.add('car', car);
+        // Add a task that uses configuration from the extension object
+        project.task('hello') {
+            doLast {
+                println "${student.name} + ${student.age}"
+                println "${car.color} + ${car.num}"
+                println "${project.extensions.findByType(Car).color}"
+            }
+        }
+    }
+}
+
+apply plugin: GreetingPlugin
+
+// Configure the extension
+student.name = 'zhangsan'
+student.age = 'zzzz'
+car {
+    color = 'red'
+    num = 4
+}
+
+
 

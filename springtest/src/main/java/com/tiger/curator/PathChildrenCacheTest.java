@@ -18,7 +18,7 @@ import static org.apache.curator.framework.recipes.cache.PathChildrenCache.Start
  * @date 2021/12/7 19:39
  * @description
  */
-public class ZookeeperListener {
+public class PathChildrenCacheTest {
 
     @Test
     @SneakyThrows
@@ -34,11 +34,19 @@ public class ZookeeperListener {
                 pathChildrenCache.getListenable().addListener(new PathChildrenCacheListener() {
                     @Override
                     public void childEvent(CuratorFramework client, PathChildrenCacheEvent event) throws Exception {
-                        System.out.println(event);
+                        if (event.getType().equals(PathChildrenCacheEvent.Type.INITIALIZED)) {
+                            pathChildrenCache.getListenable().addListener(new PathChildrenCacheListener() {
+                                @Override
+                                public void childEvent(CuratorFramework client, PathChildrenCacheEvent event)
+                                    throws Exception {
+                                    System.out.println(event);
+                                }
+                            });
+                        }
                     }
                 });
-                // pathChildrenCache.start(POST_INITIALIZED_EVENT);
-                pathChildrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
+                pathChildrenCache.start(POST_INITIALIZED_EVENT);
+                // pathChildrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
                 Thread.sleep(Long.MAX_VALUE);
             }
         }

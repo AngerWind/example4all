@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -23,11 +24,11 @@ import java.util.concurrent.TimeUnit;
 public class RedisLockImpl implements Lock {
     private StringRedisTemplate redisTemplate;
     private String lockKey;
-    private String lockKeyValue;
+    private String uuid;
     private long DEFAULT_RELEASE_TIME = 30;
     private static final DefaultRedisScript<Long> LOCK_SCRIPT;
     private static final DefaultRedisScript<Object> UNLOCK_SCRIPT;
-    private ScheduledExecutorService scheduledExecutorService  = new ScheduledThreadPoolExecutor(1);
+    private static final ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
 
     static {
         // 加载释放锁的脚本
@@ -42,16 +43,14 @@ public class RedisLockImpl implements Lock {
     public RedisLockImpl(StringRedisTemplate redisTemplate, String lockKey) {
         this.redisTemplate = redisTemplate;
         this.lockKey = lockKey;
-        this.lockKeyValue = UUID.randomUUID().toString();
+        this.uuid = UUID.randomUUID().toString();
     }
-
-
 
     @Override
     public boolean tryLock() {
         // 执行脚本
-        Long result = redisTemplate.execute(LOCK_SCRIPT, Collections.singletonList(lockKey),
-            lockKeyValue, String.valueOf(DEFAULT_RELEASE_TIME));
+        Long result = redisTemplate.execute(LOCK_SCRIPT, Collections.singletonList(lockKey), uuid,
+            String.valueOf(DEFAULT_RELEASE_TIME));
         // 判断结果
         return result != null && result.intValue() == 1;
     }
@@ -60,9 +59,9 @@ public class RedisLockImpl implements Lock {
     public boolean tryLock(long time) {
         Instant endTime = Instant.now().plusMillis(time);
 
-        while(Instant.now().getEpochSecond() < endTime.getEpochSecond()) {
-            Long result = redisTemplate.execute(LOCK_SCRIPT, Collections.singletonList(lockKey),
-                lockKeyValue, String.valueOf(DEFAULT_RELEASE_TIME));
+        while (Instant.now().getEpochSecond() < endTime.getEpochSecond()) {
+            Long result = redisTemplate.execute(LOCK_SCRIPT, Collections.singletonList(lockKey), uuid,
+                String.valueOf(DEFAULT_RELEASE_TIME));
 
             if (result != null && result.intValue() == 1) {
                 renewKey(Thread.currentThread());
@@ -70,7 +69,6 @@ public class RedisLockImpl implements Lock {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -78,8 +76,8 @@ public class RedisLockImpl implements Lock {
     public void lock() {
 
         while (true) {
-            Long result = redisTemplate.execute(LOCK_SCRIPT, Collections.singletonList(lockKey),
-                lockKeyValue, String.valueOf(DEFAULT_RELEASE_TIME));
+            Long result = redisTemplate.execute(LOCK_SCRIPT, Collections.singletonList(lockKey), uuid,
+                String.valueOf(DEFAULT_RELEASE_TIME));
 
             if (result != null && result.intValue() == 1) {
                 renewKey(Thread.currentThread());
@@ -92,18 +90,17 @@ public class RedisLockImpl implements Lock {
     @Override
     public void unlock() {
         // 执行脚本
-        redisTemplate.execute(
-            UNLOCK_SCRIPT,
-            Collections.singletonList(lockKey),
-            lockKeyValue, String.valueOf(DEFAULT_RELEASE_TIME));
+        redisTemplate.execute(UNLOCK_SCRIPT, Collections.singletonList(lockKey), uuid,
+            String.valueOf(DEFAULT_RELEASE_TIME));
     }
 
     /**
      * 定时续费
+     * 
      * @param thread
      */
     public void renewKey(Thread thread) {
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
+        ScheduledFuture<?> future = scheduledExecutorService.scheduleAtFixedRate(() -> {
             if (thread.isAlive() && redisTemplate.hasKey(lockKey)) {
                 redisTemplate.expire(lockKey, DEFAULT_RELEASE_TIME, TimeUnit.SECONDS);
             } else {
