@@ -3,6 +3,7 @@ package com.tiger.curator;
 import lombok.SneakyThrows;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
@@ -11,13 +12,7 @@ import org.junit.Test;
 
 import static org.apache.curator.framework.recipes.cache.PathChildrenCache.StartMode.POST_INITIALIZED_EVENT;
 
-/**
- * @author tiger.shen
- * @version v1.0
- * @Title ZookeeperListener
- * @date 2021/12/7 19:39
- * @description
- */
+
 public class PathChildrenCacheTest {
 
     @Test
@@ -50,6 +45,52 @@ public class PathChildrenCacheTest {
                 Thread.sleep(Long.MAX_VALUE);
             }
         }
+    @SneakyThrows
+    @Test
+    public void test() {
+        ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(1000, 3, 5000);
+        CuratorFramework zkClient = CuratorFrameworkFactory.builder()
+                .connectString("127.0.0.1:2181")
+                .sessionTimeoutMs(5000)
+                .connectionTimeoutMs(5000)
+                .retryPolicy(retryPolicy)
+                .build();
+        zkClient.start();
+        zkClient.blockUntilConnected();
+
+        PathChildrenCache childrenCache = new PathChildrenCache(zkClient, "/children", true, false, Executors.newSingleThreadExecutor());
+        childrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
+        childrenCache.getListenable().addListener(new PathChildrenCacheListener() {
+            @Override
+            public void childEvent(CuratorFramework client, PathChildrenCacheEvent event) throws Exception {
+                switch (event.getType()) {
+                    // initialized事件，只有在StartMode为POST_INITIALIZED_EVENT才会触发，表示已经异步初始化完成。
+                    case INITIALIZED:
+                        break;
+
+                    case CHILD_ADDED:
+                        break;
+                    case CHILD_REMOVED:
+                        break;
+                    case CHILD_UPDATED:
+                        break;
+
+                    case CONNECTION_LOST:
+                        break;
+                    case CONNECTION_RECONNECTED:
+                        break;
+                    case CONNECTION_SUSPENDED:
+                        break;
+                }
+            }
+        });
+        List<ChildData> currentData = childrenCache.getCurrentData();
+        for (ChildData childData : currentData) {
+            childData.getData();
+            childData.getPath();
+            childData.getStat();
+        }
+        ChildData data = childrenCache.getCurrentData("full");
 
     }
 }
