@@ -17,3 +17,6 @@ my:
 spring:
   activemq:
     broker-url: my-bro
+  profiles:
+    include: dev
+    active: prod
