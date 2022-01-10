@@ -15,8 +15,28 @@ my:
     key2: value2
 
 spring:
-  activemq:
-    broker-url: my-bro
   profiles:
-    include: dev
+    include: dev, test
     active: prod
+
+---
+bb: 111
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+bb: 222
+
+---
+spring:
+  config:
+    activate:
+      on-profile: fat
+bb: 333
+
+###
