@@ -3,17 +3,12 @@ package com.tiger.spring_sub_test;
 import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
+import org.springframework.boot.context.event.EventPublishingRunListener;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
-/**
- * @author tiger.shen
- * @version v1.0
- * @Title SimpleSpringApplicationRunListerner
- * @date 2021/12/24 11:44
- * @description
- */
+
 public class SimpleSpringApplicationRunListener implements SpringApplicationRunListener {
 
     /**

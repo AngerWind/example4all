@@ -1,5 +1,5 @@
 org.springframework.boot.Bootstrapper=\
-com.tiger.spring_sub_test.SubTestBootstrap
+com.tiger.spring_sub_test.bootstrap.BootstrapIntitializer
 
 org.springframework.boot.SpringApplicationRunListener=\
   com.tiger.spring_sub_test.SimpleSpringApplicationRunListener
