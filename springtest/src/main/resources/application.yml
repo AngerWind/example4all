@@ -1,0 +1,19 @@
+my:
+  simpleProp: simpleValue
+  arrayProp: 1, 2, 3, 4, 5, 6, 7
+  arrayProp1:
+    - 127
+    - 2181
+  list:
+    - name: abcd
+      value: 1234
+    - name: skdfjsk
+      value: sfkds
+
+  map:
+    key1: value1
+    key2: value2
+
+spring:
+  activemq:
+    broker-url: my-bro

@@ -10,6 +10,9 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.junit.Test;
 
+import java.util.List;
+import java.util.concurrent.Executors;
+
 import static org.apache.curator.framework.recipes.cache.PathChildrenCache.StartMode.POST_INITIALIZED_EVENT;
 
 
@@ -17,14 +20,14 @@ public class PathChildrenCacheTest {
 
     @Test
     @SneakyThrows
-    public void test(){
+    public void test() {
         try (CuratorFramework client = CuratorFrameworkFactory
-            .newClient("10.2.0.201:2181", new ExponentialBackoffRetry(1000, 3))) {
+                .newClient("10.2.0.201:2181", new ExponentialBackoffRetry(1000, 3))) {
             client.start();
             client.blockUntilConnected();
 
             try (PathChildrenCache pathChildrenCache = new PathChildrenCache(client,
-                "/default/MasterSelector/welab-skyscanner-tenma/task/local", true)) {
+                    "/default/MasterSelector/welab-skyscanner-tenma/task/local", true)) {
 
                 pathChildrenCache.getListenable().addListener(new PathChildrenCacheListener() {
                     @Override
@@ -33,7 +36,7 @@ public class PathChildrenCacheTest {
                             pathChildrenCache.getListenable().addListener(new PathChildrenCacheListener() {
                                 @Override
                                 public void childEvent(CuratorFramework client, PathChildrenCacheEvent event)
-                                    throws Exception {
+                                        throws Exception {
                                     System.out.println(event);
                                 }
                             });
@@ -45,9 +48,10 @@ public class PathChildrenCacheTest {
                 Thread.sleep(Long.MAX_VALUE);
             }
         }
+    }
     @SneakyThrows
     @Test
-    public void test() {
+    public void test1() {
         ExponentialBackoffRetry retryPolicy = new ExponentialBackoffRetry(1000, 3, 5000);
         CuratorFramework zkClient = CuratorFrameworkFactory.builder()
                 .connectString("127.0.0.1:2181")
