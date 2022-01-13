@@ -1,42 +1,62 @@
-my:
-  simpleProp: simpleValue
-  arrayProp: 1, 2, 3, 4, 5, 6, 7
-  arrayProp1:
-    - 127
-    - 2181
-  list:
-    - name: abcd
-      value: 1234
-    - name: skdfjsk
-      value: sfkds
+#my:
+#  str: simpleValue
+#  array: 1, 2, 3, 4, 5, 6, 7
+#  list:
+#    - 127
+#    - 2181
+#  listMap:
+#    - name: abcd
+#      value: 1234
+#    - name: skdfjsk
+#      value: sfkds
+#  map:
+#    key1: ${my.str}
+#    key2: value2
+#
+#people:
+#  address: &address
+#    city: beijin
+#  name: &name zhangsan
+#
+#people1:
+#  address:
+#    <<: *address
+#  name: *name
 
-  map:
-    key1: value1
-    key2: value2
+
 
 spring:
   profiles:
-    include: dev, test
-    active: prod
+    include: mysql, zk
+    active: dev, test
+    group:
+      dev: dev-mysql, dev-zk
 
 ---
-bb: 111
+test: test
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: test
 ---
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: dev-mysql
 bb: 222
 
 ---
 spring:
   config:
     activate:
-      on-profile: fat
-bb: 333
+      on-profile: dev-zk
+cc: 333
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev-zk
+cc: 333
 
 ###
