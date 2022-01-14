@@ -26,11 +26,21 @@
 
 
 spring:
+  config:
+    import: a
   profiles:
-    include: mysql, zk
+    include: mysql
     active: dev, test
     group:
       dev: dev-mysql, dev-zk
+---
+spring:
+  config:
+    activate:
+      on-cloud-platform: kubernetes
+  profiles:
+    include: zk
+location: k8s
 
 ---
 test: test

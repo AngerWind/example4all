@@ -1,13 +1,16 @@
 package com.tiger;
 
+import com.google.common.collect.Maps;
 import com.tiger.springtest.SpringtestApplication;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.Serializable;
+import java.util.Map;
 
 @Configuration
 // @ComponentScan(basePackageClasses = SpringTestApplication.class, nameGenerator = SimpleBeanNameGenerator.class, scopeResolver = SimpleScopeMetadataResolver.class, lazyInit = false, resourcePattern = "**/*Test.class")
@@ -32,7 +35,17 @@ public class SpringTestApplication implements BeanNameAware, Serializable {
 
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(new Class[]{SpringtestApplication.class}, args);
+        // ConfigurableApplicationContext context = SpringApplication.run(new Class[]{SpringtestApplication.class}, args);
+
+        Map<String, Object> defaultProperties = Maps.newHashMap();
+        defaultProperties.put("spring.main.cloud-platform", "KUBERNETES");
+        defaultProperties.put("spring.config.import", "classpath:import/*");
+        defaultProperties.put("spring.config.additional-location", "aa");
+        defaultProperties.put("spring.config.on-not-found", "ignore");
+        defaultProperties.put("spring.config.name", "application, config");
+        ConfigurableApplicationContext context = new SpringApplicationBuilder(SpringApplication.class)
+            .properties(defaultProperties)
+            .run(args);
         System.out.println(context.getEnvironment().getProperty("my"));
         System.out.println(context.getEnvironment().getProperty("my.arrayProp[0]"));
         System.out.println(context.getEnvironment().getProperty("my.arrayProp1[1]"));
