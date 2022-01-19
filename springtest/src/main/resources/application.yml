@@ -26,8 +26,8 @@
 
 
 spring:
-  config:
-    import: a
+#  config:
+#    import: a
   profiles:
     include: mysql
     active: dev, test
@@ -40,7 +40,6 @@ spring:
       on-cloud-platform: kubernetes
   profiles:
     include: zk
-location: k8s
 
 ---
 test: test
