@@ -38,11 +38,11 @@ public class SpringTestApplication implements BeanNameAware, Serializable {
         // ConfigurableApplicationContext context = SpringApplication.run(new Class[]{SpringtestApplication.class}, args);
 
         Map<String, Object> defaultProperties = Maps.newHashMap();
-        defaultProperties.put("spring.main.cloud-platform", "KUBERNETES");
-        defaultProperties.put("spring.config.import", "classpath:import/*");
-        defaultProperties.put("spring.config.additional-location", "aa");
-        defaultProperties.put("spring.config.on-not-found", "ignore");
-        defaultProperties.put("spring.config.name", "application, config");
+        // defaultProperties.put("spring.main.cloud-platform", "KUBERNETES");
+        // defaultProperties.put("spring.config.import", "classpath:import/*");
+        // defaultProperties.put("spring.config.additional-location", "aa");
+        // defaultProperties.put("spring.config.on-not-found", "ignore");
+        // defaultProperties.put("spring.config.name", "application, config");
         ConfigurableApplicationContext context = new SpringApplicationBuilder(SpringApplication.class)
             .properties(defaultProperties)
             .run(args);
