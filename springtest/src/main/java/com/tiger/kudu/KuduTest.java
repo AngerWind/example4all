@@ -162,10 +162,4 @@ public class KuduTest {
 
     }
 
-    public static void main(String[] args) {
-        Integer i = Integer.MAX_VALUE;
-        int j = i + 1;
-        System.out.println(j);
-    }
-
 }

@@ -12,9 +12,11 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * @date 2021/11/26 17:01
  * @description
  */
-public class BootstrapIntitializer implements Bootstrapper {
+public class BootstrapIntitializer implements BootstrapRegistryInitializer {
+
+
     @Override
-    public void intitialize(BootstrapRegistry registry) {
+    public void initialize(BootstrapRegistry registry) {
         registry.addCloseListener(new BootstrapCloseListener());
     }
 
