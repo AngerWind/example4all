@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.NumberDeserializers;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.IOException;
@@ -36,6 +38,10 @@ public class JsonSerializeAndJsonDeserializeTest {
         @JsonSerialize(using = JsonDataSerializer.class)
         @JsonDeserialize(using = JsonDataDeserializer.class)
         String address;
+
+        // long类型转json给前端可能丢失进度, 序列化时long->string, 反序列化时string->long
+        @JsonSerialize(using = ToStringSerializer.class)
+        Long id;
     }
 
     public static class JsonDataSerializer extends JsonSerializer<String> {
