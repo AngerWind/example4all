@@ -7,7 +7,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tiger</groupId>
     <artifactId>springtest</artifactId>
@@ -173,22 +172,28 @@
             <version>3.16.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
 
 
     </dependencies>
 
 
     <distributionManagement>
-        <repository>
-            <id>local-nexus-releases</id>
-            <name>maven-releases</name>
-            <url>http://localhost:12345/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>local-nexus-snapshots</id>
-            <name>maven-snapshots</name>
-            <url>http://localhost:12345/repository/maven-snapshots/</url>
-        </snapshotRepository>
+<!--        <repository>-->
+<!--            <id>local-nexus-releases</id>-->
+<!--            <name>maven-releases</name>-->
+<!--            <url>http://localhost:12345/repository/maven-releases/</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>local-nexus-snapshots</id>-->
+<!--            <name>maven-snapshots</name>-->
+<!--            <url>http://localhost:12345/repository/maven-snapshots/</url>-->
+<!--        </snapshotRepository>-->
     </distributionManagement>
 
 
