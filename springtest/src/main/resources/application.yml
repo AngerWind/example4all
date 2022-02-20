@@ -37,7 +37,7 @@ test: test
 spring:
   config:
     activate:
-      on-profile: test
+      on-profile: test443
 ---
 spring:
   config:
