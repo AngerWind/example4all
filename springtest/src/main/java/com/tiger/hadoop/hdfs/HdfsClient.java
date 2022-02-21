@@ -32,6 +32,7 @@ public class HdfsClient {
         conf.set("dfs.replication", "1");
 
         // 客户端操作hdfs时,默认使用的是当前系统登录的用户,有可能导致权限不足
+        // 可以直接代码设置用户, 也可以设置系统环境变量或者jvm系统变量HADOOP_USER_NAME
         fs = FileSystem.get(new URI("hdfs://localhost:8082"), conf, "shen");
     }
 
@@ -44,7 +45,7 @@ public class HdfsClient {
     @Test
     @SneakyThrows
     public void mkdir() {
-        boolean mkdirs = fs.mkdirs(new Path("/xiyou"));
+        boolean mkdirs = fs.mkdirs(new Path("/sanguo"));
         System.out.println(mkdirs);
     }
 
