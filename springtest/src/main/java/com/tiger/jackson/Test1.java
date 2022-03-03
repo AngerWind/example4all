@@ -145,4 +145,19 @@ public class Test1 {
         }
     }
 
+    @Test
+    @SneakyThrows
+    public void stringToLong(){
+//        Age age = new Age();
+//        age.age = 1L;
+//        System.out.println(new ObjectMapper().writeValueAsString(age));
+
+        String ageStr = "{\"age\":1}";
+        Age age1 = new ObjectMapper().readValue(ageStr, Age.class);
+        System.out.println(age1.age);
+    }
+    public static class Age{
+        public String age;
+    }
+
 }
