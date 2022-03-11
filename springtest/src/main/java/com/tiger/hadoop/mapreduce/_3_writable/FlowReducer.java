@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce.writable;
+package com.tiger.hadoop.mapreduce._3_writable;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;

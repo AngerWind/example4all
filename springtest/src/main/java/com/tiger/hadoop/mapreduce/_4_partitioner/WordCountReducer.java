@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._3_partitioner;
+package com.tiger.hadoop.mapreduce._4_partitioner;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;

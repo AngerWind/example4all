@@ -1,10 +1,12 @@
-package com.tiger.hadoop.mapreduce.writable;
+package com.tiger.hadoop.mapreduce._3_writable;
 
+import com.tiger.hadoop.mapreduce.ClassPathSys;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * 求用户总上行流量, 下行流量, 总流量
@@ -23,8 +25,13 @@ public class FlowMapper extends Mapper<LongWritable, Text, Text, FlowBean> {
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         String[] words = value.toString().split("\\s+");
-        long up = Long.parseLong(words[3]);
-        long down = Long.parseLong(words[4]);
-        context.write(new Text(words[1]), new FlowBean(up, down, down + up));
+        long up = Long.parseLong(words[2]);
+        long down = Long.parseLong(words[3]);
+        context.write(new Text(words[0]), new FlowBean(up, down, down + up));
+    }
+
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException {
+
     }
 }
