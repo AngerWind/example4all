@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce.writable;
+package com.tiger.hadoop.mapreduce._2_writable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

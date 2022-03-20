@@ -1,12 +1,4 @@
-package com.tiger.hadoop.mapreduce._3_partitioner;
-
-/**
- * @author Shen
- * @version v1.0
- * @Title WordCountMapper
- * @date 2022/2/24 23:28
- * @description
- */
+package com.tiger.hadoop.mapreduce._3_spilt;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.io.IntWritable;
@@ -15,6 +7,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
+
 
 public class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
