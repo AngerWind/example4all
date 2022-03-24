@@ -1,10 +1,10 @@
-package com.tiger.hadoop.mapreduce._3_writable;
-
-import org.apache.commons.lang3.RandomUtils;
+package com.tiger.hadoop.mapreduce._5_local_run;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import org.apache.commons.lang3.RandomUtils;
 
 /**
  * @author tiger.shen
