@@ -33,7 +33,7 @@ public class HdfsClient {
 
         // 客户端操作hdfs时,默认使用的是当前系统登录的用户,有可能导致权限不足
         // 可以直接代码设置用户, 也可以设置系统环境变量或者jvm系统变量HADOOP_USER_NAME
-        fs = FileSystem.get(new URI("hdfs://localhost:8082"), conf, "shen");
+        fs = FileSystem.get(new URI("hdfs://hadoop:8082"), conf, "tiger");
     }
 
     @After
@@ -61,7 +61,7 @@ public class HdfsClient {
     @SneakyThrows
     public void put() {
         // 方式1
-        fs.copyFromLocalFile(false, true, new Path("E:\\apache-maven\\apache-maven-3.6.3\\conf\\settings.xml"),
+        fs.copyFromLocalFile(false, true, new Path("C:\\Users\\Tiger.Shen\\Desktop\\问题.md"),
                 new Path("/xiyou/"));
 
         // 方式2

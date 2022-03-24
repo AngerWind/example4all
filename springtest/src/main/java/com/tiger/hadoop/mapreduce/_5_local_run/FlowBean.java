@@ -1,13 +1,14 @@
-package com.tiger.hadoop.mapreduce._2_writable;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.apache.hadoop.io.Writable;
+package com.tiger.hadoop.mapreduce._5_local_run;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+
+import org.apache.hadoop.io.Writable;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 实现Writable接口, 使得类可以序列化, write方法和readFields方法对于字段的序列化顺序需要一致

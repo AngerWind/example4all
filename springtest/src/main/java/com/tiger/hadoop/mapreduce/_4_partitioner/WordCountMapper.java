@@ -1,5 +1,13 @@
 package com.tiger.hadoop.mapreduce._4_partitioner;
 
+/**
+ * @author Shen
+ * @version v1.0
+ * @Title WordCountMapper
+ * @date 2022/2/24 23:28
+ * @description
+ */
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
