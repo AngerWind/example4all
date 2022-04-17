@@ -1,11 +1,10 @@
-package com.tiger.hadoop.mapreduce._3_spilt;
+package com.tiger.hadoop.mapreduce._6_compress;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
-
 
 public class WordCountReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
 
