@@ -112,6 +112,6 @@ public class HbaseTest {
         Delete delete = new Delete("rowKey1".getBytes());
 
 
-        table.get(get);
+        // table.get(get);
     }
 }
