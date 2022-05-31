@@ -23,7 +23,7 @@ public class JDBCTest {
 
     @Before
     public void init() {
-        String url = "jdbc:mysql://localhost:3306/test";
+        String url = "jdbc:mysql://localhost:3308/tenma_test?useTimezone=true&serverTimezone=UTC";
         String username = "root";
         String password = "871403165";
 

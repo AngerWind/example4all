@@ -37,10 +37,11 @@ public class KuduTest {
     @Before
     public void init() {
         //初始化操作
-        String kuduMaster = "10.2.0.242:7051";
+        String kuduMaster = "cdh01.wld.com:7051";
         KuduClient.KuduClientBuilder kuduClientBuilder = new
                 KuduClient.KuduClientBuilder(kuduMaster);
         kuduClientBuilder.defaultOperationTimeoutMs(1800000);
+        kuduClientBuilder.defaultAdminOperationTimeoutMs(1800000);
 
         kuduClient = kuduClientBuilder.build();
         // 创建写session,kudu必须通过session写入
