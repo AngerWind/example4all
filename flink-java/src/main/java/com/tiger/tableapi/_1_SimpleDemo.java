@@ -39,7 +39,7 @@ public class _1_SimpleDemo {
 
         // 对table中的数据进行查询, 转换成另外一张表
         Table allTable = tableEnv.sqlQuery("select user, url, `timestamp` from " + eventTable);
-        Table maryStream = eventTable.select($("user"), $("url"), $("timestamp"))
+        Table maryStream = eventTable.select($("user"), $("url"), $("timestamp").plus(1))
                 .where($("user").isEqual("Mary"));
 
         // table转换成dataStream进行输出

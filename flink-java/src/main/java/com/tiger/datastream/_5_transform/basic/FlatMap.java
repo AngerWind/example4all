@@ -21,4 +21,23 @@ public class FlatMap {
 
         env.execute();
     }
+
+    @Test
+    public void flatMap1() throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        DataStreamSource<String> source = env.fromElements("a b c", "xx ss gg");
+
+        source.flatMap((String str, Collector<String> collector) -> {
+            System.out.println(str);
+            Arrays.stream(str.split(" ")).forEach(collector::collect);
+        }).returns(new TypeHint<String>() {}).print();
+
+        source.flatMap((String str, Collector<String> collector) -> {
+            System.out.println(str);
+            Arrays.stream(str.split(" ")).forEach(collector::collect);
+        }).returns(new TypeHint<String>() {}).print();
+
+
+        env.execute();
+    }
 }
