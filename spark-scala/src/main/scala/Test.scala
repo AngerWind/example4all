@@ -1,3 +1,5 @@
+
+
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag
 
@@ -23,11 +25,8 @@ object Test {
       val value: Map[Int, Int] = Map(1 -> 2)
       value(1)
 
-
-
     }
 
-
-
-
 }
+
+

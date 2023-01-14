@@ -1,0 +1,84 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "available",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "required",
+						"type": "uint256"
+					}
+				],
+				"name": "InsufficientBalance",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "available",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "required",
+						"type": "uint256"
+					}
+				],
+				"name": "check",
+				"outputs": [],
+				"stateMutability": "pure",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"check(uint256,uint256)": {
+					"notice": "- Solidity 中的错误（关键字error）提供了一种方便且省gas的方式来向用户解释为什么一个操作会失败。 它们可以被定义在合约（包括接口和库）内部和外部。 - 使用revert语句来抛出一个异常, 它会还原当前调用中的发生的所有变化，并将错误数据传回给调用者。 revert语句接受一个自定义错误作为不带括号的直接参数: revert CustomError(arg1, arg2); 出于向后兼容的原因，还有revert()函数，它使用圆括号并接受一个字符串:revert(); revert(“description”); - 在EVM内部定义了两个内建的error, 分别是Panic(uint256)和Error(string) Panic这类error的含义与java中的RuntimeException类似, 即正常的函数代码永远不会产生 Panic ,  甚至是基于一个无效的外部输入时。如果发生了，那就说明出现了一个需要你修复的 bug。 Error这类error的含义与java中的非RuntimeException类似 - 使用自定义错误实例通常比使用字符串描述便宜得多，因为你可以使用错误名称来描述它，该名称仅用4个字节编码。 - 错误不能被重写或覆盖，但是可以继承。 - 在内部， Solidity 对异常执行回退操作（指令 0xfd ），从而让 EVM 回退对状态所做的所有更改。"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"合约/_11_错误和异常处理_抛出异常.sol": "TestToken"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"合约/_11_错误和异常处理_抛出异常.sol": {
+			"keccak256": "0x046c00787600bcd2d3bb3eafb1fab0eec7c84f891f793f75d6acf1b96b30d2d3",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://16995bf333d94b3c4869113f10a52be701061c2693de94b15585b40a41cb8c9d",
+				"dweb:/ipfs/QmaBi34ebsPPwxEBuoRinuZCgPHfzVkg64dzFY18vKCk32"
+			]
+		}
+	},
+	"version": 1
+}

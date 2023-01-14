@@ -1,0 +1,71 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"name": "Log",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "foo",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"合约/test.sol": "K2"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"合约/test.sol": {
+			"keccak256": "0x4eba9916b07339cbb263d7b2461b3cf0a51038ff6b376a3cdb48847a074d3a62",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://29db766460696addc395f6a436c2877b5e25e4f4c3e6d05de92a68cd3827b3c8",
+				"dweb:/ipfs/QmcX5DsUN5uQfTFL7bwJbrivK2tcs4Cz3SFf7bgx4KbLa4"
+			]
+		}
+	},
+	"version": 1
+}

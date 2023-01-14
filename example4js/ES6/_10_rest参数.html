@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rest参数</title>
+</head>
+
+<body>
+    <script>
+
+        // ES5 获取实参的方式
+        function date() {
+            // 这里的arguments是一个类数组对象, 属性为0, 1, 2.... 他不是真正的数组
+            console.log(arguments);
+        }
+        date('白芷', '阿娇', '思慧');
+
+        // ES6 引入 rest 参数，用于获取函数的实参，用来代替 arguments
+        function date1(...args) {
+            // 这里的args是一个真正的数组对象(Array), 其中有一些数组操作函数
+            console.log(args);// filter some every map 
+        }
+        date1('阿娇', '柏芝', '思慧');
+
+        // rest 参数必须要放到参数最后
+        function fn(a, b, ...args) {
+            console.log(a);
+            console.log(b);
+            console.log(args);
+        }
+        fn(1, 2, 3, 4, 5, 6);
+
+    </script>
+</body>
+
+</html>

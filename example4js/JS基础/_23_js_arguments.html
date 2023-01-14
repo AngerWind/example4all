@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script type="text/javascript">
+            /**
+             * 在调用函数是, 浏览器会传递两个隐含的参数
+             *      1. 函数的上下文对象this
+             *      2. 封装实参的对象arguments
+             *          - arguments对象是一个类数组对象, 可以通过索引来操作数据, 通过length获取长度
+             *          - 在函数调用的时候, 所有的实参都会封装到arguments中
+             *          - 他里面有一个属性callee, 就是当前正在执行的函数对象
+             */ 
+            function sum() {
+                // 通过length获取长度
+                console.log(arguments.length)
+
+                // 通过下标获取元素
+                console.log(arguments[0])
+                console.log(arguments[1])
+                console.log(arguments[2])
+
+                // arguments不是Array
+                // 他是类似这样这样的一个对象{"1":"", "2":"", "3": "" .....}
+                console.log(arguments instanceof Array) // false
+                // 通过for in 获取 arguments中的属性
+                for(var property in arguments){
+                    console.log(property) // 打印0, 1, 2, 3....
+                }
+
+                // arguments中有一个属性callee, 他就是当前方法
+                console.log(arguments.callee == sum) // true
+            }
+
+            sum(1, 23, 4)
+        </script>
+    </head>
+</html>

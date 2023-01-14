@@ -43,7 +43,7 @@ public class WordCount {
         JavaPairRDD<Integer, String> map = reduce.mapToPair(Tuple2::swap);
 
         JavaPairRDD<Integer, String> sort = map.sortByKey(false);
-        sort.saveAsTextFile("hdfs://hadoop102:8020/wordcount/output111");
+        sort.saveAsTextFile("hdfs://hadoop102:8020/wordcount/output11111");
 
         context.stop();
     }

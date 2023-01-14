@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>类声明</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * es5定义一个类
+         */
+        function Phone(brand, price) {
+            this.brand = brand;
+            this.price = price;
+        }
+        //给所有的Phone添加一个方法, 需要在原型上面添加
+        Phone.prototype.call = function () {
+            console.log(`${this.brand}, ${this.price}`);
+        }
+
+        //实例化对象
+        let Huawei = new Phone('华为', 5999);
+        Huawei.call();
+
+
+        // es6定义一个类
+        class TelePhone {
+            //构造方法 名字不能修改
+            constructor(brand, price) {
+                this.brand = brand;
+                this.price = price;
+            }
+            //方法必须使用该语法, 不能使用 ES5 的对象完整形式
+            call() {
+                console.log(`${this.brand}, ${this.price}`);
+            }
+        }
+
+        let onePlus = new TelePhone("1+", 1999);
+        onePlus.call()
+    </script>
+</body>
+
+</html>

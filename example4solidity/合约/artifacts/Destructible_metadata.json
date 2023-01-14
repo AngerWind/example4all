@@ -1,0 +1,53 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "destroy",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"合约/_10_合约_继承.sol": "Destructible"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"合约/_10_合约_继承.sol": {
+			"keccak256": "0x2db7aca638edd581159e891a4c5ce4c17f00e9c04809a62e01c1b0f3f4cd389c",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://70a5b405bdcbc3a871abd1d4278450e57e7f6942a6572795162b83d1f1f84bb7",
+				"dweb:/ipfs/QmdBbLj8ETNj9iHDWg6a5esXTSTL1K6yg5Cj62y6zkqFDw"
+			]
+		}
+	},
+	"version": 1
+}

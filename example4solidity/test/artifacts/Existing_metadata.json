@@ -1,0 +1,97 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "t",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "getA",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "result",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_val",
+						"type": "uint256"
+					}
+				],
+				"name": "setA",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "result",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"test/Caller.sol": "Existing"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"test/A.sol": {
+			"keccak256": "0x191fe5f6531c6714a23a4d4ba4815e12319e187faae9ee2a81c345c2bce0eed8",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://d8c779d3e0e13659d3ba1d2269c3f0b57fbf5ad2a61af5090a28bd6452fcc0db",
+				"dweb:/ipfs/QmdKF2Yppx2YRp7CnUn6iubmXveU7JFhbWAZW45HnqWkNW"
+			]
+		},
+		"test/Caller.sol": {
+			"keccak256": "0xf6462820cf977901cef061a03d578b9dc164514f04da1edfa7b835c53823d2b2",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://d01d09011e5b756116135867fdaf092227cb91c7bb2278652651871bd2f549c0",
+				"dweb:/ipfs/QmRA8Qb6uW2KiJBX8uw8GTqB2pzSzeszz4eHvqGTwRhN6T"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+    <h1 id="count"></h1>
+
+    <!-- 定时任务 -->
+    <script>
+        /*
+         * setInterval() 每隔指定毫秒调用一次任务
+         * 	- 返回一个Number类型的数据用来作为定时器的唯一标识
+         */
+        var num = 1;
+        var timer = setInterval(function () {
+            document.getElementById("count").innerHTML = num++;
+            if (num == 11) {
+                //关闭定时器
+                clearInterval(timer);
+            }
+        }, 1000);
+
+        //console.log(timer);
+
+        /**
+         * clearInterval()可以用来关闭一个定时器
+         * 方法中需要一个定时器的标识作为参数，这样将关闭标识对应的定时器
+         * 如果参数是一个有效的定时器的标识，则停止对应的定时器
+         * 如果参数不是一个有效的标识(null, undefined)，则什么也不做
+         */
+        // clearInterval(timer);
+    </script>
+
+    <!-- 延时任务 -->
+    <script>
+        // 指定毫秒延时之后调用一次任务
+        var timer = setTimeout(function () {
+            alert("三秒的延时任务触发了....")
+        }, 3000);
+
+        //使用clearTimeout()来关闭一个延时调用
+        // clearTimeout(timer);
+    </script>
+</body>
+
+</html>

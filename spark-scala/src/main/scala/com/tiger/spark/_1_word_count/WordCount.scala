@@ -9,7 +9,9 @@ object WordCount {
 
     // 1. 创建spark config
     // 这里的local表示使用本地线程模拟分布式, 默认为1个线程, 可以使用local[2]表示使用两个线程来模拟, local[*]表示使用当前cpu核数的线程数来模拟
-    val sparkConf: SparkConf = new SparkConf().setMaster("local").setAppName("WordCount")
+    val sparkConf: SparkConf = new SparkConf()
+      .setMaster("local") // 这里别硬编码设置master地址, 应该在提交的时候来指定
+      .setAppName("WordCount")
 
     // 2. 创建spark上下文
     val context: SparkContext = new SparkContext(sparkConf)
@@ -36,9 +38,5 @@ object WordCount {
     context.stop()
 
 
-
-
-
-    
   }
 }

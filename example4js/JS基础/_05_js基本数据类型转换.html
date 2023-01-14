@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        /**
+         * 将其他数据类型转换为string, 调用转换类型的toString()方法
+         * 但是Null类型和Undefined类型不能调用, 会报错
+         */
+        var num = 123;
+        var nStr = num.toString();
+        var b = true;
+        var bStr = b.toString();
+        // var c = null;
+        // var cStr = c.toString();
+        // var u;
+        // var u = u.toString();
+
+        /**
+         * 直接调用String()函数, 并将参数传入
+         * 这种方式Null和Undefined也可以使用
+         */
+        var num1 = 123;
+        var nStr1 = String(num1);
+        var b1 = true;
+        var bStr1 = String(b1)
+        var c1 = null;
+        var cStr = String(c1); // null
+        var u1;
+        var uStr1 = String(u1) // undefined
+    </script>
+
+    <script type="text/javascript">
+        /**
+         * 将其他类型转换为Number
+         *  转换方式一: 
+         *      使用Number()函数
+         *          String -> Number
+         *              1. 如果是一个纯数字, 那么直接转换为数字
+         *              2. 如果字符串不是一个纯数字, 那么转换为NaN
+         *              3. 如果字符串为空或者全是空格, 那么转换为0
+         *          Boolean -> Number
+         *              true转为1, false转为0
+         *          Null -> Number
+         *              转为0
+         *          Undefined -> Number
+         *              转为NaN  
+         */
+        var sNum = Number("123") // 123
+        var sNum1 = Number("123sds") // NaN
+        var bNum = Number(true) // 1
+        var nullNum = Number(null) // 0
+        var un;
+        var undefinedNum = Number(un) // NaN
+
+        /**
+         * 方式二:
+         *  这种方式专门使用在String中有字符串的时候
+         *  调用parseInt(), parseFloat()
+         *  该方法从左边第一个元素开始解析数字
+         *  对于非字符串的类型, 会先转为字符串之后再进行转换
+         */
+        var num11 = parseInt("123px") // 123
+        var num12 = parseInt("aa123") // NaN
+        var num13 = parseInt("123.456px") // 123
+        var num14 = parseFloat("123.3px") // 123.3
+        var num15 = parseInt(true) // NaN, 先转为字符串的"true", 然后转换为NaN
+        var num16 = parseInt(123.3) // 123, 先转换为字符串对的"123.3", 然后转换为123
+    </script>
+
+<script type="text/javascript">
+    /**
+     * 在js中, 如果需要表示16进制的数组需要使用0x开头
+     * 使用8进制的数组使用0o开头
+     * 使用2进制的数字使用0b开头, 不是所有浏览器都支持
+     */
+    var a21 = 0x10 // 十进制16
+    var a22 = 0o10 // 十进制8
+    var a23 = 0b10 // 十进制2
+</script>
+
+<script type="text/javascript">
+    /**
+     * 将其他类型转为Boolean
+     * - 使用Boolean()函数
+     *      Number->Boolean: 除了0和NaN,其他都为true
+     *      String->Boolean: 除了空串, 其他全为true
+     *      Null -> Boolean: false
+     *      Undefined->Boolean: false
+     */ 
+    var a31 = Boolean(0) // false
+    var a32 = Boolean(NaN) // false
+    var a33 = Boolean(123) // true
+    var a34 = Boolean("") // false
+    var a35 = Boolean("123") // true
+    var a36 = Boolean("  ") // true
+    var a37 = Boolean(null) // false
+    var xxx
+    var a38 = Boolean(xxx) // false
+</script>
+</head>
+
+</html>

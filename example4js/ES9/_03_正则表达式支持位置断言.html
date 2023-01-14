@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正则扩展-反向断言</title>
+</head>
+
+<body>
+    <script>
+        //正向断言
+        let str = 'JS5211314你知道么555啦啦啦';
+        const reg = /\d+(?=啦)/;
+        const result = reg.exec(str);
+
+        //反向断言
+        const reg1 = /(?<=么)\d+/;
+        const result1 = reg.exec(str);
+        console.log(result1);
+    </script>
+</body>
+
+</html>

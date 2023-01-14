@@ -1,0 +1,66 @@
+{
+	"compiler": {
+		"version": "0.8.17+commit.8df45f5f"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"name": "Log",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "destroy",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"合约/_14_合约_继承_多重继承与线性化.sol": "Final"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"合约/_14_合约_继承_多重继承与线性化.sol": {
+			"keccak256": "0x0cf9c2b778963faff339e8b8b61a98f31285aaac8ea9f7cb58f6efc55f02296d",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://1fa680b73b7e57c867bddec4acba79c32e50319b2c6437ea327e853d731b165e",
+				"dweb:/ipfs/QmWB47vVLcfmgFHpJ8xrDHr7uebb8M2wiQjHTsucDmb8zQ"
+			]
+		}
+	},
+	"version": 1
+}

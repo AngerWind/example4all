@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object.fromEntries</title>
+</head>
+
+<body>
+    <script>
+        //从二维数组创建对象, 数组第一个作为属性
+        const result = Object.fromEntries([
+            ['name', '尚硅谷'],
+            ['xueke', 'Java,大数据,前端,云计算']
+        ]);
+        console.log(result) // {name: '尚硅谷', xueke: 'Java,大数据,前端,云计算'}
+
+        //从map创建对象, key转换为属性
+        const m = new Map();
+        m.set('name', 'ATGUIGU');
+        const result1 = Object.fromEntries(m);
+        console.log(result1) // {name: 'ATGUIGU'}
+    </script>
+</body>
+
+</html>

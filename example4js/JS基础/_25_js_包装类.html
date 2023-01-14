@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script type="text/javascript">
+            /**
+             * 在js中为我们提供了三个包装类
+             *      - String
+             *      - Number
+             *      - Boolean
+             * 
+             */ 
+            var str = new String("hello world")
+            var b = Boolean(true)
+            var num = Number(12.3)
+
+            // 上面三种用法在实际引用中基本不用, 因为在比较的时候会有不可预料的结果
+            console.log(new String("hello world") == new String("hello world")); // false
+            if(new Boolean(false)){
+                console.log("离了大普....")
+            }
+
+            // 上面三种包装类的作用在于: 调用基本数据类型的属性和方法时, 会自动包装
+            var num = 123
+            var s = num.toString() // num自动包装
+        </script>
+    </head>
+</html>

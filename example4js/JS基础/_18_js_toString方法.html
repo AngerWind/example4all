@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script type="text/javascript">
+        console.log("hello")
+            function Person(name) {
+                this.name = name
+            }
+            var p = new Person("zhangsan")
+            console.log(p) // 打印的时候打印的是p.toString方法的返回值
+            Person.prototype.toString = function(){
+                return `Person[${this.name}]`
+            }
+            console.log(p) // 打印的时候打印的是p.toString方法的返回值
+        </script>
+    </head>
+</html>

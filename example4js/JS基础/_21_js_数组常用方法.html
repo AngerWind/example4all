@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 数组常用的方法 -->
+    <script>
+        // concat, 连接多个数组并返回连接后的结果, !!不改变自身!!
+        var a1 = [1, 2, 3]
+        var a2 = a1.concat([4, 5], [true])
+        console.log(`a1: [${a1}], a2: [${a2}]`); // a1: [1,2,3], a2: [1,2,3,4,5,true]
+
+        // join, 数组所有元素通过分隔符连接
+        var s1 = [1, 2, 3].join("|")
+        console.log(s1); // 1|2|3
+
+        // reverse, 翻转数组
+        var a5 = [1, 2, 3]
+        a5.reverse()
+        console.log(`${a5}`) // 3,2,1
+
+        // pop, 删除并返回数组最后一个元素
+        var a3 = [1, 2, 3]
+        var n1 = a3.pop()
+        console.log(`${a3}    ${n1}`) // 1,2    3
+
+        // shift, 删除并返回第一个元素
+        var a6 = [1, 2, 3]
+        var n2 = a6.shift()
+        console.log(`${a6}    ${n2}`) // 2,3    1
+
+        // push, 向数组末尾添加一个或者多个元素, 返回数组长度
+        var a4 = [1, 2, 3]
+        var len1 = a4.push(true, false)
+        console.log(`${a4}     ${len1}`) // 1,2,3,true,false     5
+
+        // unshift, 向数组开头添加一个或者多个元素, 返回数组长度
+        var a7 = [1, 2, 3]
+        var len2 = a7.unshift(true, false)
+        console.log(`${a7}     ${len2}`) // true,false,1,2,3     5
+
+        // slice, 截断数组, 返回截断后的数组, 左闭右开, 不改变自身
+        var a8 = [1, 2, 3, 5, 6, 7]
+        var a9 = a8.slice(2)
+        var a10 = a8.slice(2, 4)
+        var a11 = a8.slice(2, -2) // 从右边开始, 第一个的索引为-1
+        console.log(`${a8}     ${a9}      ${a10}    ${a11}`)
+
+        // splice, 删除元素并向删除位置添加多个元素, 返回删除的元素的数组
+        var a12 = [1, 2, 3, 5, 6, 7]
+        var del = a12.splice(1, 2, "hello", "world") // 从索引1开始删除2个元素, 并将hello, world从索引1的位置插入
+        console.log(`${del}    ${a12}`); // 2,3    1,hello,world,5,6,7
+
+        // sort, 排序
+        var a13 = [12, 1, 33, 5, 9]
+        a13.sort() // 按照Unicode排序
+        console.log(a13); // [1, 12, 33, 5, 9]
+
+        // sort, 按照比较函数排序, 返回值大于0表示大于, 小于0表示小于, 等于0表示相等
+        a13.sort(function(a, b){
+            return a - b
+        })
+        console.log(a13)
+    </script>
+    </script>
+</head>
+
+</html>

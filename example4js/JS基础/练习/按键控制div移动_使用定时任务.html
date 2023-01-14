@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        #box1 {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+        /**
+         * 当onkeydown连续触发时，
+         * 第一次和第二次之间会间隔稍微长一点，其他的会非常的快, 这种设计是为了防止误操作的发生。
+         * 所以在移动div的时候, 第一下和第二下之间会有以下卡顿
+         * 
+         * 这里采用定时任务来驱动div的移动
+         * keydown的时候给定移动方向
+         * keyup的时候移除给定方向
+         */
+        window.onload = function () {
+
+            // 创建一个变量表示方向, 通过修改dir来影响移动的方向
+            var dir = 0;
+
+            // 开启一个定时器，来控制div的移动
+            // 一直存在的定时任务是否会消耗太多性能?????????
+            setInterval(function () {
+                switch (dir) {
+                    case 37:
+                        //alert("向左"); left值减小
+                        box1.style.left = box1.offsetLeft - 10 + "px";
+                        break;
+                    case 39:
+                        //alert("向右");
+                        box1.style.left = box1.offsetLeft + 10 + "px";
+                        break;
+                    case 38:
+                        //alert("向上");
+                        box1.style.top = box1.offsetTop - 10 + "px";
+                        break;
+                    case 40:
+                        //alert("向下");
+                        box1.style.top = box1.offsetTop + 10 + "px";
+                        break;
+                }
+            }, 30);
+
+            // 按下按键, 设置方向
+            document.onkeydown = function (event) {
+                //使dir等于按键的值
+                dir = event.keyCode;
+            };
+
+            //当按键松开时，取消方向
+            document.onkeyup = function () {
+                //设置方向为0
+                dir = 0;
+            };
+        };
+
+
+    </script>
+</head>
+
+<body>
+    <div id="box1"></div>
+</body>
+
+</html>
