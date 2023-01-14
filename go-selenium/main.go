@@ -78,7 +78,7 @@ type Info struct {
 }
 
 const (
-	seleniumPath = `C:\Users\Administrator\Desktop\example4all\go-selenium\chromedriver.exe`
+	seleniumPath = `.\chromedriver.exe`
 	port         = 19515
 )
 
@@ -115,6 +115,7 @@ func getWebDriver() selenium.WebDriver {
 			// "--headless", // 设置Chrome无头模式，在linux下运行，需要设置这个参数，否则会报错
 			// "--no-sandbox",
 			"--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36", // 模拟user-agent，防反爬
+			"--incognito",
 		},
 	}
 	// 以上是设置浏览器参数
@@ -167,8 +168,13 @@ func main() {
 
 		for {
 			time.Sleep(500 * time.Millisecond)
-			driver.ExecuteScript(fmt.Sprintf(`document.querySelector("#uid").value = %s`, container.IncentiveId), []interface{}{})
+			element, _ := driver.FindElement(selenium.ByID, "uid")
+			element.Clear()
+			element.Clear()
+			element.SendKeys(" ")
 
+			driver.ExecuteScript(fmt.Sprintf(`document.querySelector("#uid").value = '%s'`, container.IncentiveId), []interface{}{})
+			element.SendKeys(" ")
 			time.Sleep(1000 * time.Millisecond)
 			incentiveUpdate, _ := driver.FindElement(selenium.ByXPATH, "//*[@id=\"root\"]/div/main/div/div[2]/div/form/div/button")
 			incentiveUpdate.Click()
