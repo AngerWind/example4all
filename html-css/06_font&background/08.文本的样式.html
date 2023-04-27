@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box1 {
+            font-size: 50px;
+            font-family: 微软雅黑;
+
+
+            /* 
+                text-decoration 设置文本修饰, 也可以用来删除a链接的下划线
+                    可选值：
+                        none 什么都没有
+                        underline 下划线
+                        line-through 删除线
+                        overline 上划线
+            */
+
+            /* text-decoration: overline; */
+
+            /* text-decoration: underline red dotted; */
+        }
+
+        /* 
+                white-space 设置网页如何处理文字的换行
+                    可选值：
+                        normal 正常, 即文本超过父元素宽度会换行
+                        nowrap 不换行, 即文本超过父元素宽度不换行(溢出), 一行显示, 太多了会显示水平滚动条
+                        pre 保留空白, 即保留文字在代码中的格式, 类似于js中的模板字符串
+
+        */
+        .box2 {
+            width: 200px;
+            white-space: nowrap;
+        }
+
+        /* 实现   文字太长就省略并且后面添加省略号 */
+        .box3 {
+            width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            /* 设置文字溢出的样式, 为省略号 */
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box1">
+        今天天气真不错
+    </div>
+    <br>
+
+    <div class="box2">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, minus fugit in perspiciatis reprehenderit
+        consequuntur aspernatur repellat cumque quidem asperiores quaerat placeat, tenetur vel veritatis deserunt
+        numquam. Dolores, cupiditate enim.
+    </div>
+    <br>
+    <div class="box3">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, minus fugit in perspiciatis reprehenderit
+        consequuntur aspernatur repellat cumque quidem asperiores quaerat placeat, tenetur vel veritatis deserunt
+        numquam. Dolores, cupiditate enim.
+    </div>
+
+
+</body>
+
+</html>

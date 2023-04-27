@@ -1,0 +1,19 @@
+进入docker的shell命令行
+执行minima命令, 启动minima交互程序
+
+    执行getaddress获取地址
+    仔细vault获取种子, 助记词
+	通过 backup auto:true 设置minima自动备份节点, 备份文件在映射的目录下
+	通过backup手动备份, 通过file参数指定文件名
+	
+	
+	将备份文件放在minima的映射目录下, 通过restore file:file-location 来恢复节点
+	
+	如果需要脚本执行minima命令, 可以通过 echo -e "cmd" | minima
+	执行完成执行会开启一个终端, 并输出响应结果, 但是终端不会关闭
+	
+	
+如果需要查看命令的使用方法, 使用 help  command:cmd(参数会用冒号分割)
+
+
+

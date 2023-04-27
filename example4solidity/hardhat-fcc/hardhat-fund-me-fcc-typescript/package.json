@@ -1,0 +1,30 @@
+{
+  "name": "hardhat-fund-me-fcc-typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "typechain": "hardhat typechain",
+    "compile": "hardhat compile",
+    "clean": "hardhat clean",
+    "deploy": "hardhat deploy",
+    "deploy sepolia": "hardhat deploy --network sepolia"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@chainlink/contracts": "^0.6.1",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@nomiclabs/hardhat-etherscan": "^3.1.7",
+    "@openzeppelin/contracts": "^4.8.3",
+    "@typechain/ethers-v5": "^10.2.0",
+    "@typechain/hardhat": "^6.1.5",
+    "dotenv": "^16.0.3",
+    "hardhat": "^2.14.0",
+    "hardhat-deploy": "^0.11.26",
+    "hardhat-deploy-ethers": "^0.3.0-beta.13",
+    "typechain": "^8.1.1"
+  }
+}

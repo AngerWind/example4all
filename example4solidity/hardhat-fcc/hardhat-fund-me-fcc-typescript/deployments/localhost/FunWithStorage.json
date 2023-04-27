@@ -1,0 +1,397 @@
+{
+  "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+  "abi": [],
+  "transactionHash": "0xa55e40a9bde5ccf92e7863b480515a1be26a6b8f803c902cd36e6edaecb6a375",
+  "receipt": {
+    "to": null,
+    "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "contractAddress": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    "transactionIndex": 0,
+    "gasUsed": "767539",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xfe2186f8911ef03c3996bb0b42279c148c4ba3a41e7c36e62ef91f27fa2706d2",
+    "transactionHash": "0xa55e40a9bde5ccf92e7863b480515a1be26a6b8f803c902cd36e6edaecb6a375",
+    "logs": [],
+    "blockNumber": 3,
+    "cumulativeGasUsed": "767539",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "4b175e0f4bdd9ab5768d1e3842c49aae",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.8+commit.dddeac2f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/FunWithStorage.sol\":\"FunWithStorage\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/FunWithStorage.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\npragma solidity ^0.8.7;\\r\\n\\r\\ncontract FunWithStorage {\\r\\n    struct Pair {\\r\\n        uint8 left;\\r\\n        uint8 middle;\\r\\n        uint right;\\r\\n    }\\r\\n    enum Status {\\r\\n        None,\\r\\n        Pending,\\r\\n        Rejected,\\r\\n        Canceled,\\r\\n        Shiped,\\r\\n        Completed\\r\\n    }\\r\\n    // slot 0: 0x0000000000000000000000000000000000000000000000000000000004000302\\r\\n    // \\u4e0b\\u97623\\u4e2a\\u53d8\\u91cf\\u56e0\\u4e3a\\u4e0d\\u591f32\\u5b57\\u8282, \\u6240\\u4ee5\\u6253\\u5305\\u5728\\u4e00\\u4e2aslot\\u91cc\\u9762\\r\\n    uint8 u8 = 2; // label: u8, slot: 0, offset: 0\\r\\n    uint16 u16 = 3; // label: u16, slot: 0, offset: 1\\r\\n    uint24 u24 = 4; // label: u24, slot: 0, offset: 3\\r\\n\\r\\n    // slot 1: 0x0000000000000000000000000000000000000000000000000000000000000005\\r\\n    uint256 u256 = 5; // label: u256, slot: 1, offset: 0  // \\u8fd9\\u4e2a\\u53d8\\u91cf32\\u5b57\\u8282, \\u6240\\u4ee5\\u5355\\u72ec\\u5360\\u4e00\\u4e2aslot\\r\\n\\r\\n    // slot 2: 0x0000000000000000000000000000000000000000000000000000000004000302\\r\\n    // \\u4e0b\\u9762\\u4e09\\u4e2a\\u53d8\\u91cf\\u6253\\u5305\\u5728\\u4e00\\u4e2aslot\\u91cc\\u9762\\r\\n    int8 i8 = 2; // label: i8, slot: 2, offset: 0\\r\\n    int16 i16 = 3; // label: i16, slot: 2, offset: 1\\r\\n    int24 i24 = 4; // label: i24, slot: 2, offset: 3\\r\\n\\r\\n    // slot 3: 0x0000000000000000000000000000000000000000000000000000000000000005\\r\\n    int256 i256 = 5; // label: i256, slot: 3, offset: 0 // \\u72ec\\u5360\\r\\n\\r\\n    // slot 4: 0x00000000000000000000015b38da6a701c568545dcfcb03fcb875f56beddc401\\r\\n    // bool\\u5360\\u4e00\\u4e2a\\u5b57\\u8282\\r\\n    bool b = true; // label: b, slot: 4, offset: 0\\r\\n    // address\\u536020\\u5b57\\u8282\\r\\n    address addr = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4; // label: addr, slot: 4, offset: 1\\r\\n    bytes1 b1 = 0x01; // label: b1, slot: 4, offset: 21\\r\\n\\r\\n    // slot 5: 0x0002012304050607080910111213141516171819202122232425262728293031\\r\\n    bytes31 b2 = 0x02012304050607080910111213141516171819202122232425262728293031; // label: b2, slot: 5, offset: 0\\r\\n    // slot 6: 0x0301230405060708091011121314151617181920212223242526272829303132\\r\\n    bytes32 b3 = 0x0301230405060708091011121314151617181920212223242526272829303132; // label: b3, slot: 6, offset: 0\\r\\n\\r\\n    // slot 7: 0x0000000000000000000000000000000000000000000000000000000000000005\\r\\n    Status status = Status.Completed; // label: status, slot: 7, offset: 0\\r\\n\\r\\n    // slot 8: 0x0000000000000000000000000000000000000000000000000000000000000201\\r\\n    // slot 9: 0x0000000000000000000000000000000000000000000000000000000000000003\\r\\n\\t// \\u6210\\u5458\\u53d8\\u91cf\\u6309\\u7167\\u58f0\\u660e\\u987a\\u5e8f\\u5b58\\u50a8\\r\\n    Pair pair = Pair(1, 2, 3); // label: pair, slot: 8, offset: 0\\r\\n\\r\\n    // slot 10: 0x0000000000000000000000000000000000000000000000000000000000000001\\r\\n    // slot 11: 0x0000000000000000000000000000000000000000000000000000000000000002\\r\\n    // slot 12: 0x0000000000000000000000000000000000000000000000000000000000000003\\r\\n    // slot 13: 0x0000000000000000000000000000000000000000000000000000000000000004\\r\\n    uint[4] uArray = [1, 2, 3, 4]; // label: uArray, slot: 10, offset: 0\\r\\n    // slot 14: 0x0000000000000000000000000000000200000000000000000000000000000001\\r\\n    // slot 15: 0x0000000000000000000000000000000000000000000000000000000000000003\\r\\n    uint128[3] u128Array = [1, 2, 3]; // label: u128Array, slot: 14, offset: 0\\r\\n\\r\\n    // slot 16: 0x0000000000000000000000000000000000000000000000000000000000000004\\r\\n    // \\u6570\\u636e\\u4fdd\\u5b58\\u5728keccak256(16)\\u7684\\u69fd\\u4f4d\\u4e2d\\r\\n    uint[] uDynamicArray = [1, 2, 3, 4]; // label: uDynamicArray, slot: 16, offset: 0\\r\\n\\r\\n    // slot 17: 0x48656c6c6f20576f726c64000000000000000000000000000000000000000016\\r\\n    // slot 18: 0x48656c6c6f20576f726c64000000000000000000000000000000000000000016\\r\\n\\t// string\\u548cbytes\\u957f\\u5ea6\\u4f4e\\u4e8e32\\u5b57\\u8282, \\u76f4\\u63a5\\u5b58\\u50a8\\u5728slot\\u91cc\\u9762, \\u9ad8\\u4f4d\\u653e\\u6570\\u636e, \\u6700\\u4f4e\\u4f4d\\u653elength*2(\\u5b57\\u8282\\u957f\\u5ea611, 11*2=22, 22\\u7684\\u4e8c\\u8fdb\\u5236\\u4e3a0x16)\\r\\n    string s = \\\"Hello World\\\"; // label: s, slot: 17, offset: 0\\r\\n    bytes bs = \\\"Hello World\\\"; // label: bs, slot: 18, offset: 0\\r\\n\\r\\n    // slot 19: 0x0000000000000000000000000000000000000000000000000000000000000151\\r\\n\\t// string\\u548cbytes\\u957f\\u5ea6\\u5927\\u4e8e32\\u5b57\\u8282, \\u4e0d\\u5b58\\u50a8\\u6570\\u636e, \\u4f4e\\u4f4d\\u653elength*2+1(\\u5b57\\u8282\\u957f\\u5ea6115, 115*2+1=231, 231\\u7684\\u4e8c\\u8fdb\\u5236\\u4e3a0x151)\\r\\n\\t// \\u6570\\u636e\\u88ab\\u5b58\\u50a8\\u5728keccak256(19)\\u4e2d\\r\\n    // // label: s1, slot: 19, offset: 0\\r\\n    string s1 =\\r\\n        \\\"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\\\";\\r\\n\\r\\n    // slot 20: 0x0000000000000000000000000000000000000000000000000000000000000000\\r\\n\\t/**\\r\\n\\t * \\u8ba1\\u7b97\\u4e00\\u4e0b data[4][9].c\\u7684\\u5b58\\u50a8\\u4f4d\\u7f6e\\u3002\\u6620\\u5c04\\u672c\\u8eab\\u7684\\u4f4d\\u7f6e\\u662f20\\u3002 \\u56e0\\u6b64data[4]\\u5b58\\u50a8\\u5728 keccak256(uint256(4).uint256(20))\\u3002 \\r\\n\\t * data[4] \\u7684\\u7c7b\\u578b\\u53c8\\u662f\\u4e00\\u4e2a\\u6620\\u5c04\\uff0c data[4][9]\\u7684\\u6570\\u636e\\u5f00\\u59cb\\u4e8e\\u69fd\\u4f4dkeccak256(uint256(9).keccak256(uint256(4).uint256(20))\\u3002\\r\\n\\t * \\u5728\\u7ed3\\u6784 S \\u7684\\u6210\\u5458 c \\u4e2d\\u7684\\u69fd\\u4f4d\\u504f\\u79fb\\u662f 1\\uff0c\\u56e0\\u4e3a a \\u548c b``\\u88ab\\u88c5\\u5728\\u4e00\\u4e2a\\u69fd\\u4f4d\\u4e2d\\u3002 \\r\\n\\t * \\u6700\\u540e ``data[4][9].c \\u7684\\u63d2\\u69fd\\u4f4d\\u7f6e\\u662f keccak256(uint256(9).keccak256(uint256(4).uint256(20)) + 1. \\r\\n\\t * \\u8be5\\u503c\\u7684\\u7c7b\\u578b\\u662f uint256\\uff0c\\u6240\\u4ee5\\u5b83\\u4f7f\\u7528\\u4e00\\u4e2a\\u69fd\\u3002\\r\\n\\t */\\r\\n\\tstruct S { uint16 a; uint16 b; uint256 c; }\\r\\n    mapping(uint => mapping(uint => S)) map; // label: map, slot: 20, offset: 0\\r\\n}\\r\\n\",\"keccak256\":\"0xd3e7b1a1b9dc1e4a756831d29e9552073b0733a8e3e12af8226e74433d388499\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405260026000806101000a81548160ff021916908360ff1602179055506003600060016101000a81548161ffff021916908361ffff1602179055506004600060036101000a81548162ffffff021916908362ffffff160217905550600560015560028060006101000a81548160ff021916908360000b60ff1602179055506003600260016101000a81548161ffff021916908360010b61ffff1602179055506004600260036101000a81548162ffffff021916908360020b62ffffff16021790555060056003556001600460006101000a81548160ff021916908315150217905550735b38da6a701c568545dcfcb03fcb875f56beddc4600460016101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160f81b600460156101000a81548160ff021916908360f81c02179055507e0201230405060708091011121314151617181920212223242526272829303160081b600560006101000a8154817effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff021916908360081c02179055507f030123040506070809101112131415161718192021222324252627282930313260001b6006556005600760006101000a81548160ff02191690836005811115610200576101ff610686565b5b02179055506040518060600160405280600160ff168152602001600260ff1681526020016003815250600860008201518160000160006101000a81548160ff021916908360ff16021790555060208201518160000160016101000a81548160ff021916908360ff1602179055506040820151816001015550506040518060800160405280600160ff168152602001600260ff168152602001600360ff168152602001600460ff16815250600a9060046102ba92919061040e565b506040518060600160405280600160ff168152602001600260ff168152602001600360ff16815250600e9060036102f2929190610453565b506040518060800160405280600160ff168152602001600260ff168152602001600360ff168152602001600460ff16815250601090600461033492919061050b565b506040518060400160405280600b81526020017f48656c6c6f20576f726c640000000000000000000000000000000000000000008152506011908051906020019061038092919061055d565b506040518060400160405280600b81526020017f48656c6c6f20576f726c64000000000000000000000000000000000000000000815250601290805190602001906103cc9291906105e3565b506040518060e0016040528060a8815260200161076360a89139601390805190602001906103fb92919061055d565b5034801561040857600080fd5b50610716565b8260048101928215610442579160200282015b82811115610441578251829060ff16905591602001919060010190610421565b5b50905061044f9190610669565b5090565b8260036001016002900481019282156104fa5791602002820160005b838211156104bc57835183826101000a8154816fffffffffffffffffffffffffffffffff021916908360ff1602179055509260200192601001602081600f0104928301926001030261046f565b80156104f85782816101000a8154906fffffffffffffffffffffffffffffffff0219169055601001602081600f010492830192600103026104bc565b505b5090506105079190610669565b5090565b82805482825590600052602060002090810192821561054c579160200282015b8281111561054b578251829060ff1690559160200191906001019061052b565b5b5090506105599190610669565b5090565b828054610569906106e4565b90600052602060002090601f01602090048101928261058b57600085556105d2565b82601f106105a457805160ff19168380011785556105d2565b828001600101855582156105d2579182015b828111156105d15782518255916020019190600101906105b6565b5b5090506105df9190610669565b5090565b8280546105ef906106e4565b90600052602060002090601f0160209004810192826106115760008555610658565b82601f1061062a57805160ff1916838001178555610658565b82800160010185558215610658579182015b8281111561065757825182559160200191906001019061063c565b5b5090506106659190610669565b5090565b5b8082111561068257600081600090555060010161066a565b5090565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602160045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b600060028204905060018216806106fc57607f821691505b602082108114156107105761070f6106b5565b5b50919050565b603f806107246000396000f3fe6080604052600080fdfea26469706673582212205970e42ef1debe4241fa06a884e5d6898b86f8e1c0e4527a0593631477c81e5f64736f6c63430008080033737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373737373",
+  "deployedBytecode": "0x6080604052600080fdfea26469706673582212205970e42ef1debe4241fa06a884e5d6898b86f8e1c0e4527a0593631477c81e5f64736f6c63430008080033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 18,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "u8",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_uint8"
+      },
+      {
+        "astId": 21,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "u16",
+        "offset": 1,
+        "slot": "0",
+        "type": "t_uint16"
+      },
+      {
+        "astId": 24,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "u24",
+        "offset": 3,
+        "slot": "0",
+        "type": "t_uint24"
+      },
+      {
+        "astId": 27,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "u256",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 30,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "i8",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_int8"
+      },
+      {
+        "astId": 33,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "i16",
+        "offset": 1,
+        "slot": "2",
+        "type": "t_int16"
+      },
+      {
+        "astId": 36,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "i24",
+        "offset": 3,
+        "slot": "2",
+        "type": "t_int24"
+      },
+      {
+        "astId": 39,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "i256",
+        "offset": 0,
+        "slot": "3",
+        "type": "t_int256"
+      },
+      {
+        "astId": 42,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "b",
+        "offset": 0,
+        "slot": "4",
+        "type": "t_bool"
+      },
+      {
+        "astId": 45,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "addr",
+        "offset": 1,
+        "slot": "4",
+        "type": "t_address"
+      },
+      {
+        "astId": 48,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "b1",
+        "offset": 21,
+        "slot": "4",
+        "type": "t_bytes1"
+      },
+      {
+        "astId": 51,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "b2",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_bytes31"
+      },
+      {
+        "astId": 54,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "b3",
+        "offset": 0,
+        "slot": "6",
+        "type": "t_bytes32"
+      },
+      {
+        "astId": 59,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "status",
+        "offset": 0,
+        "slot": "7",
+        "type": "t_enum(Status)15"
+      },
+      {
+        "astId": 67,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "pair",
+        "offset": 0,
+        "slot": "8",
+        "type": "t_struct(Pair)8_storage"
+      },
+      {
+        "astId": 76,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "uArray",
+        "offset": 0,
+        "slot": "10",
+        "type": "t_array(t_uint256)4_storage"
+      },
+      {
+        "astId": 84,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "u128Array",
+        "offset": 0,
+        "slot": "14",
+        "type": "t_array(t_uint128)3_storage"
+      },
+      {
+        "astId": 92,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "uDynamicArray",
+        "offset": 0,
+        "slot": "16",
+        "type": "t_array(t_uint256)dyn_storage"
+      },
+      {
+        "astId": 95,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "s",
+        "offset": 0,
+        "slot": "17",
+        "type": "t_string_storage"
+      },
+      {
+        "astId": 98,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "bs",
+        "offset": 0,
+        "slot": "18",
+        "type": "t_bytes_storage"
+      },
+      {
+        "astId": 101,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "s1",
+        "offset": 0,
+        "slot": "19",
+        "type": "t_string_storage"
+      },
+      {
+        "astId": 115,
+        "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+        "label": "map",
+        "offset": 0,
+        "slot": "20",
+        "type": "t_mapping(t_uint256,t_mapping(t_uint256,t_struct(S)108_storage))"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_uint128)3_storage": {
+        "base": "t_uint128",
+        "encoding": "inplace",
+        "label": "uint128[3]",
+        "numberOfBytes": "64"
+      },
+      "t_array(t_uint256)4_storage": {
+        "base": "t_uint256",
+        "encoding": "inplace",
+        "label": "uint256[4]",
+        "numberOfBytes": "128"
+      },
+      "t_array(t_uint256)dyn_storage": {
+        "base": "t_uint256",
+        "encoding": "dynamic_array",
+        "label": "uint256[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_bytes1": {
+        "encoding": "inplace",
+        "label": "bytes1",
+        "numberOfBytes": "1"
+      },
+      "t_bytes31": {
+        "encoding": "inplace",
+        "label": "bytes31",
+        "numberOfBytes": "31"
+      },
+      "t_bytes32": {
+        "encoding": "inplace",
+        "label": "bytes32",
+        "numberOfBytes": "32"
+      },
+      "t_bytes_storage": {
+        "encoding": "bytes",
+        "label": "bytes",
+        "numberOfBytes": "32"
+      },
+      "t_enum(Status)15": {
+        "encoding": "inplace",
+        "label": "enum FunWithStorage.Status",
+        "numberOfBytes": "1"
+      },
+      "t_int16": {
+        "encoding": "inplace",
+        "label": "int16",
+        "numberOfBytes": "2"
+      },
+      "t_int24": {
+        "encoding": "inplace",
+        "label": "int24",
+        "numberOfBytes": "3"
+      },
+      "t_int256": {
+        "encoding": "inplace",
+        "label": "int256",
+        "numberOfBytes": "32"
+      },
+      "t_int8": {
+        "encoding": "inplace",
+        "label": "int8",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_uint256,t_mapping(t_uint256,t_struct(S)108_storage))": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => mapping(uint256 => struct FunWithStorage.S))",
+        "numberOfBytes": "32",
+        "value": "t_mapping(t_uint256,t_struct(S)108_storage)"
+      },
+      "t_mapping(t_uint256,t_struct(S)108_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct FunWithStorage.S)",
+        "numberOfBytes": "32",
+        "value": "t_struct(S)108_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Pair)8_storage": {
+        "encoding": "inplace",
+        "label": "struct FunWithStorage.Pair",
+        "members": [
+          {
+            "astId": 3,
+            "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+            "label": "left",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8"
+          },
+          {
+            "astId": 5,
+            "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+            "label": "middle",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_uint8"
+          },
+          {
+            "astId": 7,
+            "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+            "label": "right",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "64"
+      },
+      "t_struct(S)108_storage": {
+        "encoding": "inplace",
+        "label": "struct FunWithStorage.S",
+        "members": [
+          {
+            "astId": 103,
+            "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+            "label": "a",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint16"
+          },
+          {
+            "astId": 105,
+            "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+            "label": "b",
+            "offset": 2,
+            "slot": "0",
+            "type": "t_uint16"
+          },
+          {
+            "astId": 107,
+            "contract": "contracts/FunWithStorage.sol:FunWithStorage",
+            "label": "c",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256"
+          }
+        ],
+        "numberOfBytes": "64"
+      },
+      "t_uint128": {
+        "encoding": "inplace",
+        "label": "uint128",
+        "numberOfBytes": "16"
+      },
+      "t_uint16": {
+        "encoding": "inplace",
+        "label": "uint16",
+        "numberOfBytes": "2"
+      },
+      "t_uint24": {
+        "encoding": "inplace",
+        "label": "uint24",
+        "numberOfBytes": "3"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      },
+      "t_uint8": {
+        "encoding": "inplace",
+        "label": "uint8",
+        "numberOfBytes": "1"
+      }
+    }
+  }
+}

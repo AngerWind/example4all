@@ -32,7 +32,9 @@
 
         function * gen(){
             let users = yield getUsers();
+
             let orders = yield getOrders();
+            
             let goods = yield getGoods();
         }
 

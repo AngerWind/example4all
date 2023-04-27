@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <style>
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .bar {
+            background-color: #e3e4e5;
+            height: 30px;
+            color: #999;
+            font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+            line-height: 30px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .shortcut {
+            width: 1190px;
+            height: 100%;
+            margin: 0px auto;
+        }
+
+        .address {
+            float: left;
+        }
+
+        .address a {
+            padding: 0px 7px 2px;
+            height: 28px;
+            line-height: 28px;
+            position: relative;
+            display: block;
+        }
+
+        .address:hover a {
+            background-color: white;
+            border: #e3e4e5 solid 1px;
+            border-bottom: 0px;
+            z-index: 999;
+        }
+
+        .address a:hover {
+            color: red;
+        }
+
+        .list {
+            float: right;
+        }
+
+        .list li {
+            float: left;
+        }
+
+        .decollator {
+            margin: 11px 5px 0px;
+            width: 1px;
+            height: 10px;
+            background-color: #ccc;
+        }
+
+        .shortcut-btn {
+            margin: 0px 7px;
+        }
+
+        .dropdown {
+            width: 300px;
+            height: 100px;
+            background-color: white;
+            border: #ccc solid 1px;
+            display: none;
+            position: absolute;
+            box-shadow: 1px 2px 1px rgb(0 0 0 / 10%);
+            padding: 10px;
+            line-height: 24px;
+        }
+
+        .address:hover .dropdown {
+            display: block;
+            top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bar">
+        <div class="shortcut">
+
+            <div class="address">
+                <a href="javascrip:;">浙江</a>
+                <div class="dropdown"></div>
+            </div>
+            <ul class="list">
+                <li class="shortcut-btn">
+                    <a href="javascript:;">你好, 请登录</a>
+                    <a href="">免费注册</a>
+                </li>
+                <li class="shortcut-btn"><a href="#">我的订单</a></li>
+                <li class="decollator"></li>
+                <li class="shortcut-btn"><a href="#">我的京东</a></li>
+                <li class="decollator"></li>
+                <li class="shortcut-btn"><a href="#">企业采购</a></li>
+                <li class="decollator"></li>
+                <li class="shortcut-btn"><a href="#">商家服务</a></li>
+                <li class="decollator"></li>
+                <li class="shortcut-btn"><a href="#">网站导航</a></li>
+                <li class="decollator"></li>
+                <li class="shortcut-btn"><a href="#">手机京东</a></li>
+                <li class="decollator"></li>
+                <li class="shortcut-btn"><a href="#">网站无障碍</a></li>
+            </ul>
+
+        </div>
+    </div>
+</body>
+
+</html>

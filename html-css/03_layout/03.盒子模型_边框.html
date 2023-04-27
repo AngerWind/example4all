@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box1 {
+            width: 200px;
+            height: 200px;
+            background-color: #bfa;
+
+            /* 边框由三个属性: 宽度(默认3px), 颜色(默认为color属性值, color默认为黑色), 样式(默认为none,即没有边框, 所以要想显示边框,一定要设置这个值不为none) */
+
+            /* 
+                通过border-width和border-color和border-style设置边跨的宽度和颜色, 边框样式
+                        border-style的属性值可以是: solid表示实线, dotted点状虚线, dashed虚线, double双线, none没有边框, 默认值是none 表示没有边框
+                    border-width和border-color和border-style的属性值都分别可以有1, 2, 3, 4个值的情况
+                        四个值：上 右 下 左
+                        三个值：上 左右 下
+                        两个值：上下 左右
+                        一个值：上下左右
+            */
+            /* 设置上边框10px 左右边框20px 下边框30px */
+            border-width: 10px 20px 30px;
+            /* 设置上下边框为黄色, 左右边框为红色 */
+            border-color: yellow red;
+            /* 设置上实线, 右点状虚线, 下虚线, 左双虚线 */
+            border-style: solid dotted dashed double;
+
+            /*
+                通过border-xxx-width和border-xxx-color和border-xxx-style单独设置某个边的宽度,颜色,样式, xxx可以是top right bottom left 
+                border-top-width: 20px; 设置上边框20px
+                border-top-color: red; 设置上边框红色
+                border-top-style: solid; 设置上边框实线
+             */
+
+
+            /* 
+                border设置所有边框的宽度, 颜色, 样式(顺序不重要)
+                    border: 20px red solid; 设置所有边框红色, 20px , 实线
+                border-xxx设置某一边框的宽度, 颜色, 样式(顺序不重要), xxx可以是top right bottom left
+                    border-top: 20px red solid; 设置上边框红色, 20px , 实线
+             */
+            /* border: 20px red solid; */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box1"></div>
+</body>
+
+</html>

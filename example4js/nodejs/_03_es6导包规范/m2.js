@@ -6,3 +6,5 @@ function findJob() {
 }
 
 export { school, findJob };
+
+export let h = 100;

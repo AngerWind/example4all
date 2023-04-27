@@ -1,0 +1,1 @@
+docker run -d -e minima_mdspassword=123 -e minima_server=true -v K:\Minima\minima10001:/home/minima/data -p 10001-10004:9001-9004  --name minima10001 -m 512m minimaglobal/minima:latest

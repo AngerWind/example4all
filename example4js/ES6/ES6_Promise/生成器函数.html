@@ -7,29 +7,32 @@
 </head>
 <body>
     <script>    
-        //生成器其实就是一个特殊的函数
-        //异步编程  纯回调函数  node fs  ajax mongodb
-        //函数代码的分隔符
+        // 生成器其实就是一个特殊的函数, 需要添加*
+        // 在生成器函数中可以使用yield关键字, 函数代码的分隔符
+        // 下面通过yield将生成器函数分割成了四部分, 每调用一次next就执行一部分函数, 同时yield后面的参数作为next的返回值
         function * gen(){
             // console.log(111);
             yield '一只没有耳朵';
+
             // console.log(222);
             yield '一只没有尾部';
+
             // console.log(333);
             yield '真奇怪';
+
             // console.log(444);
         }
 
-        let iterator = gen();
-        console.log(iterator.next());
-        console.log(iterator.next());
-        console.log(iterator.next());
-        console.log(iterator.next());
+        let iterator = gen(); // 生成器函数返回一个迭代器, 有next方法
+        console.log(iterator.next()); // 返回第一个yield的值 一只没有耳朵
+        console.log(iterator.next()); // 返回第2个yield的值 一只没有尾部
+        console.log(iterator.next()); // 返回第3个yield的值 真奇怪
+        console.log(iterator.next()); // 返回第4个yield的值 undefined
 
         //遍历
-        // for(let v of gen()){
-        //     console.log(v);
-        // }
+        for(let v of gen()){
+            console.log(v);
+        }
 
     </script>
 </body>

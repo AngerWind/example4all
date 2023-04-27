@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div {
+            border: 1px red solid;
+
+            /* 
+            font-weight 字体的加粗 
+                    normal 默认值 不加粗
+                    bold 加粗
+                    100-900 九个级别（没什么用, 取决于用户是否安装这几个级别的字体）
+
+                font-style 字体的风格
+                    normal 正常的
+                    italic 斜体
+            */
+
+            /* 
+                font 可以设置一次性字体相关的所有属性
+                    语法：
+                        font: [font-weight] [font-style] font-size/[line-height] [font-family]
+                        []中的可以不写, 不写就使用默认值(会覆盖上面已经设置的属性,坑) 
+            */
+
+            font-weight: bold;
+            font-style: italic;
+
+            /* style为正常, 加粗为正常, 大小50px, 行高100px, 推荐微软雅黑
+                下面的设置会覆盖上面的font-weight, font-style属性
+             */
+            font: 50px/2 微软雅黑, 'Times New Roman', Times, serif;
+            /* font: normal normal 50px/2  微软雅黑, 'Times New Roman', Times, serif; */
+            /* font: bold italic 50px/2 微软雅黑, 'Times New Roman', Times, serif; */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>今天天气真不错 Hello hello</div>
+
+</body>
+
+</html>

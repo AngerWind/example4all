@@ -1,0 +1,52 @@
+Arguments: 
+  E:\nodejs\node.exe C:\Users\Administrator\AppData\Local\node\corepack\yarn\1.22.19\bin\yarn.js install
+
+PATH: 
+  E:\Git\mingw64\bin;E:\Git\usr\bin;C:\Users\Administrator\bin;E:\Python\Python310\Scripts;E:\Python\Python310;E:\XFtp;E:\XShell;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\Intel\WiFi\bin;C:\Program Files\Common Files\Intel\WirelessCommon;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;E:\Git\cmd;E:\GitExtensions;E:\UltraEdit;E:\UltraCompare;E:\mysql-8.0.20-winx64\bin;E:\Java\jdk-11.0.7\bin;E:\Java\jdk-11.0.7\jre\bin;E:\apache-maven\apache-maven-3.6.3\bin;E:\apache-tomcat-9.0.37\bin;E:\MongoDB_4.2.8\bin;C:\Program Files\PowerShell\7;E:\Git\usr\bin;E:\scala\bin;E:\groovy-3.0.9\bin;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;E:\gradle-7.3.1-all\gradle-7.3.1\bin;E:\VMware Workstation;C:\Program Files\dotnet;E:\Go\bin;E:\nodejs;E:\Geth;C:\Program Files\Docker\Docker\resources\bin;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;E:\Fiddler;E:\Microsoft VS Code\bin;E:\nodejs\node_global;E:\IntelliJ IDEA 2020.1.4\bin;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;E:\DataGrip 2022.2.1\bin;E:\GoLand 2022.2.4\bin;C:\Users\Administrator\go\bin;C:\Users\Administrator\AppData\Roaming\npm;E:\PyCharm 2020.2.3\bin;C:\Users\Administrator\.dotnet\tools
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.12.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EPERM: operation not permitted, unlink 'C:\Users\Administrator\Desktop\example4all\example4solidity\hardhat-fcc\hardhat-fund-me-fcc-typescript\node_modules\@nomicfoundation\solidity-analyzer-win32-x64-msvc\solidity-analyzer.win32-x64-msvc.node'
+
+npm manifest: 
+  {
+    "name": "hardhat-fund-me-fcc-typescript",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "hardhat test",
+      "typechain": "hardhat typechain",
+      "compile": "hardhat compile",
+      "clean": "hardhat clean",
+      "deploy": "hardhat run ./scripts/deploy.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "@chainlink/contracts": "^0.6.1",
+      "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+      "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
+      "@openzeppelin/contracts": "^4.8.3",
+      "@typechain/ethers-v5": "^10.2.0",
+      "@typechain/hardhat": "^6.1.5",
+      "hardhat": "^2.14.0",
+      "hardhat-deploy": "^0.11.26",
+      "typechain": "^8.1.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

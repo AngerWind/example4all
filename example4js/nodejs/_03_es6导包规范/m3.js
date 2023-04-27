@@ -5,3 +5,4 @@ export default {
         console.log("我们可以改变你!!");
     }
 }
+export let h = "hello"

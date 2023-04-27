@@ -5,3 +5,9 @@ function test() {
 console.log("running in a.file") // require当前文件的时候会执行这段代码
 // 导出当前文件中的test函数
 module.exports = test
+
+const a = () => {
+    return [1, 2, 3, 4, 5]
+}
+[b, c] = a();
+console.log(b, c)

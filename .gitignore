@@ -79,5 +79,7 @@ mvnw.cmd
 classes/
 out/
 build
+**/artifacts/
+**/venv/*
 
 
