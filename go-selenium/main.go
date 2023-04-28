@@ -40,7 +40,7 @@ func (c Container) ExecPause() (string, error) {
 	return CmdRun(c.PauseCmd())
 }
 func (c Container) UnpauseCmd() string {
-	return fmt.Sprintf("docker unpause %s", c.Id)
+	return fmt.Sprintf("docker unpause %s", c.Name)
 }
 func (c Container) ExecUnpause() (string, error) {
 	return CmdRun(c.UnpauseCmd())
@@ -140,8 +140,9 @@ func main() {
 
 	for _, container := range Containers {
 		container.ExecUnpause()
+		time.Sleep(5 * time.Second)
 		container.AddHosts(ip)
-		defer container.ExecPause()
+		// defer container.ExecPause()
 
 		driver.Get(fmt.Sprintf("https://localhost:%d", container.HostPort))
 		if ele, err := driver.FindElement(selenium.ByID, "details-button"); err == nil {
@@ -189,6 +190,7 @@ func main() {
 			}, 10*time.Second)
 			successSpan, _ := driver.FindElement(selenium.ByCSSSelector, "#root > div > main > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-10.MuiGrid-grid-sm-9.MuiGrid-grid-lg-6.css-1jgmrmj > div > form > div > span")
 			if successSpan != nil {
+				container.ExecPause()
 				break
 			}
 		}
