@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      ul {
+        width: 600px;
+        height: 800px;
+        border: 10px red solid;
+        /* 设置ul为弹性容器 */
+        display: flex;
+
+        /* 
+                flex-wrap: 
+                    在设置display: flex的容器中，其中的子元素默认是不换行的，
+                    当其子元素的总宽度大于容器的宽度时，其会将子元素的宽度挤压，即得不到我们想要的宽度。
+                    而flex-wrap则可以将容器设置为是否可换行，其中常用的值有如下所示：
+                    可选值：
+                        nowrap 默认值，元素不会自动换行，其子元素的中宽度大于容器的宽度时，子元素的宽度会被挤压变小
+                        wrap 元素沿着辅轴方向自动换行，其子元素的宽度不会被挤压变小   
+                        wrap-reverse 元素沿着辅轴反方向换行, 其子元素的宽度不会被挤压变小
+
+                align-content: 
+                    该属性只有flex-wrap设置为wrap是才有用, 并且有多行时才有用
+
+                    当弹性容器的子元素进行自动换行时, 多行可能无法占据整个元素的高度, 该属性定义了行如何处理剩余的高度, 与justify-content类似
+                            stretch	默认值。多行平均占据剩余高度
+                            flex-start 剩余高度空白在辅轴末尾, 即所有元素都在顶部, 空白在底部
+                            flex-end 剩余高度空白在辅轴开始, 即所有元素都在底部, 空白在顶部
+                            center 剩余高度平均分配在辅轴两侧, 即所有元素都在中间, 空白在上下两边
+                            space-around 剩余高度分布到每行的两侧, 空白均匀分布在每行的上下两边, 元素中间的空白双两份
+                            space-evenly 空白平均分布到行间, 空白均匀分布在每行的上下两边, 元素中间的空白只算一份
+                            space-between 空白在辅轴中间(空白在中间, 所有元素在上下两边)
+
+                            https://juejin.cn/post/6984365925168316447
+
+                当前情况分析:
+                被分为两行, 第一个最高高度是第三个li 300px, 第二行最高是第五个li 200px, 剩余300px, 所以换行后第一行450px, 第二行350px 同时因为前四个li的高度都是由内容撑开的, 没有主动设置, 所以前四个li的高度都会被拉伸为当前行的高度,
+                第五个主动设置了高度 200px, 所以第五个li不会被拉伸 */
+        flex-wrap: wrap;
+
+        /* align-content: 辅轴空白空间的分布 */
+        align-content: space-around;
+
+        /* flex-flow:  flex-wrap 和 flex-direction 的简写属性 */
+        /* flex-flow: row wrap; */
+      }
+
+      li {
+        width: 200px;
+        font-size: 50px;
+        text-align: center;
+        line-height: 100px;
+      }
+
+      li:nth-child(1) {
+        background-color: #bfa;
+      }
+
+      li:nth-child(2) {
+        background-color: pink;
+      }
+
+      li:nth-child(3) {
+        background-color: orange;
+        /* 设置/修改第三个li的高度会导致换行之后的两行高度改变, 同时第三个li不会被拉伸与行高相同 */
+        /* height: 600px; */
+      }
+
+      li:nth-child(4) {
+        background-color: yellow;
+      }
+
+      li:nth-child(5) {
+        background-color: chocolate;
+        /* 设置这个高度后, 当前元素不会被拉伸 */
+        height: 200px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <ul>
+      <li>1</li>
+      <li>
+        2
+        <div>2</div>
+      </li>
+      <li>
+        3
+        <div>3</div>
+        <div>3</div>
+      </li>
+      <!-- <br> -->
+
+      <li>4</li>
+
+      <li>
+        5
+        <div>5</div>
+      </li>
+    </ul>
+  </body>
+</html>

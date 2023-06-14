@@ -1,0 +1,8 @@
+const MetaCoin = artifacts.require("MetaCoin");
+let ConvertLib = artifacts.require("ConvertLib");
+
+module.exports = function (deployer) {
+  deployer.deploy(ConvertLib);
+  deployer.link(ConvertLib, MetaCoin); // 是在是搞不懂这个link是干啥的
+  deployer.deploy(MetaCoin);
+};

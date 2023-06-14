@@ -1,0 +1,19 @@
+{
+  "name": "truffle",
+  "version": "1.0.0",
+  "license": "MIT",
+  "devDependencies": {
+    "@typechain/truffle-v5": "^8.0.2",
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "truffle": "^5.8.4",
+    "typechain": "^8.1.1"
+  },
+  "scripts": {
+    "typechain": "truffle compile && typechain --target truffle-v5 './build/contracts/*.json'",
+    "mi": "truffle migrate",
+    "mireset": "truffle migrate --reset"
+  }
+}

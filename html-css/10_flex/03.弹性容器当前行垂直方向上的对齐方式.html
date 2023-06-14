@@ -1,101 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
 
-        ul {
-            width: 600px;
-            height: 800px;
-            border: 10px red solid;
-            /* 设置ul为弹性容器 */
-            display: flex;
-            flex-wrap: wrap;
+      ul {
+        width: 600px;
+        height: 800px;
+        border: 10px red solid;
+        /* 设置ul为弹性容器 */
+        display: flex;
+        flex-wrap: wrap;
 
-            /*
+        /*
              align-items: 
                 设置元素在当前行垂直方向上的对齐方式
                     - 可选值：
                         stretch 默认值，如果元素没有设置高度(高度由内容撑开)就把它拉伸到与当前行相同的高度
-                        flex-start 元素不会拉伸，向当前行顶部对齐
-                        flex-end 元素不会被拉伸, 向当前行底部对齐
-                        center 元素不会被拉伸, 向当前行中间对齐
-                        baseline 元素不会被拉伸, 向基线对齐（什么是基线？？？）
+                        flex-start 元素不会拉伸，向当前行顶部对齐, 全部在顶部
+                        flex-end 元素不会被拉伸, 向当前行底部对齐, 全部在底部
+                        center 元素不会被拉伸, 向当前行中间对齐, 在中间
+                        baseline 元素不会被拉伸, 向基线对齐（项目的第一行文字的基线对齐。）
              */
-            align-items: flex-end;
-        }
+        align-items: flex-end;
+      }
 
-        li {
-            width: 200px;
-            background-color: #bfa;
-            font-size: 50px;
-            text-align: center;
-            line-height: 100px;
-            flex-shrink: 0;
-        }
+      li {
+        width: 200px;
+        background-color: #bfa;
+        font-size: 50px;
+        text-align: center;
+        line-height: 100px;
+        flex-shrink: 0;
+      }
 
-        li:nth-child(1) {
-            /* 
+      li:nth-child(1) {
+        /* 
                 align-self: 
                     与align-items类似， align-items是放置在父元素中， 设置子元素的对齐方式
                     align-self是设置自身的对齐方式， 会覆盖父元素中的align-items属性
              */
-            /* align-self: stretch; */
-        }
+        /* align-self: stretch; */
+      }
 
-        li:nth-child(2) {
-            background-color: pink;
-            /* 当前元素设置了高度, 即使align-items为stretch也不会拉伸 */
-            height: 200px;
-        }
+      li:nth-child(2) {
+        background-color: pink;
+        /* 当前元素设置了高度, 即使align-items为stretch也不会拉伸 */
+        height: 200px;
+      }
 
-        li:nth-child(3) {
-            background-color: orange;
-        }
+      li:nth-child(3) {
+        background-color: orange;
+      }
 
-        li:nth-child(4) {
-            background-color: yellow;
-        }
+      li:nth-child(4) {
+        background-color: yellow;
+      }
 
-        li:nth-child(5) {
-            background-color: chocolate;
-        }
+      li:nth-child(5) {
+        background-color: chocolate;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
-
+  <body>
     <ul>
-        <li>1</li>
-        <li>
-            2
-            <div>2</div>
-        </li>
-        <li>
-            3
-            <div>3</div>
-            <div>3</div>
-        </li>
-        <!-- <br> -->
+      <li>1</li>
+      <li>
+        2
+        <div>2</div>
+      </li>
+      <li>
+        3
+        <div>3</div>
+        <div>3</div>
+      </li>
+      <!-- <br> -->
 
-        <li>4</li>
+      <li>4</li>
 
-        <li>
-            5
-            <div>5</div>
-        </li>
+      <li>
+        5
+        <div>5</div>
+      </li>
     </ul>
-
-</body>
-
+  </body>
 </html>

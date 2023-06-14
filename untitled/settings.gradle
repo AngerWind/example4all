@@ -1,4 +1,0 @@
-rootProject.name = 'untitled'
-
-println this==settings
-

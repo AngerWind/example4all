@@ -88,14 +88,14 @@ describe("test1 file", function () {
     this.slow(1000); // 针对当前分组中的所有测试案例, 如果超过1000ms就会标记为慢用例
     this.timeout(2000); // 针对当前分组中的所有测试案例, 如果超过1000ms就会标记为超时用例
 
-      it("test8", async function () {
-          this.slow(500) // 覆盖
-          this.timeout(1000); // 覆盖
+    it("test8", async function () {
+      this.slow(500); // 覆盖
+      this.timeout(1000); // 覆盖
 
-          console.log("test8");
-          await new Promise((resolve, reject) => {
-              setTimeout(resolve, 1500);
-          });
+      console.log("test8");
+      await new Promise((resolve, reject) => {
+        setTimeout(resolve, 1500);
+      });
     });
   });
 });

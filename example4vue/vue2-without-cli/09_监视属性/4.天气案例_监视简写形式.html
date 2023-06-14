@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>天气案例_深度监视简写形式</title>
+    <script src="../js/vue.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <h1>今天天气很 {{ info }}</h1>
+      <button @click="changeWeather">切换</button>
+      <hr />
+    </div>
+    <script type="text/javascript">
+      Vue.config.productionTip = false;
+      const vm = new Vue({
+        el: "#root",
+        data: {
+          isHot: true,
+        },
+        //计算属性
+        computed: {
+          info() {
+            return this.isHot ? "炎热" : "凉爽";
+          },
+        },
+        //改变模版数据的方法
+        methods: {
+          changeWeather() {
+            this.isHot = !this.isHot;
+          },
+        },
+        watch: {
+          // isHot:{
+          //     //immediate: true,
+          //     //deep: true
+          //     handler(newValue, preValue){
+          //         console.log('ishot 被修改了');
+          //         console.log(`newValue: ${newValue}, preValue: ${preValue}`);
+          //     }
+          // }
+
+          //只要当配置项不需要配置其他配置项时，可以直接写成函数形式!!!!!!
+          isHot(newValue, preValue) {
+            console.log(newValue, preValue);
+          },
+        },
+      });
+      //完整写法
+      // vm.$watch('isHot', {
+      //     deep: true,
+      //     immediate: true,
+      //     handler(newValue, preValue){
+      //         console.log(newValue, preValue);
+      //     }
+      // });
+      //简写 (代价就是不能配置其他配置项deep immediate)
+      vm.$watch("isHot", function (newValue, preValue) {
+        //this === vm
+        console.log(newValue, preValue);
+      });
+    </script>
+  </body>
+</html>

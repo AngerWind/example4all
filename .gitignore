@@ -82,4 +82,8 @@ build
 **/artifacts/
 **/venv/*
 
+vue-template/
+
+**/node_modules/
+
 

@@ -1,3 +1,5 @@
 {
-  "commentTranslate.targetLanguage": "zh-CN"
+  "commentTranslate.targetLanguage": "zh-CN",
+  "solidity-va.outline.decorations": true,
+  "solidity-va.outline.enable": true
 }
