@@ -41,6 +41,7 @@ public class JDKDynamicProxyTest {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             try {
+                System.out.println("invoke被调用");
                 method.invoke(target, args);
             } catch (Exception e) {
                 e.printStackTrace();

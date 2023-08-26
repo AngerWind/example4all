@@ -169,6 +169,7 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
     function _swap(uint[] memory amounts, address[] memory path, address _to) private {
         for (uint i; i < path.length - 1; i++) {
             (address input, address output) = (path[i], path[i + 1]);
+            // 获取input, output交易对的left
             (address token0,) = UniswapV2Library.sortTokens(input, output);
             uint amountOut = amounts[i + 1];
             (uint amount0Out, uint amount1Out) = input == token0 ? (uint(0), amountOut) : (amountOut, uint(0));
@@ -176,6 +177,8 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
             IUniswapV2Pair(UniswapV2Library.pairFor(factory, input, output)).swap(amount0Out, amount1Out, to, new bytes(0));
         }
     }
+    // path是一个erc20地址的数组, 表示交换的路径
+    // 假如从token0换成token2的路径是token0->token1->token2, 那么path就是[token0Address, token1Address, token2Address]
     function swapExactTokensForTokens(
         uint amountIn,
         uint amountOutMin,
@@ -183,9 +186,16 @@ contract UniswapV2Router01 is IUniswapV2Router01 {
         address to,
         uint deadline
     ) external override ensure(deadline) returns (uint[] memory amounts) {
+        // 返回的amounts是一个数组
+        // 假如path是[token0Address, token1Address, token2Address]
+        // 那么返回出来的就是[token0Amount, token1Amount, token2Amount],
+        // token0Amount是amountIn, token1Amount是token0换成token1的数量, token2Amount是token1换成token2的数量
         amounts = UniswapV2Library.getAmountsOut(factory, amountIn, path);
+        // 最后交换出来的token的数量必须大于等于amountOutMin
         require(amounts[amounts.length - 1] >= amountOutMin, 'UniswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT');
+        // 将amountIn数量的token0转入到token0和token1的交易对中
         TransferHelper.safeTransferFrom(path[0], msg.sender, UniswapV2Library.pairFor(factory, path[0], path[1]), amounts[0]);
+        // 开始交换
         _swap(amounts, path, to);
     }
     function swapTokensForExactTokens(

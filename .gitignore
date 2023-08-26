@@ -84,6 +84,8 @@ build
 
 vue-template/
 
+**/.vscode/
+
 **/node_modules/
 
 

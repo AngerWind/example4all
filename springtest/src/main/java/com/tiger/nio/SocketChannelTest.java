@@ -1,15 +1,20 @@
 package com.tiger.nio;
 
-import lombok.SneakyThrows;
-import org.junit.Test;
-
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
+
+import org.junit.Test;
+
+import lombok.SneakyThrows;
 
 /**
  * @author tiger.shen
@@ -223,6 +228,36 @@ public class SocketChannelTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void test1() throws IOException {
+        ServerSocketChannel socketChannel = ServerSocketChannel.open();
+        socketChannel.bind(new InetSocketAddress(8080));
+        socketChannel.configureBlocking(false);
+        while (true) {
+            SocketChannel client = socketChannel.accept();
+            if (client != null) {
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                long read = client.read(buffer);
+                buffer.flip();
+                StringBuilder sb = new StringBuilder();
+                sb.append(new String(buffer.array(), 0, (int) read, StandardCharsets.UTF_8));
+                System.out.println(sb.toString());
+            }
+
+        }
+
+    }
+    @Test
+    public void test2() throws IOException {
+        try (Socket socket = new Socket("localhost", 8080)) {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            writer.write("msg");
+            writer.flush();
+            System.out.println("hello");
+        }
+
     }
 
 }
