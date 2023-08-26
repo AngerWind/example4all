@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>symbol</title>
+</head>
+
+<body>
+    <script>
+
+        /**
+         * Symbol表示一个独一无二的对象, 任何的两个Symbol对象都不会相等
+         * 他的作用在于, 从外部获取一个对象并向给这个对象添加一些属性的时候, 你不能确定该对象当前是否已经有了这些属性
+         * 如果已经有了可能造成覆盖, 所以可以给新添加的属性设置属性名为symbol, 因为symbol是唯一的, 那么就不会和已有的属性名冲突
+         */
+
+        //创建Symbol
+        let s = Symbol();
+        // 给定一个字符串, 用以描述该symbol的作用
+        let s2 = Symbol('尚硅谷');
+        let s3 = Symbol('尚硅谷');
+        //Symbol.for 创建
+        let s4 = Symbol.for('尚硅谷');
+        let s5 = Symbol.for('尚硅谷');
+
+        // 给定的字符串只做描述作用, s2和s3, s4, s5都互不相等
+
+
+        //不能与其他数据进行运算
+        //    let result = s + 100;
+        //    let result = s > 100;
+        //    let result = s + s;
+
+    </script>
+
+    <!-- symbol作为对象属性 -->
+    <script>
+        //向对象中添加方法 up down
+        let game = {
+            name: '俄罗斯方块',
+            up: function () { },
+            down: function () { }
+        };
+
+        // 假如你不知道对象中是否已经有了up和down属性, 为了避免属性名冲突, 你可以使用下面这种方式来添加属性
+        let methods = {
+            up: Symbol(),
+            down: Symbol()
+        };
+
+        game[methods.up] = function () {
+            console.log("我可以改变形状");
+        }
+
+        game[methods.down] = function () {
+            console.log("我可以快速下降!!");
+        }
+
+        // 调用方法
+        game[methods.up]()
+        game[methods.down]()
+    </script>
+
+    <!-- 内置的symbol对象 -->
+    <script>
+        // 在使用一些内置的操作符的时候, 这些操作符会判断当前对象中是否有一些特定属性名的属性
+        // 如果有的话, 就会调用这些特定的属性名的方法
+
+        // 在concat的时候, 会通过Symbol.isConcatSpreadable属性来判断当前数组是否为可拆分的
+        const arr = [1, 2, 3];
+        const arr2 = [4, 5, 6];
+        arr2[Symbol.isConcatSpreadable] = false;
+        console.log(arr.concat(arr2));
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        /**
+         * call()和apply()
+         *     - 这两个方法都是Function对象的方法, 需要通过函数对象才能调用
+         *     - 这两个方法都会导致函数的执行, 并且传递的第一个参数会成为执行函数时的this对象
+         *     - call()和apply()的区别在于
+         *         call()方法将函数实参依次传递
+         *         apply()方法将函数实参封装在数组中传递
+         */
+        function playSomething(a, b) {
+            console.log(`${this.name} is playing ${a} and ${b}`)
+        }
+        var obj = {
+            name: "zhangsan",
+            playSomething: playSomething
+        }
+        var obj1 = {
+            name: "lisi"
+        }
+        var obj2 = {
+            name: "wanwu"
+        }
+        obj.playSomething("basketball", "football"); // zhangsan is playing basketball and football
+
+        // lisi is playing basketball and football, 相当于obj1.playSomething()
+        playSomething.call(obj1, "basketball", "football") // 顺序传递参数
+        playSomething.apply(obj1, ["basketball", "football"])  // 通过数组传递参数
+
+        // wanwu is playing basketball and football, 相当于obj2.playSomething()
+        playSomething.call(obj2, "basketball", "football")
+        playSomething.apply(obj2, ["basketball", "football"])
+    
+    </script>
+</head>
+
+</html>

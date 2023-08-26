@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        ul {
+            width: 200px;
+            border: 10px red solid;
+            /* 设置弹性盒 */
+            display: flex;
+
+        }
+
+        li {
+
+            height: 100px;
+            background-color: #bfa;
+            font-size: 50px;
+            text-align: center;
+            line-height: 100px;
+
+
+
+            /* 
+                flex-basis  设置元素在主轴上的基础长度, 该值会覆盖width或者height属性
+                    如果主轴是 横向的 则 该值指定的就是元素的宽度
+                    如果主轴是 纵向的 则 该值指定的是就是元素的高度
+                    - 默认值是 auto，表示参考元素自身的height或width
+                    - 如果传递了一个具体的数值，则以该值为准
+            */
+            width: 200px;
+            flex-basis: 100px;
+
+            /* 
+                flex 可以设置弹性元素所有的三个样式
+                    flex 增长 缩减 基础;
+                        initial "flex: 0 1 auto".
+                        auto  "flex: 1 1 auto"
+                        none "flex: 0 0 auto" 弹性元素没有弹性
+            */
+
+
+
+        }
+
+        li:nth-child(1) {}
+
+        li:nth-child(2) {
+            background-color: pink;
+
+        }
+
+        li:nth-child(3) {
+            background-color: orange;
+
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ul>
+
+</body>
+
+</html>

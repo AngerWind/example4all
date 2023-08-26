@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 时间的使用 -->
+    <script type="text/javascript">
+        /**
+         * 在js中使用Date表示时间
+         */
+        var d = new Date()
+        console.log(d)
+
+        // 指定日期, 格式: 月/日/年 时:分:秒
+        var d2 = new Date("11/02/2016")
+        var d3 = new Date("11/02/2016 11:03:04")
+        console.log(d2)
+        console.log(d3)
+
+        // day of month (1-31)
+        console.log(d.getDate())
+        // day of week (0-6)
+        console.log(d.getDay());
+        // month (0-11)
+        console.log(d.getMonth());
+        // year, 四位数字
+        console.log(d.getFullYear());
+        // hours (0-23)
+        console.log(d.getHours());
+        // minutes(0-59)
+        console.log(d.getMinutes());
+        // seconds (0-59)
+        console.log(d.getSeconds())
+        // milliseconds(0-59)
+        console.log(d.getMilliseconds());
+        // timestamp, 时间戳毫秒数
+        console.log(d.getTime())
+    </script>
+</head>
+
+</html>

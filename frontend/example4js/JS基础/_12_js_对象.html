@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        /**
+         * 对象的分类:
+         * 1. 内建对象
+         *      由ES标准中定义的对象, 在任何的ES的实现中都可以使用
+         *      比如: Math String Number Boolean Function Object
+         * 
+         * 2. 数组对象
+         *      有JS的运行环境提供的对象, 目前来讲主要是由浏览器提供的对象
+         *      比如BOM, DOM
+         * 
+         * 3. 自定义对象:
+         *      有开发人员自己创建的对象
+         */
+
+        // 创建对象
+        var obj = new Object()
+
+        // 向对象中添加属性
+        obj.name = "孙悟空"
+        obj.age = 9999
+        obj.gender = "男"
+
+        // 读取对象的属性, 对于未添加的属性, 其值为undefined
+        console.log(obj.age)
+        console.log(obj.address) // undefined
+
+        // 修改对象的属性
+        obj.age = 122
+
+        // 删除对象的属性, 删除成功返回true, 删除失败返回false
+        var b = delete obj.name
+        console.log(b); // true
+        console.log(obj.name) // undefined
+    </script>
+
+    <!-- 属性名 -->
+    <script type="text/javascript">
+        /**
+         * 向对象中添加属性的时候, 属性名不强制遵守标识符的规范, 但是还是尽量按照标识符的规范去做
+         * 
+         * 如果要在对象中添加特殊的标识符, 可以使用一下方式
+         *      对象名[属性名] = 属性值
+         * 对于添加的特殊属性名, 只能使用对象名[属性名]的方式来读取
+         */
+        var o = new Object
+        o["h w"] = "hello world"
+        o[123] = 123
+        console.log("o的'h w'属性是: " + o["h w"])
+        console.log("o的123属性是: " + o[123])
+
+
+        // 可以在[]中传递一个变量去读取对应的属性值
+        var n = 123
+        var n1 = "h w"
+        console.log(o[n]); // 123
+        console.log(o[n1]); // hello world
+    </script>
+
+    <!-- 属性值 -->
+    <script>
+        /**
+         * 对象的属性值可以是任意的类型, 甚至可以是另外一个对象
+         */
+        var obj = new Object()
+        obj.name1 = true
+        obj.name2 = null
+        obj.name3 = undefined
+        obj.name4 = "zhangsan"
+        obj[123] = 100
+
+        /**
+         * 可以使用in关键字来判断对象中是否包含某个属性
+         */
+        console.log("name1" in obj); // true
+        console.log(123 in obj); // true
+        console.log(456 in obj); // false
+        console.log("name3" in obj); // true, 这里需要注意的是, name3也在obj属性中, 只不过值被赋予了undefined
+    </script>
+
+    <!-- 值类型和引用类型 -->
+    <script>
+        /**
+         * 在JS中, 五种基础类型(String, Number, Boolean, Null, Undefined)是值类型, 而对象类型(Object)是引用类型
+         */
+
+        // 值类型
+        var a = 1
+        var b = a
+        a++
+        console.log(b); // 1
+
+        // 引用类型
+        var obj = new Object();
+        var obj1 = obj;
+        obj.name = "zhangsan"
+        console.log(obj1.name) // zhangsan
+    </script>
+
+
+    <!-- 对象字面量 -->
+    <script>
+        /**
+         * 使用对象字面量来创建一个对象
+         *      - 属性名可以加冒号,也可以不加, 如果需要使用特殊的属性名需要使用冒号
+         *      - 属性之间使用逗号隔开
+         *      - 属性名与属性值之间使用分号隔开
+         */
+        var obj = {
+            name: "zhangsan",
+            "age": 18,
+            gender: "男",
+            123: "xxx",
+            hight: {
+                h: "170",
+                units: "cm"
+            }
+        }
+
+        var obj1 = {} // 创建一个空的对象
+    </script>
+
+    <!-- 遍历对象中的属性 -->
+    <script>
+        /**
+         * 可以使用for in 语句来遍历对象中的属性
+         */ 
+         var obj = {
+            name: "zhangsan",
+            "age": 18,
+            gender: "男",
+            123: "xxx",
+            hight: {
+                h: "170",
+                units: "cm"
+            }
+        }
+        for(var n in obj) {
+            console.log(`属性名: ${n}, 属性值: ${obj[n]}`)
+        }
+    </script>
+
+</head>
+
+</html>

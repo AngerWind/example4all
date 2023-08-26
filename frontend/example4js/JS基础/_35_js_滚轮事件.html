@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        #box1 {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+    <script type="text/javascript">
+
+        window.onload = function () {
+
+            document.getElementById("box1").onmousewheel = function (event) {
+                // 滚轮滚动一个齿轮触发一次该函数
+                // event.wheelDelta 向上滚为正, 向下滚为负
+                console.log(`${event.wheelDelta}`) // 这个值的大小貌似与鼠标灵敏度有关
+
+                // 当鼠标滚轮向下滚动时，box1变长, 当滚轮向上滚动时，box1变短
+                // 判断鼠标滚轮滚动的方向
+                if (event.wheelDelta > 0) {
+                    //向上滚，box1变短
+                    box1.style.height = (box1.clientHeight - 10) + "px";
+                } else {
+                    //向下滚，box1变长
+                    box1.style.height = (box1.clientHeight + 10) + "px";
+                }
+
+                /*
+                 * 当滚轮滚动时，如果浏览器有滚动条，滚动条会随之滚动，
+                 * 这是浏览器的默认行为，如果不希望发生，则可以取消默认行为
+                 */
+                return false;
+            };
+        };
+    </script>
+</head>
+
+<body style="height: 2000px;">
+
+    <div id="box1"></div>
+
+</body>
+
+</html>

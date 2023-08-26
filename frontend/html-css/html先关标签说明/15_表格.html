@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <!-- table表示单元格, tr表示行, th表示表头单元格, td表示普通单元格 -->
+    <!-- th中的内容加粗并居中显示 -->
+    <!-- 不要在table和tr中添加其他标签， 如果需要添加其他标签可以添加到td和th中 -->
+    <!-- 每个tr中的td,th的个数是相同的 -->
+
+    <!-- border表示表格的边框宽度, width表示表格的总宽度, height表示表格的总高度, cellspacing表示单元格之间的距离, cellpadding表示单元格边框与文本之间的距离 -->
+    <!-- align表示表格的对齐方式, center, left, right -->
+    <!-- bgcolor表示表格的背景颜色 -->
+    <!-- bordercolor表示表格边框颜色 -->
+    <table
+      bordercolor="red"
+      border="10"
+      width="1000"
+      height="300"
+      cellspacing="10"
+      cellpadding="10"
+      align="center"
+      bgcolor="green"
+    >
+      <!-- 设置在tr中的属性会作用在每个单元格中 -->
+      <!-- height设置高度, 但是总高度不变, 所以会挤压其他行的高度 -->
+      <!-- tr没有width属性 -->
+      <!-- align设置当前行中所有单元格中文本水平对齐方式, left, center, right, 默认left -->
+      <!-- valign设置当前行中所有单元格中文本垂直对齐方式, top, middle bottom , 默认middle-->
+      <tr height="100" bgcolor="yellow" align="right" valign="bottom">
+        <th>序号</th>
+        <th>王者英雄</th>
+        <th>王者属性</th>
+        <th>所属位置</th>
+        <th>详情</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>王昭君</td>
+        <td>女</td>
+        <td>中路</td>
+        <td><a href="">点击查看详情</a></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>亚瑟</td>
+        <td>男</td>
+        <td>对抗路</td>
+        <td><a href="">点击查看详情</a></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>虞姬</td>
+        <td>女</td>
+        <td>发育路</td>
+        <td><a href="">点击查看详情</a></td>
+      </tr>
+    </table>
+
+    <table border="1" cellpadding="0" cellspacing="0">
+      <tr>
+        <!-- width会作用当前列所有单元格, height会作用当前行的所有单元格 -->
+        <!-- bgcolor, align, valign只会设置当前单元格 -->
+        <td
+          width="300"
+          height="100"
+          bgcolor="red"
+          align="right"
+          valign="bottom"
+        >
+          1
+        </td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+      </tr>
+    </table>
+  </body>
+</html>

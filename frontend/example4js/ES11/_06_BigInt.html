@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigInt</title>
+</head>
+
+<body>
+    <script>
+        //新增基础类型bigint
+        let n = 521n;
+        console.log(n, typeof (n)); // 521n bigint
+
+        //BigInt函数将整数转换为bigint
+        let n1 = 123;
+        console.log(BigInt(n1));
+        // console.log(BigInt(1.2));  // 报错, 1.2不是整数
+
+
+        let max = Number.MAX_SAFE_INTEGER;
+        console.log(max); // 9007199254740991
+        console.log(max + 1); // 9007199254740992
+        console.log(max + 2); // 9007199254740992, 整数运算的最大值, 超过了这个值就需要使用bigint进行运算了
+
+
+        // bigint运算
+        console.log(BigInt(max)) // 9007199254740991n
+        console.log(BigInt(max) + BigInt(1)) //9007199254740992n
+        console.log(BigInt(max) + BigInt(2)) // 9007199254740993n
+    </script>
+</body>
+
+</html>

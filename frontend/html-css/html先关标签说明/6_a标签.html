@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 如果是一个网址, 需要带上http, 否则无法跳转 -->
+    <!-- target表示超链接的打开方式, _blank表示在新页面中打开, _self表示在当前页面中打开 -->
+    <a href="http://www.baidu.com" target="_blank"></a>
+    <a href="http://www.baidu.com" target="_self"></a>
+
+    <!-- a标签还可以作为锚点链接, 用来实现同一个页面中不同区域的跳转 -->
+    <!-- href中填入元素选择器, 一般为id选择器 -->
+    <a href="#box1">box1</a>
+    <a href="#box2">box1</a>
+
+    <p id="box1">p1</p>
+    <p id="box2">p2</p>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script type="text/javascript">
+         var s = "hello world"
+
+         // string底层是通过字符串保存的, 可以通过索引获取指定位置的字符
+         console.log(s[0]); // h
+
+         console.log(s.length) // 11, 获取指定字符串的长度
+         console.log(s.charAt(1)); // e 获取指定位置字符
+         console.log(s.charCodeAt(1)); //101,  获取指定位置字符的十进制Unicode编码
+         console.log(String.fromCharCode(101)) // e, 十进制unicode转字符
+         console.log(s.concat("1111", "222")); // hello world1111222, 拼接多个字符串, 与+相同
+         console.log(s.indexOf("el")) //1,  返回el第一次出现的索引位置, 没有找到返回-1
+         console.log(s.indexOf("l", 5)) // 5. 第二个参数表示开始查找的位置
+         console.log(s.lastIndexOf("l")) // 9,  与indexOf类似, 但是从后往前找
+         console.log(s.lastIndexOf("l", 5)) // 3, 从后往前找, 第二个参数表示开始查找的位置
+         console.log(s.slice(6)) // world,  截取字符串
+         console.log(s.slice(6, -1)) // worl,  截取字符串, 右边第一个下标为-1
+         console.log(s.substring(6)) // world, 使用一个参数的时候与slice相同
+         console.log(s.substring(6, -1)) // hello, 第二个参数不能为负数, 如果为负数则使用0, 同时如果第一个参数比第二个参数大, 那么会自动调整两个参数的位置, 所以这个方法等于slice(0, 6)
+         console.log(s.substr(1, 3)) // ell, 第一个参数表示开始截取的位置, 第二个参数表示截取的位置
+         console.log(s.split(" ")) // [hello, world], 拆分数组, 返回数组
+         console.log(s.split("")) // h,e,l,l,o, ,w,o,r,l,d, 传递一个空串, 拆分每一个字符
+         console.log("aBc".toLowerCase()) // abc, 转换成小写
+         console.log("aBc".toUpperCase()) // ABC, 转换成大写
+        </script>
+    </head>
+</html>

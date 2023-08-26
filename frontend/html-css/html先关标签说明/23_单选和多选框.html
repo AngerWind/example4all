@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="">
+        <!-- 单选框和多选框必须成组使用才有意义, 组是通过name属性来定义的, name相同的为一组 -->
+        <!-- 单选框和多选框的默认选中可以通过checked来设置, 只要不为空的字符串都可以或者只定义checked属性不定义属性值 -->
+        <!-- name同时还表示提交时参数的名称, value表示表单提交时的参数的值 -->
+        性别:
+        <input type="radio" name="gender" value="1">男
+        <input type="radio" name="gender" value="0">女
+
+        <br>
+        喜欢的运动:
+        <input type="checkbox" name="sport" checked value="basketball">篮球
+        <input type="checkbox" name="sport" checked="1" value="yumao">羽毛球
+        <input type="checkbox" name="sport" value="bangqiu">棒球
+
+    </form>
+</body>
+
+</html>

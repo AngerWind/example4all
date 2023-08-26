@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- 
+        合并单元格的步骤:
+        1. 先写出完整的单元格的格式
+        2. 找到需要合并的单元格的左上角的单元, 设置跨行或者跨列的单元格个数
+        3. 删除掉被合并的单元格
+
+        例如下面的需要合并上午这个大单元格, 所以找到(3,1)这个单元格, 设置他的跨行为4, 然后删除掉(4,1) (5,1) (6,1)的td
+        合并下午这个单元格, 找到(7,1)设置跨4行, 删除掉(8,1) (9),1) (10,1)的td
+        合并最后一行的单元格, 找到(2, 11)设置跨列为5, 删除掉(3,11) (4,11) (5,11) (6,11) 的td
+     -->
+    <table border="1" cellpadding="0" cellspacing="0" width="500" height="200">
+        <tr height="20">
+            <th></th>
+            <th>星期1</th>
+            <th>星期2</th>
+            <th>星期3</th>
+            <th>星期4</th>
+            <th>星期5</th>
+        </tr>
+        <tr height="20">
+            <td>早自习</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr height="20">
+            <td rowspan="4">上午</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr height="20">
+
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr height="20">
+
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr height="20">
+
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr height="20">
+            <td rowspan="4">下午</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr height="20">
+
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr height="20">
+
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr height="20">
+
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr height="20">
+            <td>晚自习</td>
+            <td colspan="5"></td>
+
+        </tr>
+    </table>
+
+</body>
+
+</html>

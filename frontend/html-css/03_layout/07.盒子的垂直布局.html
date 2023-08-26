@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="../stone/css/reset.css"> -->
+    <style>
+        /* 
+            在垂直方向上, 不要求 子元素两个边框+两外边距+两内边距+子元素高度=父元素内容区高度, 如果子元素高度不够也无所谓
+
+            不设置父元素的高度的话,父元素高度默认为auto, 即会被子元素撑开, 即父元素高度跟随子元素高度变化
+            如果设置了父元素的高度的话, 就不会撑开
+            如果子元素的高度超过了父元素的高度,就会溢出,使用 overflow 属性来设置父元素如何处理溢出的子元素
+                visible，默认值, 子元素会从父元素中溢出，在父元素外部的位置显示
+                hidden 溢出内容将会被裁剪不会显示
+                scroll 生成横向和纵向两个滚动条(即使可能不需要横向滚动条也会生成)，通过滚动条来查看完整的内容
+                auto 根据需要生成横向和纵向滚动条(不需要横向滚动条也会生成就不生成)
+            同时还有overflow-x和overflow-y分别处理横向和纵向的溢出
+        */
+        .outer {
+            background-color: #bfa;
+            height: 600px;
+            overflow: auto;
+        }
+
+        .inner {
+            background-color: yellow;
+            height: 120px;
+            margin-bottom: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="inner"></div>
+    </div>
+</body>
+
+</html>

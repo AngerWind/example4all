@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成器函数参数</title>
+</head>
+<body>
+    <script>
+        // 生成器函数可以传参, yield后面的参数作为next函数的返回值
+        // next函数可以传入参数, 传入的参数作为yield的返回值
+        function * gen(arg){
+            console.log(arg); // AAA
+            let one = yield 111;
+
+            console.log(one); // BBB
+            let two = yield 222;
+
+            console.log(two); // CCC
+            let three = yield 333;
+
+            console.log(three); // DDD
+        }
+
+        //执行获取迭代器对象
+        let iterator = gen('AAA');
+        console.log(iterator.next());
+        //next方法可以传入实参
+        console.log(iterator.next('BBB'));
+        console.log(iterator.next('CCC'));
+        console.log(iterator.next('DDD'));
+        
+    </script>
+</body>
+</html>

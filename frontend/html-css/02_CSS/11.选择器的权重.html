@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <style>
+      /* #box1{
+            background-color: orange;
+        }
+
+        div#box1{
+            background-color: yellow;
+        } */
+
+      /* .d1 {
+            background-color: purple !important;
+        } */
+
+      .red {
+        background-color: red;
+      }
+
+      /* div,p,span{
+            background-color:yellowgreen;
+        } */
+
+      /* 
+            样式的冲突
+                - 当我们通过不同的选择器，选中相同的元素，并且为相同的样式设置不同的值时，此时就发生了样式的冲突。
+
+            分别计算如下选择器的个数
+            a: ID选择器
+            b: 类, 伪类, 属性选择器
+            c: 元素, 伪元素选择器
+            (后代选择器, 子代选择器等等不用计算权重)
+            形成(a,b,c)的格式, 然后按照从左到右的顺序进行比较, 谁的值大, 就使用谁的样式
+            如果(a,b,c)都相同, 那么后来居上
+            
+            !import > 内联元素 > 内部样式 = 外部样式 (按照上面的规则比较权重) > 通用选择器 > 继承 > 浏览器默认样式
+            
+
+         */
+
+      /* * {
+            font-size: 50px;
+        }
+
+        div {
+            font-size: 20px;
+        } */
+    </style>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div id="box1" class="red d1 d2 d3 d4">
+      我是一个div
+      <span>我是div中的span</span>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box1 {
+            width: 100px;
+            height: 100px;
+            background-color: #bfa;
+            padding: 10px;
+            border: 10px red solid;
+            /* 
+                默认情况下，盒子可见框的大小由内容区、内边距和边框共同决定
+
+                    box-sizing 用来设置盒子尺寸的计算方式（设置width和height的作用）
+                        可选值：
+                            content-box: 默认值，此时width和height用来设置内容区的宽度和高度, 盒子的大小由内容区, 边框,内边距决定
+                            border-box: width和height用来设置整个盒子可见框的宽度和高度, 即盒子的内容区+边框+内边距是固定的, 设置边框和内边距会自动调整内容区大小
+                                
+             */
+
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box1"></div>
+
+</body>
+
+</html>

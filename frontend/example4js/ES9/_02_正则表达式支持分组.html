@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正则扩展-命名捕获分组</title>
+</head>
+
+<body>
+    <script>
+
+        //提取 url 与 『标签文本』
+        let str = '<a href="http://www.atguigu.com">尚硅谷</a>';
+        const reg = /<a href="(.*)">(.*)<\/a>/;
+        const result = reg.exec(str);
+
+        console.log(result);
+        console.log(result[1]);
+        console.log(result[2]);
+
+
+        //分组命名
+        let str1 = '<a href="http://www.atguigu.com">尚硅谷</a>';
+        const reg1 = /<a href="(?<url>.*)">(?<text>.*)<\/a>/;
+        const result1 = reg.exec(str1);
+        console.log(result1.groups.url);
+        console.log(result1.groups.text);
+    </script>
+</body>
+
+</html>
