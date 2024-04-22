@@ -1,6 +1,4 @@
-package com.tiger.cglib.dao;
-
-import com.tiger.cglib.EverythingTest;
+package com.tiger.dynamic_proxy.cglib.dao;
 
 /**
  * @author tiger.shen
