@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>事件处理基本</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+        <!--
+							1.使用v-on:xxx 或 @xxx 绑定事件，其中xxx是事件名；
+							2.在method和data中配置的方法和属性, 最终都会变为vm的方法和属性
+							3.methods中配置的函数，不要用箭头函数！否则this就不是vm了
+		-->
+    <div id="root">
+        <button v-on:click="showInfo1">点我提示信息1</button>
+
+        <!--简写形式 @click-->
+        <button @click="showInfo1">点我提示信息2</button>
+    </div>
+    <script type="text/javascript">
+        Vue.config.productionTip = false;
+        const vm = new Vue({
+            el: '#root',
+            data(){
+                return {
+                   name: 'shanghai',
+                }
+            },
+            //methods配置事件处理的回调函数
+            methods:{
+                //默认给你传递event参数
+                showInfo1(e){
+
+                    // this是vm实例, 如果使用箭头函数创建showInfo1函数的话, this就是window了
+                    console.log(this === vm); // true
+
+                    // 因为this是vm属性, 所以可以使用通过this使用vm上的属性和方法
+                    console.log(this.name) // shanghai
+                }
+            }
+        });
+
+
+    </script>
+</body>
+</html>

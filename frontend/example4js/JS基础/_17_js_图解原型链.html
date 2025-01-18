@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <script type="text/javascript">
+
+        /**
+         * 因为Object是一个函数, 所以也是对象, 所以Object也有 prototype
+         * Object的 prototype 就是最初的原型对象
+         * 这个最初的原型对象的 __proto__ 就是null了
+         */
+        var originalProto = Object.prototype
+        console.log(originalProto.__proto__ === null) // true
+
+        /**
+         * 我们创建的Object的 __proto__ 都指向这个最初的原型对象
+         */
+        console.log((new Object()).__proto__ === originalProto) // true
+        console.log({}.__proto__ === originalProto) // true
+
+        /**
+         * 同时我们定义的函数, 会有自己单独的原型对象, 而这个单独的原型对象的原型是最初的原型独享
+         */
+        function A() {}
+        function B() {}
+        console.log(A.prototype === B.prototype) // false
+        console.log(A.prototype.__proto__ === originalProto) // true
+        console.log(B.prototype.__proto__ === originalProto) // true
+        console.log((new A()).__proto__.__proto__ === originalProto) // true
+
+    </script>
+</head>
+
+<body>
+<img src="JS原型链.png" alt="原型链">
+</body>
+</html>

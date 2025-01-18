@@ -9,35 +9,23 @@
 import { reactive } from 'vue';
 export default {
   name: 'Demo',
-  beforeCreate() {
-    console.log('----@bc');
-  },
-  props: ['msg', 'school'],
-  emits:['hello'],
-  setup(props, context){
-    // console.log('----setup');
-    // console.log(this); ///undefined
-    console.log(props); //props: 外部给组件丢的参数 => 响应式(Proxy实例)
-    //表演的舞台(setup)
-    //准备数据 data
-    //ref实现响应式(基本类型)也是采用Object.definedProperty()来实现的 getter和setter
-    // let name = ref('py'); //ref引用对象(RefImpl)实例
-    // let age = ref(21);
-    //ref实现响应式(对象类型)也是采用Proxy来实现(proxy) 这里如果就算是用ref也是借助了reactive
-    let person = reactive({
-      name: 'py',
-      age: 21,
-    });
+  props: ['msg', 'school'], // 定义要接受的参数
+  emits:['hello'], // 定义当前组件会触发的事件类型
 
-    // console.log(context, context.attrs); 相当于vue2中的$attrs
-    // console.log(context,context.slots); 插槽
+  // setup可以接受两个参数, props和context
+  // context可以用来触发自定义事件
+  setup(props, context){
+    // props参数, 可以接受上面props中定义的参数
+    console.log(props) // {"msg": "hello", "school": "wust"}
+
+    function test(){
+      context.emit('hello', 666); // 触发自定义事件
+    }
 
     //返回一个对象
     return {
       person,
-      test(){
-        context.emit('hello', 666); //触发自定义事件
-      }
+      test
     }
   }
 }

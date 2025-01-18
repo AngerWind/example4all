@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>vue计算属性语法实现</title>
+    <script src="../js/vue.js"></script>
+  </head>
+  <body>
+    <div id="root">
+
+      <!--v-model双向绑定-->
+      姓:<input type="text" v-model="firstName" /> <br /><br />
+      名:<input type="text" v-model="lastName" /> <br /><br />
+
+      全名: <span>{{ fullName }}</span>
+    </div>
+    <script type="text/javascript">
+      const vm = new Vue({
+        el: "#root",
+        data: {
+          firstName: "张",
+          lastName: "三",
+        },
+        computed: {
+          fullName: {
+            // 当通过 fullName 来读取值的时候, 会调用 get 方法来计算 fullName 的值
+            // 如果 fullName 依赖的 的属性没有发生改变的话, 那么多次读取会直接返回缓存
+            // 如果计算属性依赖的值发生改变, 那么计算属性也会自动计算新值
+            // 如果使用 methods 来计算的话, 那么没有缓存, 读几次就调用几次
+            get() {
+              // 此时get函数中的this指向是vm
+              return this.firstName + "--" + this.lastName;
+            },
+
+            // 当fullName被修改时, 调用set
+            set(value) {
+              // 此时set函数中的this指向是vm
+              const [firstName, lastName] = value.split("-");
+              this.firstName = firstName;
+              this.lastName = lastName; // 依赖属性发生改变之后,计算属性自动改变
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v3响应式</title>
+</head>
+<body>
+    <script type="text/javascript">
+
+        // vue3 对于基本数据类型, 使用的还是Object.defineProperty来实现响应式的
+        function RefImpl(value) {
+            Object.defineProperty(this, "value", {
+                get() {
+                    return value
+                },
+                set(v) {
+                    value = v
+                }
+            })
+        }
+        function ref(value){
+            return new RefImpl(value)
+        }
+        let a = ref("hahha")
+
+
+        let person = {
+            name: '张三',
+            age: 18
+        };
+
+        //模拟vue2中的响应式
+        let p = {};
+        Object.defineProperty(p, 'name', {
+            get(){
+                //get name
+                return person.name;
+            },
+            set(value){
+                //set name
+                console.log('name changed, must change the page');
+                person.name = value;
+            }
+        })
+
+        Object.defineProperty(p, 'age', {
+            configurable: true,
+            get(){
+                //get age
+                return person.age;
+            },
+            set(value){
+                //set age
+                console.log('age changed, must change the page');
+                person.age = value;
+            }
+        })
+
+        //vue3的响应式
+        const p = new Proxy(person,{
+            //读取, target是上面被代理的person对象
+            get(target, propName){
+                console.log('读取');
+                return Reflect.get(target,propName);
+            },
+            // 增加和修改属性
+            set(target, propName, value) {
+                console.log('修改');
+                Reflect.set(target, propName, value);
+            },
+            // 删除属性
+            deleteProperty(target, propName) {
+                console.log(`删除`);
+                return Reflect.deleteProperty(target, propName);
+            }
+        });
+
+    </script>
+</body>
+</html>
