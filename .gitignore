@@ -82,7 +82,7 @@ build
 **/artifacts/
 **/venv/*
 
-vue-template/
+
 
 **/.vscode/
 
