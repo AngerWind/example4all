@@ -1,0 +1,25 @@
+@import "variable.module";
+
+// 可以通过:export导出变量
+// 然后在js中 import styles from '@/styles/js'
+// 通过styles.color使用
+// 本来是可以直接在variable.module.scss中直接导出的, 但是因为在vite.config.js中配置了variable.module.scss
+// 如果在其他地方 import variable.module.scss会导致该文件被加载两次, 报错 , 详细情况查看
+// https://blog.csdn.net/hp9999/article/details/126338799
+
+:export {
+  // logo相关
+  logo-height: $logo-height;
+  logo-padding-left: $logo-padding-left;
+
+  // menu相关
+  menu-background-color: $menu-background-color;
+  menu-text-color: $menu-text-color;
+
+  // header相关
+  header-background-color: $main-background-color;
+
+
+  // main相关
+  main-background-color: $main-background-color;
+}
