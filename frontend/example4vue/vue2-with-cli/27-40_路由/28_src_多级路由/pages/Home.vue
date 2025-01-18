@@ -5,6 +5,7 @@
       <ul class="nav nav-tabs">
         <li>
           <!--路由按钮-->
+          <!-- 这里是二级路由 -->
           <router-link class="list-group-item" active-class="active" to="/home/news">News</router-link>
         </li>
         <li>
@@ -25,8 +26,6 @@ export default {
   // 如果重新路由到组件, 又会创建一个新的vc实例, 进行重新的挂载
   mounted() {
     console.log('Home组件挂载完毕', this);
-    window.homeRoute = this.$route;
-    window.homeRouter = this.$router;
   },
   beforeDestroy() {
     console.log('Home组件将要被销毁');

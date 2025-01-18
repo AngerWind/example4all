@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.js"></script>
+</head>
+<body>
+<button id="btn">点我发送请求</button>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl, port, url} from "./server/config.js"
+
+
+    document.getElementById("btn").onclick = function () {
+        /**
+         * 所有可以通过config对象设置的参数, 都可以通过 axios.defaults.xxx 来设置
+         */
+        axios.defaults.baseURL = `http://localhost:${port}`; // 设置全局的baseURL
+        axios.defaults.method = "get" // 设置默认的method
+        axios.defaults.headers.common["key1"] = "value1" // 设置全局的header
+        axios.defaults.headers.common["key2"] = "value2"
+        axios.defaults.headers.post["post1"] = "value1" // 设置全局post的header
+        axios.defaults.headers.get["get1"] = "value1" // 添加全局get的header
+        axios.defaults.params = { // 添加全局的params
+            "id": "1289128991"
+        }
+
+        axios.get(url, {})
+            .then((response) => {
+                console.log(response.data)
+            }).catch((err) => {
+            console.log(err)
+        })
+    }
+</script>
+</body>
+</html>

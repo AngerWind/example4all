@@ -11,13 +11,13 @@
     <!-- 引入Vue -->
 </head>
 <body>
-<!--
-        v-cloak指令（没有值）：
-                1.本质是一个特殊属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性。
-                2.使用css配合v-cloak可以解决网速慢时页面展示出{{xxx}}的问题。
--->
-<!-- 准备好一个容器-->
+
+
 <div id="root">
+    <!-- 如果没有v-cloak, 当网速特别慢的时候, 有可能Vue还没有来得及解析这个div, 其中的内容就已经在页面上展示了
+         所以我们可以给元素一个v-cloak属性, 来标记他是还没有解析的内容, 并通过css来让他隐藏
+         当Vue解析完毕之后, vue会自动删除v-cloak属性, 这样就可以直接展示已经解析好的内容
+      -->
     <h2 v-cloak>{{name}}</h2>
 </div>
 <script type="text/javascript" src="http://localhost:8080/resource/5s/vue.js"></script>

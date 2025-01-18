@@ -4,7 +4,7 @@ let a = 10;
 console.log(hi);
 console.log(a);
 
-// a = 'hello';
+// a.js = 'hello';
 
 function fn(a: number, b: number){
     return a + b;

@@ -52,6 +52,20 @@
         arr.forEach(function(value, index, a){
             console.log(`${value}, ${index}, ${a.toString()}`)
         })
+
+        // for in
+        const array = [1, 2, 3, 4, 5];
+        for (const key in array) {
+            console.log(`索引: ${key}, 值: ${array[key]}`);
+        }
+
+        // for of
+        const array1 = [1, 2, 3, 4, 5];
+        for (const value of array1) {
+            console.log(value); // 输出每个元素
+        }
+
+
     </script>
 </head>
 

@@ -19,10 +19,10 @@
     Vue.config.productionTip = false;
     new Vue({
         el:"#root",
-        //template模版字符串只能有一个根结点
+        // template模版字符串只能有一个根结点
         // template:'<div><h1>当前的n值是{{ n }}</h1>\n' +
         //     '<button @click="add">点我+1</button></div>',
-        //注意template是不能作为根标签来使用的，不能去骗vue，可以用fragment(vue3新加，模仿react)
+        // 注意template是不能作为根标签来使用的，不能去骗vue，可以用fragment(vue3新加，模仿react)
         data: {
             n: 1
         },
@@ -32,8 +32,8 @@
                 this.n++;
             },
             bye(){
-                //实例销毁后调用。该钩子被调用后，对应 Vue 实例的所有指令都被解绑，所有的(自定义)事件监听器被移除，所有的子实例也都被销毁。
                 console.log('bye');
+                // 调用这个方法之后, Vue实例就被销毁了, 但是已经在页面上渲染的元素还是保留着的
                 this.$destroy();
             }
         },
@@ -42,19 +42,24 @@
                 console.log('n变了');
             }
         },
+        // 数据代理之前, 还没有进行响应式
         beforeCreate(){
             console.log('beforeCreate');
             // console.log(this);
 
         },
+        // 数据代理之后, 已经进行响应式了
         created(){
             console.log('created');
             // console.log(this);
         },
+        // 在虚拟dom转换为真实dom, 并挂载到页面之前
         beforeMount(){
             console.log('beforeMount');
             // console.log(this);
         },
+        // 在虚拟dom转换为真实dom, 并挂载到页面之后
+        // 可以在这里发送ajax请求、启动定时器、绑定自定义事件、订阅消息等【初始化操作】。
         mounted(){
             console.log('mounted');
             console.log(this);
@@ -68,8 +73,9 @@
             console.log('updated');
             console.log(this.n); //此时数据是新的，页面也是新的，同步
         },
+        // 可以在这里清除定时器、解绑自定义事件、取消订阅消息等【收尾工作】。
         beforeDestroy(){
-            //仍然可以使用data,methods，关闭定时器，取消订阅消息，解绑自定义事件等收尾工作，移除watchers
+            //仍然可以使用data, methods
             console.log('beforeDestroy');
             console.log(this.n);
             // this.add(); //记住一旦到了beforeDestroy或者destroyed钩子，即使你拿到数据想要更新它也不会走更新的路了(beforeUpdate,updated)

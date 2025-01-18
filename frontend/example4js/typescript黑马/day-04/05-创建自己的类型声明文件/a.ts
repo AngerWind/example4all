@@ -1,4 +1,4 @@
-// a.ts
+// a.js.ts
 import { Props } from './index'
 
 // type Props = { x: number; y: number }

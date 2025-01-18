@@ -1,5 +1,4 @@
 <template>
-  <!--vue3的组件模版结构可以没有根标签-->
   <input v-model="keyWord"/>
   <h3>{{ keyWord }}</h3>
 </template>
@@ -10,7 +9,7 @@ export default {
   name: 'App',
   setup(){
     // let keyWord = ref('hello'); //使用vue提供的内置ref,
-    let keyWord = myRef('hello'); //使用自定义ref
+    let keyWord = myRef('hello'); // 创建一个自定义的ref, 对数据的修改会延迟一秒钟
 
     function myRef(value){
       // 生成一个自定义的ref, 并返回
@@ -20,8 +19,8 @@ export default {
            // 通过myRef创建的变量被读取时, 被调用
            get(){
               console.log(`从myRef这个容器读取数据,data:${value}`);
-              track(); // 在返回数据前调用
-              return value; //读取的时候就会调用get
+              track(); // 在返回数据之前需要调用一下track
+              return value;
            },
            // 通过myRef创建的变量被修改时, 被调用
            set(nv){
@@ -30,8 +29,8 @@ export default {
              // 延迟一秒再变化
              timer = setTimeout(() => {
                value = nv;
-               trigger(); //trigger通知vue重新解析模版
-             },500);
+               trigger(); // 调用trigger通知vue重新解析模版
+             },1000);
            }
          }
       });

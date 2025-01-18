@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>vue中的数据代理</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+
+<div id="root">
+{{name}}
+</div>
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+
+    const vm = new Vue({
+        el: "#root",
+        data: {
+            name: "panyue",
+            student: {
+                name: "zhangsan"
+            },
+            habbit: [{
+                "action": "打篮球",
+                "location": "篮球场"
+            }, {
+                action: "吃西瓜",
+                location: "西瓜地"
+            }]
+        },
+    });
+
+    // 被属性代理后的data, 我们修改他的任何属性, 都可以被监听到
+    vm.name = "hello" // 可以被监听到name属性改变了
+
+    // 但是对于后添加的属性, vue是没有办法监听的
+    // 比如如下添加了一个age属性, 那么这个age属性是不具备监听的
+    vm._data.age = 18
+
+    // 要想属性具有监听, 可以使用Vue.set(), 或者vm.$set()添加属性
+    // 或者如果是在vm内部, 可以通过this.$set()来添加属性
+    Vue.set(vm._data.student, "color", 18)
+    vm.$set(vm._data.student, "weight", 199)
+
+    // 但是上面设置属性的方式有一个缺陷, 那就是不能给data对象添加一个属性, 只能给data的属性添加属性
+    // Vue.set(vm._data, "color", 19) // 这会报错, 你不能给data对象添加一个属性, 不知道为啥
+
+    // 同时如果你直接使用下标来修改data中的属性, 那么也是没有办法进行响应式的
+    vm.habbit[1].location = "飞机场" // 这样是有响应式, 因为对location的修改经过了setter
+    vm.habbit[1] = {action: "吃馒头", location: "发酵房"} // 这样直接通过元素下表来修改元素, 是没有办法进行响应式的, 因为通过下标改元素, 不经过setter
+
+    // 只有在调用如下的方法对数据进行修改的时候, 才有响应式
+    // push()、pop()、shift()、unshift()、splice()、sort()、reverse()
+    vm.habbit.splice(1, 1, {action: "打哈欠", location: "教室"}) // splice从指定的位置删除指定的元素, 同时再插入指定的元素, 以此来替换
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // 在vue3中, 这些都不是问题
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+</script>
+</body>
+</html>

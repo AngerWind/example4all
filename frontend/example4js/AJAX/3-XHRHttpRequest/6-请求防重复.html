@@ -14,9 +14,13 @@
         //标识变量
         let isSending = false; // 是否正在发送AJAX请求
 
+
+        // 多次点击会重复发送请求, 所以要防重
         btns[0].onclick = function(){
             //判断标识变量
-            if(isSending) x.abort();// 如果正在发送, 则取消该请求, 创建一个新的请求
+            if(isSending) {
+                return // 如果正在发送请求, 那么就直接return
+            }
             x = new XMLHttpRequest();
             //修改 标识变量的值
             isSending = true;

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <script type="text/javascript">
+
+        /**
+         * 在使用instanceof判断的时候
+         * 实际上就是判断 函数的prototype对象是否在对象的原型链上面__proto__
+         */
+
+        function Person(){}
+        console.log((new Person()).__proto__.__proto__ === Object.prototype) // true
+        console.log(new Person() instanceof Object) // true, Object的prototype 在 new Person的原型链上面
+
+        console.log(Person instanceof Function) // true
+        console.log((Person.__proto__) === Function.prototype) // true
+    </script>
+</head>
+
+</html>

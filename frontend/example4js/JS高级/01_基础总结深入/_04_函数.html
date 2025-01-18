@@ -1,0 +1,40 @@
+<html>
+<head>
+
+</head>
+<body>
+<script type="text/javascript">
+    /**
+     * - 函数也是对象
+     */
+    console.log(console.log instanceof Object)
+
+    /**
+     * 定义函数的方式
+     */
+    // 方式1
+    function a(){} // 声明式
+    var b = function(){} // 表达式
+
+    /**
+     * 函数的调用方式
+     */
+    function sayMessage(msg){
+        console.log(msg)
+    }
+    // 直接调用
+    sayMessage("哈哈")
+
+    // 通过对象调用
+    var obj = {}
+    obj.sayMessage("hello")
+
+    // 通过call来调用, 依次传递多个参数
+    sayMessage.call(obj, "哈哈哈")
+
+    // 通过apply来调用, 多个参数要封装为一个数组
+    sayMessage.apply(obj, ["哈哈哈"])
+
+</script>
+</body>
+</html>

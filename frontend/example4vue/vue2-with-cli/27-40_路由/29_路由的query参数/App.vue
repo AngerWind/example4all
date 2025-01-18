@@ -6,12 +6,23 @@
     <div class="row">
       <div class="col-xs-2 col-xs-offset-2">
         <div class="list-group">
-          <!--原始使用a标签跳转多个页面,多页面应用-->
-<!--          <a.js class="list-group-item active" href="./about.html">About</a.js>-->
-<!--          <a.js class="list-group-item" href="./home.html">Home</a.js>-->
-          <!--vue中借助router=link标签实现路由的切换-->
-          <router-link class="list-group-item" active-class="active" to="/about">About</router-link>
-          <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
+
+          <!-- 可以在路径中添加 queryString 来传递query参数 -->
+          <router-link class="list-group-item" active-class="active"
+                       :to="`/about?message=${aboutMessage.name}&age=${aboutMessage.age}`">About
+          </router-link>
+
+          <!-- 也可以使用如下这种方式来传递 query 参数 -->
+          <router-link class="list-group-item" active-class="active"
+                       :to="{
+                          path: '/home',
+                          query: {
+                            name: homeMessage.name,
+                            age: homeMessage.age
+                          }
+                       }">
+            Home
+          </router-link>
         </div>
       </div>
       <div class="col-xs-6">
@@ -29,9 +40,22 @@
 
 <script>
 import Banner from "./components/Banner";
+
 export default {
   name: "App",
   components: {Banner},
+  data() {
+    return {
+      aboutMessage: {
+        name: "zhangsan",
+        age: 19
+      },
+      homeMessage: {
+        name: "lisi",
+        age: 19
+      },
+    }
+  }
 }
 </script>
 <style lang="css" scoped>

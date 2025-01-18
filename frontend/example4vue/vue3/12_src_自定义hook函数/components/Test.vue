@@ -4,17 +4,16 @@
 </template>
 
 <script>
-import usePoint from "../hooks/usePoint";
-
 export default {
   name: "Test",
-  setup(){
-    const point = usePoint(); //复用打点hook(封装数据以及其要用的生命周期钩子) 组合式api的好处
-    return {
-      point
-    }
-  }
 }
+</script>
+
+<script setup>
+
+import usePoint from "../hooks/usePoint";
+const {point} = usePoint(); // 复用一个功能
+
 </script>
 
 <style scoped>

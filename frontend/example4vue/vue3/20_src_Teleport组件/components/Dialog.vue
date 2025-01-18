@@ -1,6 +1,11 @@
 <template>
   <div>
     <button @click="isShow = true">点我弹个窗</button>
+    <!-- teleport组件表示传送, 他主要解决的问题是, 如果下面的div通过v-if来控制展示 -->
+    <!-- 当div展示的时候, 他会把父元素撑大, 当不展示的时候, 父元素又会缩小, 这样不美观 -->
+    <!-- 所以我们就可以使用 teleport 组件将他包裹一层, 然后将他传送到别的元素内部的最后面 -->
+
+    <!-- 将内部的div传送到body里面, 作为body的最后一个子节点, 也可以使用to="#app"来传送到id为app的元素内部, 并作为他的最后一个子节点-->
     <teleport to="body">
       <div class="mask" v-if="isShow">
         <div class="dialog">

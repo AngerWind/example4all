@@ -1,0 +1,30 @@
+<html>
+<head>
+
+</head>
+<body>
+<script type="text/javascript">
+    // 对象的属性名默认是string类型, 即使不写引号
+    var p = {
+        name: 'Tom',
+        age: 12,
+        setName: function (name) {
+            this.name = name
+        },
+        setAge: function (age) {
+            this.age = age
+        }
+    }
+
+    // 调用对象的属性可以通过obj.xxx, 也可以通过obj["xxx"]
+    p.setName('Bob')
+    p['setAge'](23)
+
+    // obj["xxx"]的形式通常用在属性名不确定的情况, 或者不是标准的情况
+    p["hello world"] = 100 // 属性名不标准
+    let a = "setAge"
+    p[a](23) // 属性名不确定
+
+</script>
+</body>
+</html>

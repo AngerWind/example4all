@@ -14,6 +14,7 @@ export default {
 </script>
 
 <style scoped>
+//不要删除这里的样式
   .son{
     background: orange;
     padding: 10px;

@@ -31,7 +31,7 @@ export default {
        }
        console.log(perObj);
        this.name = '';
-       this.$store.commit('person/ADD_PERSON', perObj);
+       this.$store.commit('person/ADD_PERSON', perObj); // 触发person组中的ADD_PERSON
      },
     addWang(){
        const perObj = {
@@ -42,19 +42,18 @@ export default {
       this.name = '';
     },
     addPersonServer(){
-       this.$store.dispatch('person/addPersonServer');
+       this.$store.dispatch('person/addPersonServer'); // 触发person组中的addPersonServer
     }
   },
   computed:{
-    // ...mapState(['personList']),
     personList(){
-      return this.$store.state.person.personList;
+      return this.$store.state.person.personList; // 获取person组中的personList
     },
     sum(){
-      return this.$store.state.count.sum;
+      return this.$store.state.count.sum; // 获取count组中的personList
     },
     firstPersonName() {
-      return this.$store.getters['person/firstPersonName'];
+      return this.$store.getters['person/firstPersonName']; // 获取person组中的getters中的firstPersonName
     }
   },
 }

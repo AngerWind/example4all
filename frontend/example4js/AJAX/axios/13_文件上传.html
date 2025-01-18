@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.min.js"></script>
+</head>
+<body>
+<label for="fileInput">选择文件:</label>
+<!-- 添加multiple属性, 表示可以选择多个文件, 否则只能选择一个文件 -->
+<input type="file" name="file" id="fileInput" required multiple>
+
+<button id="btn1">点我上传一个文件</button>
+<button id="btn2">点我上传多个文件</button>
+<button id="btn3">点我上传多个文件, 简写</button>
+
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl, port, url, upload} from "./server/config.js"
+
+    /**
+     * 文件上传的时候, 文件一共有两个name,
+     *      - 一个是文件在文件系统的名称, file.originalname
+     *      - 一个是在上传时指定的名称, file.fieldname
+     *
+     * 文件上传记得使用 postForm
+     */
+    let input = document.querySelector('#fileInput')
+    document.getElementById("btn1").onclick = function (){
+        // 上传一个文件
+        let file = input.files[0]
+        console.log(`上传文件, name:${file.name}, 上次修改时间: ${file.lastModifiedDate}, size: ${file.size}, type: ${file.type}`)
+        axios.postForm(upload, {
+            'aaa' : 'bbb',
+            'file1': file // 指定文件的filedname
+        });
+    }
+    document.getElementById("btn2").onclick = function (){
+        // 上传多个文件
+        axios.postForm(upload, {
+            'files[]': document.querySelector('#fileInput').files // 所有文件的fieldname都是 `files[]`
+        });
+    }
+    document.getElementById("btn3").onclick = function (){
+        // 上传多个文件, 简写
+        axios.postForm(upload, document.querySelector('#fileInput').files) // 所有文件的 fieldname 都是 `files[]`
+    }
+</script>
+</body>
+</html>

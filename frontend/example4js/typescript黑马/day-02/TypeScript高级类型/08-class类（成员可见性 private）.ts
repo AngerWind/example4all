@@ -19,7 +19,7 @@ class Animal {
 }
 
 const a = new Animal()
-// a.
+// a.js.
 
 // 子类
 class Dog extends Animal {

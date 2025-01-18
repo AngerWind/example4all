@@ -13,14 +13,15 @@
 
       /* 
             伪元素，表示页面中一些特殊的并不真实的存在的元素（特殊的位置）
-                伪元素使用 :: 开头
+                伪元素可以使用:开始(CSS2), 也可以使用::开始(CSS3)
+                所有::before和:before没有区别
 
                 ::first-letter 表示第一个字母
                 ::first-line 表示第一行
                 ::selection 表示选中的内容
-                ::before 元素的开始 
-                ::after 元素的最后
-                    - before 和 after 必须结合content属性来使用
+                ::before
+                ::after
+                    - before 和 after 必须结合content属性来使用, 他们用来给标签的内容的最开始和最后面 添加指定的内容
 
                 ::placeholder 表示表单元素中的占位文本。
         */

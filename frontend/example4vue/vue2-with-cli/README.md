@@ -920,7 +920,7 @@ module.exports = {
 	component:Detail,
 
 	//第一种写法：props值为对象，该对象中所有的key-value的组合最终都会通过props传给Detail组件
-	// props:{a:900}
+	// props:{a.js:900}
 
 	//第二种写法：props值为布尔值，布尔值为true，则把路由收到的所有params参数通过props传给Detail组件
 	// props:true

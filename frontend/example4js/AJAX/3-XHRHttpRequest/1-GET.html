@@ -24,35 +24,39 @@
         btn.onclick = function(){
             //1. 创建对象
             const xhr = new XMLHttpRequest();
-            //2. 初始化 设置请求方法和 url
+            //2. 初始化 设置请求方法和 url,   如果有queryString的话, 直接放到url中
             xhr.open('GET', 'http://127.0.0.1:8000/server?a=100&b=200&c=300');
+
+            // 设置请求头, 如果有多个header, 就多次调用
+            xhr.setRequestHeader("token", "aaa")
+
+
             //3. 发送
             xhr.send();
             //4. 事件绑定 处理服务端返回的结果
-            // on  when 当....时候
-            // readystate 是 xhr 对象中的属性, 表示状态 0 1 2 3 4
-            // change  改变
+            // readstate有如下几种状态:
+            //    0: 刚创建XMLHttpRequest,  1: 调用了open, 2: 调用了send, 3: 服务器返回了部分数据, 4: 服务器返回了全部数据
+            //    所以onreadystatechange一共会触发4次, 我们只处理返回了全部数据的那次change
             xhr.onreadystatechange = function(){
-                //判断 (服务端返回了所有的结果)
+                // 只处理服务器返回了全部结果
                 if(xhr.readyState === 4){
                     //判断响应状态码 200  404  403 401 500
                     // 2xx 成功
                     if(xhr.status >= 200 && xhr.status < 300){
-                        //处理结果  行 头 空行 体
-                        //响应 
-                        // console.log(xhr.status);//状态码
-                        // console.log(xhr.statusText);//状态字符串
-                        // console.log(xhr.getAllResponseHeaders());//所有响应头
-                        // console.log(xhr.response);//响应体
-                        //设置 result 的文本
+                        //处理结果
+                        console.log(xhr.status);// 状态码
+                        console.log(xhr.statusText);//状态字符串
+                        console.log(xhr.getAllResponseHeaders());// 返回的是一个字符串, 一个header就是一行
+                        console.log(xhr.response); //打印响应体
+
+                        // 设置 result 的文本
                         result.innerHTML = xhr.response;
                     }else{
-
+                        // 处理异常响应
+                        console.log(xhr.status)
                     }
                 }
             }
-
-
         }
     </script>
 </body>

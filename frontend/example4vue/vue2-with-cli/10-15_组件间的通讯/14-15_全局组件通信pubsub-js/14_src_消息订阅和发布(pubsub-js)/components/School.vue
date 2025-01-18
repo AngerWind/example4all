@@ -19,7 +19,7 @@ export default {
   mounted() {
     //订阅指定频道中的消息
     this.pubId = pubsub.subscribe('hello',  (name, msg) => {
-      //注意这里写剪头函数this才不会丢
+      // 注意这里写剪头函数this才不会丢
       console.log(`有人发布了hello消息，回调被执行,data: ${msg}`);
 
     });

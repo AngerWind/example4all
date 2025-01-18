@@ -24,14 +24,6 @@
         el: "#root",
         data: {
           persons: [
-            /**
-             * vue对于数组对象的更新检测是非常有限的
-             * 要通过方法才能实现, 比如push, pop, shift, unshift, splice, sort, reverse
-             * 如果通过索引直接修改数组中的某一项, vue是无法监测到的
-             *
-             * 并且对于data中后添加的属性, vue也是无法检测到的
-             * 要通过Vue.set( target, key, value )来给data添加属性, 才能实现监控
-             */
             { id: "001", name: "周冬雨", age: 20, sex: "女" },
             { id: "002", name: "马冬梅", age: 19, sex: "女" },
             { id: "003", name: "周杰伦", age: 21, sex: "男" },
@@ -40,11 +32,14 @@
         },
         methods: {
           updateM() {
-            this.persons[1].name = "马老师"; //奏效
-            this.persons[1].age = 50; //奏效
-            this.persons[1].sex = "男"; //奏效
-            // this.persons[1] = { id: "002", name: "马老师", age: 50, sex: "男" }; //这样修改vue是无法监测数据的
-            // this.persons.splice(1,1,{ id: '002', name: '马老师', age: 50, sex:'男' }); // 有效
+            // 在6部分数据代理中, 已经讲了, data中的属性, 后添加的属性需要通过Vue.set来添加才有代理, 直接添加没有代理
+            // 对于数组, 直接使用下标来修改元素没有代理, 只有这7个方法才有代理: push()、pop()、shift()、unshift()、splice()、sort()、reverse()
+            this.persons[1].name = "马老师"; // 有响应式, 因为经过了setter
+
+            this.persons[1] = { id: "002", name: "马冬梅", age: 19, sex: "女" } // 无效, 没有经过setter
+
+            // splice的作用是在指定的位置删除指定个数的元素, 然后再指定添加多个元素
+            this.persons.splice(1,1,{ id: '002', name: '马老师', age: 50, sex:'男' });  // 有响应式
           },
         },
       });

@@ -12,10 +12,10 @@ let obj: any = { x: 0 }
 
 // --
 
-// let a
-// a = 1
-// a = ''
-// a()
+// let a.js
+// a.js = 1
+// a.js = ''
+// a.js()
 
 // function add(num1, num2) {}
 // add(1, 2)

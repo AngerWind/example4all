@@ -30,16 +30,25 @@
             xhr.onreadystatechange = function(){
                 if(xhr.readyState === 4){
                     if(xhr.status >= 200 && xhr.status < 300){
-                        //
-                        // console.log(xhr.response);
-                        // result.innerHTML = xhr.response;
-                        // 1. 手动对数据转化
+
+                        /**
+                         * 默认情况下, 服务器返回JSON, 保存在 xhr.response 中,
+                         *
+                         *     - 默认情况下他是字符串, 需要我们手动转换为对象, 才能获取其中的字段
+                         *
+                         *     - 如果在发送请求的时候, 设置 xhr.responseType = 'json',
+                         *       那么浏览器会自动将返回的json转换为对象, 然后保存到xhr.response上
+                         */
+
+                        // 1. 不设置 xhr.responseType = 'json', xhr.response是字符串, 需要手动转换
                         // let data = JSON.parse(xhr.response);
                         // console.log(data);
                         // result.innerHTML = data.name;
-                        // 2. 自动转换
-                        console.log(xhr.response);
-                        result.innerHTML = xhr.response.name;
+
+
+                        // 2. 设置  xhr.responseType = 'json', xhr.response就是JSON转换后的对象
+                        console.log(xhr.response instanceof Object); // true
+                        result.innerHTML = xhr.response.name; // 可以直接调用xhr.response.xxx来获取json字段
                     }
                 }
             }

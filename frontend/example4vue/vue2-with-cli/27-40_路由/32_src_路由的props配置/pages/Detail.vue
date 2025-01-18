@@ -8,10 +8,8 @@
 <script>
 export default {
   name: "Detail",
-  props: ['id', 'title']
-  // mounted() {
-  //   console.log(this.$route);
-  // }
+  // 在这里接受路由的参数
+  props: ['id', 'title', "a", "b"]
 }
 </script>
 

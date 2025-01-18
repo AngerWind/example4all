@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.js"></script>
+</head>
+<body>
+<button id="btn">点我发送请求</button>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl, port, url} from "./server/config.js"
+
+
+    // 如果又有全局的默认配置, 实例的默认配置, 在调用的时候也传递了配置
+    // 那么后缀会覆盖前者
+    axios.defaults.headers.common["key1"] = "value1"
+
+    let instance = axios.create({
+        headers: {
+            "key1": "value2"
+        }
+    })
+
+    document.getElementById("btn").onclick = function () {
+        instance.get(requestUrl, {
+            headers: {
+                "key1": "value3"
+            }
+        }).then((response) => {
+            console.log(response.config.headers["key1"]) // value3
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+</script>
+</body>
+</html>

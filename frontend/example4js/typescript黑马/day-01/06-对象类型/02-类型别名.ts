@@ -1,4 +1,4 @@
-// let arr: (number | string)[] = [1, 3, 5, 'a', 'b']
+// let arr: (number | string)[] = [1, 3, 5, 'a.js', 'b']
 // let arr1: (number | string)[] = [1, 'x', 2, 'y']
 
 // 改造：

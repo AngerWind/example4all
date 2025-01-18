@@ -11,7 +11,7 @@ import Detail from "@/pages/Detail";
 export default new VueRouter({
    routes:[
        {
-           name: 'regard',
+           name: 'about',
            path:'/about',
            component: About
        },
@@ -31,7 +31,12 @@ export default new VueRouter({
                            name: 'particulars',
                            path: 'detail/:id/:title',
                            component: Detail,
-                           //props的第一种写法值为对象,该对象的所有key-value都会以props的形式传给detail组件(死数据)
+                           /**
+                            * 使用props的理由是, 在使用query参数和路径参数的时候, 一直要this.$route.params.xxx和this.$route.query.xxx
+                            * 特别的不方便, 所以你可以将路径参数和query参数, 转换为第三节中讲到的 props 参数, 然后就可以直接使用props参数了
+                            */
+
+                           //props的第一种写法值为对象,该对象的所有key-value都会以props的形式传给detail组件(死数据), 不会这样用
                            // props:{
                            //     a.js:1,
                            //     b:'hello'
@@ -42,20 +47,17 @@ export default new VueRouter({
                            // (注意如果是query参数不会奏效的)
                            // props: true
 
-                           //props的第三种写法,值为函数
-                           // 该函数可以接收到$router对象, 然后通过结构赋值提取出来
-                           props({ query: { id, title } }){
+                           // props的第三种写法,值为函数
+                           // 该函数可以接收到 $route对象, 然后你就可以将query参数和路径参数提取出来, 通过 props 参数的形式传入进去,
+                           // 然后就可以直接通过props参数来使用了
+                           props: function($route){
                                return {
-                                   id,
-                                   title
+                                   id: $route.query.id,
+                                   title: $route.query.title,
                                }
-                           },
-                           // props: function($router){
-                           //     return {
-                           //         id: $router.query.id,
-                           //         title: $router.query.title,
-                           //     }
-                           // }
+                           }
+
+                           // !!!!! 记得在Detail中定义要接受的props参数 !!!!
                        }
                    ],
                }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.js"></script>
+</head>
+<body>
+<button id="btn">点我发送请求</button>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl, port, url} from "./server/config.js"
+
+
+    /**
+     * 你可以通过 axios.create() 来创建一个 axios 实例
+     * 你可以传入一个 config 对象, 作为这个实例的默认配置
+     *
+     * 如果你有两个后端服务器, 那么可以为每一个后端服务器创建一个实例
+     */
+        // 创建的时候通过config设置默认的配置
+    const instance = axios.create({
+            baseURL: `http://localhost:${port}`,
+            timeout: 10000,
+            headers: {'X-Custom-Header': 'foobar'},
+            params: {
+                aaa: "bbb"
+            },
+            data: { // get的时候不会携带这个参数
+                "ddd": "eee"
+            }
+        });
+    // 创建后设置默认的配置
+    instance.defaults.headers.common['Authorization'] = "token1289123";
+    instance.defaults.baseURL = `http://localhost:${port}`; // 设置全局的baseURL
+    instance.defaults.method = "get" // 设置默认的method
+    instance.defaults.headers.common["key1"] = "value1" // 设置全局的header
+    instance.defaults.headers.common["key2"] = "value2"
+    instance.defaults.headers.post["post1"] = "value1" // 设置全局post的header
+    instance.defaults.headers.get["get1"] = "value1" // 添加全局get的header
+    instance.defaults.params = { // 添加全局的params
+        "id": "1289128991"
+    }
+
+    document.getElementById("btn").onclick = function () {
+        instance.get(url)
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+</script>
+</body>
+</html>

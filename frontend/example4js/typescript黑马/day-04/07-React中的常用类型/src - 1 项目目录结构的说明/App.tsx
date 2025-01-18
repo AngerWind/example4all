@@ -2,7 +2,7 @@ import React from 'react'
 import logo from './logo.svg'
 import './App.css'
 
-// let a: A = {
+// let a.js: A = {
 //   name: ''
 // }
 

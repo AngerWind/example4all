@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.js"></script>
+</head>
+<body>
+<button id="btn">点我发送请求</button>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl} from "./server/config.js"
+
+
+    // 配置的完整参数如下
+    let config = {
+        url: '/user',  // 发送请求的url
+        method: 'get', // 请求的方式, 不指定默认为 get
+        baseURL: 'https://some-domain.com/api/', // 基础路径, 如果指定了那么请求地址为 baseURL + url
+        headers: {'X-Requested-With': 'XMLHttpRequest'}, // headers
+        params: { // query string, 必须是一个对象
+            ID: 12345
+        },
+        // 请求体, 只能在put post delete patch的时候使用
+        // 只能是如下几种类型, 除非你设置了transformRequest
+        // - string, plain object, ArrayBuffer, ArrayBufferView, URLSearchParams
+        // - Browser only: FormData, File, Blob
+        // - Node only: Stream, Buffer, FormData (form-data package)
+        data: {firstName: 'Fred'},
+        timeout: 1000, // 默认为0, 超过时间会将请求中断
+
+        // 只在put, post, patch, delete的时候可用
+        // 类似于拦截器, 在请求发送之前用于修改request body和headers
+        // 是一个数组, 最后一个transformRequest只能返回一个string, Buffer, ArrayBuffer, FormData, Stream
+        transformRequest: [function (data, headers) {
+            return data;
+        }],
+        // 类似于拦截器, 在请求返回的时候, 修改响应体
+        // 是一个数组, 所以可以有多个拦截器
+        transformResponse: [function (data) {
+            return data;
+        }],
+        // 可以在这个方法中根据响应状态码来控制返回的promise的状态是success还是reject
+        // 如果返回true, null, undefined表示Promise会success, 负责为reject
+        validateStatus: function (status) {
+            return status >= 200 && status < 300; // default
+        },
+
+        // 回调这个函数来通过下载进度, 每秒调用3次
+        // browser & node.js
+        onDownloadProgress: function ({loaded, total, progress, bytes, estimated, rate, download = true}) {
+            // Do whatever you want with the Axios progress event
+        },
+        // 回调这个函数来通过上传进度, 每秒调用3次
+        // browser & node.js
+        onUploadProgress: function ({loaded, total, progress, bytes, estimated, rate, upload = true}) {
+            // Do whatever you want with the Axios progress event
+        },
+
+        // 用于取消请求, 查看取消请求部分
+        cancelToken: new CancelToken(function (cancel) {
+        }), // 用于取消请求, 查看取消请求部分
+        signal: new AbortController().signal, // 用于取消请求, 查看取消请求部分
+
+        // 限速 (only node.js)
+        maxRate: [
+            100 * 1024, // 100KB/s upload limit,
+            100 * 1024  // 100KB/s download limit
+        ],
+
+        maxContentLength: 2000, // 响应的最大长度, nodejs only
+        maxBodyLength: 2000, // 请求允许的最大长度, nodejs only
+
+        // 自定义序列化器, 将params对象序列化为string
+        paramsSerializer: {
+            // 调用这个函数来序列化一个 key/value 对, 如果有多对query string, 会调用多次
+            encode: (param) => {  // param是string
+                // 必须返回string
+            },
+            //Configuration for formatting array indexes in the params.
+            // Three available options:
+            // (1) indexes: null (leads to no brackets),
+            // (2) (default) indexes: false (leads to empty brackets),
+            // (3) indexes: true (leads to brackets with indexes).
+            indexes: false,
+            // 通过这个函数来一次性序列化所有的 query string
+            serialize: (params) => {
+                return qs.stringify(params, {arrayFormat: 'repeat'})
+            }
+        },
+
+
+        // 指示响应体的格式, 可选的值有
+        // nodejs: 'arraybuffer', 'document', 'json', 'text', 'stream'
+        // browser: 'blob'
+        responseType: 'json', // default
+
+        // 指示响应体的编码, nodejs only, 可选值有:
+        // 'ascii', 'ASCII', 'ansi', 'ANSI', 'binary', 'BINARY', 'base64', 'BASE64', 'base64url',
+        // 'BASE64URL', 'hex', 'HEX', 'latin1', 'LATIN1', 'ucs-2', 'UCS-2', 'ucs2', 'UCS2', 'utf-8', 'UTF-8',
+        // 'utf8', 'UTF8', 'utf16le', 'UTF16LE'
+        responseEncoding: 'utf8', // default
+
+        // 允许的最大的重定向次数, 如果设置为0, 那么就不允许重定向, 默认为21
+        // 在重定向之前, 会调用这个函数, 你可以在这里
+        // - 调整request参数
+        // - 检查响应的header
+        // - 抛出一个异常来取消重定向
+        maxRedirects: 21,
+        beforeRedirect: (options, {headers}) => {
+            if (options.hostname === "example.com") {
+                options.auth = "user:password";
+            }
+        },
+
+        // `withCredentials` indicates whether or not cross-site Access-Control requests
+        // should be made using credentials
+        withCredentials: false, // default
+
+        // `auth` indicates that HTTP Basic auth should be used, and supplies credentials.
+        // This will set an `Authorization` header, overwriting any existing
+        // `Authorization` custom headers you have set using `headers`.
+        // Please note that only HTTP Basic auth is configurable through this parameter.
+        // For Bearer tokens and such, use `Authorization` custom headers instead.
+        auth: {
+            username: 'janedoe',
+            password: 's00pers3cret'
+        },
+
+        // `socketPath` defines a UNIX Socket to be used in node.js.
+        // e.g. '/var/run/docker.sock' to send requests to the docker daemon.
+        // Only either `socketPath` or `proxy` can be specified.
+        // If both are specified, `socketPath` is used.
+        socketPath: null, // default
+        // `transport` determines the transport method that will be used to make the request. If defined, it will be used. Otherwise, if `maxRedirects` is 0, the default `http` or `https` library will be used, depending on the protocol specified in `protocol`. Otherwise, the `httpFollow` or `httpsFollow` library will be used, again depending on the protocol, which can handle redirects.
+        transport: undefined, // default
+        // `httpAgent` and `httpsAgent` define a custom agent to be used when performing http
+        // and https requests, respectively, in node.js. This allows options to be added like
+        // `keepAlive` that are not enabled by default.
+        httpAgent: new http.Agent({keepAlive: true}),
+        httpsAgent: new https.Agent({keepAlive: true}),
+        // `proxy` defines the hostname, port, and protocol of the proxy server.
+        // You can also define your proxy using the conventional `http_proxy` and
+        // `https_proxy` environment variables. If you are using environment variables
+        // for your proxy configuration, you can also define a `no_proxy` environment
+        // variable as a comma-separated list of domains that should not be proxied.
+        // Use `false` to disable proxies, ignoring environment variables.
+        // `auth` indicates that HTTP Basic auth should be used to connect to the proxy, and
+        // supplies credentials.
+        // This will set an `Proxy-Authorization` header, overwriting any existing
+        // `Proxy-Authorization` custom headers you have set using `headers`.
+        // If the proxy server uses HTTPS, then you must set the protocol to `https`.
+        proxy: {
+            protocol: 'https',
+            host: '127.0.0.1',
+            // hostname: '127.0.0.1' // Takes precedence over 'host' if both are defined
+            port: 9000,
+            auth: {
+                username: 'mikeymike',
+                password: 'rapunz3l'
+            }
+        },
+
+
+        // `decompress` indicates whether or not the response body should be decompressed
+        // automatically. If set to `true` will also remove the 'content-encoding' header
+        // from the responses objects of all decompressed responses
+        // - Node only (XHR cannot turn off decompression)
+        decompress: true, // default
+
+        // `insecureHTTPParser` boolean.
+        // Indicates where to use an insecure HTTP parser that accepts invalid HTTP headers.
+        // This may allow interoperability with non-conformant HTTP implementations.
+        // Using the insecure parser should be avoided.
+        // see options https://nodejs.org/dist/latest-v12.x/docs/api/http.html#http_http_request_url_options_callback
+        // see also https://nodejs.org/en/blog/vulnerability/february-2020-security-releases/#strict-http-header-parsing-none
+        insecureHTTPParser: undefined, // default
+
+        // transitional options for backward compatibility that may be removed in the newer versions
+        transitional: {
+            // silent JSON parsing mode
+            // `true`  - ignore JSON parsing errors and set response.data to null if parsing failed (old behaviour)
+            // `false` - throw SyntaxError if JSON parsing failed (Note: responseType must be set to 'json')
+            silentJSONParsing: true, // default value for the current Axios version
+
+            // try to parse the response string as JSON even if `responseType` is not 'json'
+            forcedJSONParsing: true,
+
+            // throw ETIMEDOUT error instead of generic ECONNABORTED on request timeouts
+            clarifyTimeoutError: false,
+        },
+
+        env: {
+            // The FormData class to be used to automatically serialize the payload into a FormData object
+            FormData: window?.FormData || global?.FormData
+        },
+
+        formSerializer: {
+            visitor: (value, key, path, helpers) => {
+            }, // custom visitor function to serialize form values
+            dots: boolean, // use dots instead of brackets format
+            metaTokens: boolean, // keep special endings like {} in parameter key
+            indexes: boolean, // array indexes format null - no brackets, false - empty brackets, true - brackets with indexes
+        },
+
+        // `adapter` allows custom handling of requests which makes testing easier.
+        // Return a promise and supply a valid response (see lib/adapters/README.md)
+        adapter: function (config) {
+            /* ... */
+        },
+        // Also, you can set the name of the built-in adapter, or provide an array with their names
+        // to choose the first available in the environment
+        adapter: 'xhr', // 'fetch' | 'http' | ['xhr', 'http', 'fetch']
+
+        // 设置了这个参数之后, 会在cookie中添加一个 "xsrfCookieName": "XSRF-TOKEN"
+        xsrfCookieName: 'XSRF-TOKEN', // default
+        // 设置了这个参数之后, 会在header中添加一个 "xsrfHeaderName": "X-XSRF-TOKEN"
+        xsrfHeaderName: 'X-XSRF-TOKEN', // default
+        // `undefined` (default) - set XSRF header only for the same origin requests
+        withXSRFToken: boolean | undefined | ((config: InternalAxiosRequestConfig) => boolean | undefined),
+
+
+    }
+</script>
+</body>
+</html>

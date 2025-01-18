@@ -1,0 +1,53 @@
+<html>
+<head>
+
+</head>
+<body>
+<script type="text/javascript">
+    /**
+     * 基本类型 / 值类型
+     *     - String: 任意字符串
+     *     - Number: 任意数字
+     *     - Boolean: true / false
+     *     - Undefined: undefined
+     *     - Null: null
+     *
+     * 对象类型 / 引用类型
+     *     Object: 任意对象, 包括Function, Array
+     */
+
+    /**
+     * 数据类型的判断
+     */
+    // 方式1, 使用===来判断null和undefined
+    var b
+    console.log(b === undefined)
+    b = null
+    console.log(b === null)
+
+    // 方式2, 使用typeof, 返回数据类型的字符串表示
+    var a
+    console.log(typeof a === "undefined") // 不推荐使用typeof来判断undefined
+    a = 3
+    console.log(typeof a === "number")
+    a = "hello world"
+    console.log(typeof a === "string")
+    a = true
+    console.log(typeof a === "boolean")
+    a = null
+    // null也是一个特例, 他妈的是object类型, 所以不要使用typeof来判断null, 而要使用===
+    console.log(typeof a === "object")
+    a = {}
+    console.log(typeof a === "object")
+    a = console.log
+    // 特例, 虽然function是object, 但是使用typeof返回"function"
+    console.log(typeof a === "function")
+
+
+    // 方式3, 使用instanceof来判断具体对象的类型
+    console.log(console.log instanceof Function)
+    console.log([] instanceof Array)
+
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.js"></script>
+</head>
+<body>
+<button id="btnGlobal">点我通过axios发送请求</button>
+<button id="btnInstance">点我通过instance发送请求</button>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl, port, url} from "./server/config.js"
+
+    const instance = axios.create();
+
+    /**
+     * 经过测试,
+     *     - 通过instance执行请求的时候, 只会触发instance身上的interceptor
+     *     - 通过axios发送请求的时候, 只会触发axios身上的interceptor
+     *     - 同一个对象上的拦截器, 后添加的在队列的前面
+     */
+
+    /**
+     * 请求拦截器
+     */
+    instance.interceptors.request.use(function (config) {
+        console.log("实例请求拦截器1 -- 成功")
+        return config;
+    }, function (error) {
+        console.log("实例请求拦截器1 -- 失败", error)
+        return Promise.reject(error);
+    });
+    axios.interceptors.request.use(function (config) {
+        console.log("全局请求拦截器1 -- 成功")
+        return config;
+    }, function (error) {
+        console.log("全局请求拦截器1 -- 失败", error)
+        return Promise.reject(error);
+    });
+
+    instance.interceptors.request.use(function (config) {
+        console.log("实例请求拦截器2 -- 成功")
+        return config;
+    }, function (error) {
+        console.log("实例请求拦截器2 -- 失败", error)
+        return Promise.reject(error);
+    });
+    axios.interceptors.request.use(function (config) {
+
+        console.log("全局请求拦截器2 -- 成功")
+        return config;
+    }, function (error) {
+        console.log("全局请求拦截器2 -- 失败", error)
+        return Promise.reject(error);
+    });
+
+    /**
+     * 响应拦截器
+     */
+    axios.interceptors.response.use(function (response) {
+        console.log("全局响应拦截器1 -- 成功")
+        return response;
+    }, function (error) {
+        console.log("全局响应拦截器1 -- 失败", error)
+        return Promise.reject(error);
+    });
+    axios.interceptors.response.use(function (response) {
+        console.log("全局响应拦截器2 -- 成功")
+        return response;
+    }, function (error) {
+        console.log("全局响应拦截器2 -- 失败", error)
+        return Promise.reject(error);
+    });
+    instance.interceptors.response.use(function (response) {
+        console.log("实例响应拦截器1 -- 成功")
+        return response;
+    }, function (error) {
+        console.log("实例响应拦截器1 -- 失败", error)
+        return Promise.reject(error);
+    });
+    instance.interceptors.response.use(function (response) {
+        console.log("实例响应拦截器2 -- 成功")
+        return response;
+    }, function (error) {
+        console.log("实例响应拦截器2 -- 失败", error)
+        return Promise.reject(error);
+    });
+
+
+
+    document.getElementById("btnInstance").onclick = function () {
+        instance({
+            method: 'PUT',
+            // url: requestUrl,
+            url: requestUrl
+        }).then(response => {
+            // 请求成功
+            console.log("自定义回调处理 -- 成功")
+        }).catch(err => {
+            // 请求失败
+            console.log("自定义回调处理 -- 失败")
+        })
+    }
+    document.getElementById("btnGlobal").onclick = function () {
+
+        axios({
+            method: 'PUT',
+            // url: requestUrl,
+            url: requestUrl
+        }).then(response => {
+            // 请求成功
+            console.log("自定义回调处理 -- 成功")
+        }).catch(err => {
+            // 请求失败
+            console.log("自定义回调处理 -- 失败")
+        })
+    }
+
+
+</script>
+</body>
+</html>

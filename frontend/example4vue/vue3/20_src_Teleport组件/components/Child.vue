@@ -11,12 +11,12 @@ export default {
   name: "Child",
   components: {Son},
   setup() {
-    // console.log('@@@@ Car ', inject('car'))
   }
 }
 </script>
 
 <style scoped>
+//不要删除这里的样式
    .child{
      background: skyblue;
      padding: 10px;

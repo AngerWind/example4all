@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script type="text/javascript">
+      /**
+       * 因为在调用属性的时候, 他会去 __proto__ 上面查找, 所以我们可以通过 __proto__ 来实现继承
+       */
+
+      /**
+       * 方式1: 原型继承
+       */
+      function Parent(name) {
+        this.name = name
+      }
+      Parent.prototype.getName = function () {
+        return this.name
+      }
+
+      // 缺点: 所有Child实例的 __proto__ 都会指向同一个Parent对象, this.name变成了static属性, 所有实例都可以访问
+      function Child1(){}
+      Child1.prototype = new Parent("zhangsan")
+      Child1.prototype.constructor = Child1 // 修正constructor
+      console.log(new Child1() instanceof Parent) // true
+
+      /**
+       * 方式2: 构造函数继承
+       */
+      // 优点: 解决了方式1中所有Child实例的 __proto__ 都指向同一个Parent对象的问题
+      // 缺陷: 子类无法继承父类的方法, 同时instanceof也无法使用
+      function Child2(name){
+        Parent.call(this, name)
+      }
+      console.log(new Child2("zhangsan").getName === undefined); // true
+      console.log(new Child2("lisi") instanceof Parent) // false
+
+      /**
+       * 方式3: 组合继承
+       *
+       * 优点: 避免了方式1和方式2的缺点
+       *
+       * 缺点: 子类实例以及子类原型对象上都会存在name属性
+       *      虽然根据原型链机制，并不会访问到原型对象上的同名属性，但总归是不美。
+       */
+      function Child3(name) {
+        Parent.call(this, name) // 继承Parent的属性
+      }
+
+      Child3.prototype = new Parent() // 继承Parent的方法
+      // 修正constructor
+      Child3.prototype.constructor = Child3
+
+      /**
+       * 方式4: 寄生组合继承
+       *
+       * 优点: 这种方式就解决了组合继承中的构造函数调用两次，构造函数引用类型共享，以及原型对象上存在多余属性的问题。
+       *      是推荐的最合理实现方式（排除ES6的class extends继承哈哈哈）。
+       *
+       * 缺点: 没啥特别的缺点
+       */
+      function inherit(child, parent) {
+        function F(){}
+        F.prototype = parent.prototype
+        var prototype = new F()
+        prototype.constructor = child
+        child.prototype = prototype
+      }
+      // 这个函数的作用可以理解为复制了一份父类的原型对象
+      // 如果直接将子类的原型对象赋值为父类原型对象
+      // 那么修改子类原型对象其实就相当于修改了父类的原型对象
+      function object(o) {
+        function F() {}
+        F.prototype = o;
+        return new F();
+      }
+      function Child4(name){
+        Parent.call(this, name)
+      }
+      inherit(Child4, Parent)
+
+      /**
+       * 方式5:  使用ES6中的 extends关键字
+       */
+      class Child5 extends Parent {
+        constructor() {
+          // 这里很重要，如果在this.topic = 'fe'后面调用，会导致this为undefined，具体原因可以详细了解ES6的class相关内容，这里不展开说明
+          super()
+          this.topic = 'fe'
+        }
+      }
+    </script>
+  </head>
+</html>

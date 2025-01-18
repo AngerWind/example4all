@@ -1,20 +1,23 @@
 <template>
   <div>
     <div class="row">
-      <Banner/>
-    </div>
-    <div class="row">
       <div class="col-xs-2 col-xs-offset-2">
         <div class="list-group">
-          <!--原始使用a标签跳转多个页面,多页面应用-->
-          <!--<a.js class="list-group-item active" href="./about.html">About</a.js>-->
-          <!--<a.js class="list-group-item" href="./home.html">Home</a.js>-->
 
-
-          <!--vue中借助router=link标签实现路由的切换-->
-          <!--<router-link class="list-group-item" active-class="active" to="/about">About</router-link>-->
-          <router-link class="list-group-item" active-class="active" :to="{name: 'regard'}">About</router-link>
-          <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
+          <!-- 通过路径传递参数 -->
+          <router-link class="list-group-item" active-class="active"
+                       :to="`/about/${aboutMessage.id}/${aboutMessage.title}`">About
+          </router-link>
+          <router-link class="list-group-item" active-class="active"
+                       :to="{
+                          name: 'home', // 这里只能指定name了, 不能指定path
+                          params: { // parmas里面传递的参数不能是对象和数组, 因为这里是路径参数
+                            id: homeMessage.id,
+                            title: homeMessage.title
+                          }
+                       }">
+            Home
+          </router-link>
         </div>
       </div>
       <div class="col-xs-6">
@@ -31,10 +34,21 @@
 </template>
 
 <script>
-import Banner from "./components/Banner";
+
 export default {
   name: "App",
-  components: {Banner},
+  data() {
+    return {
+      aboutMessage: {
+        id: "001",
+        title: "about page"
+      },
+      homeMessage: {
+        id: "002",
+        title: "home page"
+      },
+    }
+  }
 }
 </script>
 <style lang="css" scoped>

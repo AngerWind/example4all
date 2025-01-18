@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.js"></script>
+</head>
+<body>
+<button id="btn">点我发送请求</button>
+<button id="remove">点我移除拦截器</button>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl, port, url} from "./server/config.js"
+
+    // 全局的请求拦截器
+    let id1 = axios.interceptors.request.use(function (config) {
+        // 接受一个config对象, 这个config对象中包含了本次请求的所有信息
+        // 你可以做对这个config做任何事
+
+        console.log("请求拦截器1 -- 成功")
+        return config;
+    }, function (error) {
+        // Do something with request error
+        // 如果请求还没有发出去就失败了,
+        console.log("请求拦截器1 -- 失败", error)
+        return Promise.reject(error);
+    });
+    // 再添加一个请求拦截器, 后添加的顺序在前
+    let id2 = axios.interceptors.request.use(function (config) {
+
+        console.log("请求拦截器2 -- 成功")
+        return config;
+    }, function (error) {
+        console.log("请求拦截器2 -- 失败", error)
+        return Promise.reject(error);
+    });
+
+    // 全局的响应拦截器
+    let id3 = axios.interceptors.response.use(function (response) {
+        // 当响应状态码为 2xx 的时候会调用这个函数
+        console.log("响应拦截器1 -- 成功")
+        return response;
+    }, function (error) {
+        // 当响应状态码不是 2xx 的时候会调用这个函数
+        // 在这里你必须返回一个 成功或者失败的 Promise
+        // 之后会触发 结果的then/catch方法,  或者下一个拦截器的成功/失败回调
+
+        console.log("响应拦截器1 -- 失败", error)
+        return Promise.reject(error);
+    });
+    // 再添加一个响应拦截器, 后添加的顺序在前
+    let id4 = axios.interceptors.response.use(function (response) {
+        console.log("响应拦截器2 -- 成功")
+        return response;
+    }, function (error) {
+        console.log("响应拦截器2 -- 失败", error)
+        return Promise.reject(error);
+    });
+    document.getElementById("btn").onclick = function () {
+
+        axios({
+            method: 'PUT',
+            // url: requestUrl,
+            url: "localhost:17839/111"
+        }).then(response => {
+            // 请求成功
+            console.log("自定义回调处理 -- 成功")
+        }).catch(err => {
+            // 请求失败
+            console.log("自定义回调处理 -- 失败")
+        })
+    }
+    document.getElementById("remove").onclick = function () {
+
+        axios.interceptors.request.eject(id1)  // 移除请求拦截器
+        axios.interceptors.response.eject(id3) // 移除响应拦截器
+
+        axios.interceptors.request.clear(); // 移除所有的请求拦截器
+        axios.interceptors.response.clear(); // 移除所有的响应拦截器
+    }
+
+</script>
+</body>
+</html>

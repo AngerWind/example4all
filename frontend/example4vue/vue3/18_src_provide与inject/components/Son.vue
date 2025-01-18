@@ -10,7 +10,7 @@ import { inject } from "vue";
 export default {
   name: "Son",
   setup(){
-    let car = inject('car'); //获取祖先组件传递过来的数据
+    let car = inject('car'); // // 通过inject来接受祖先组件通过provide传递过来的key="car"的数据
     console.log(car); //响应式数据
     return {
       car

@@ -1,6 +1,6 @@
 // 演示类型兼容性：
 
-// let arr = ['a', 'b', 'c']
+// let arr = ['a.js', 'b', 'c']
 
 // arr.forEach(item => {})
 // arr.forEach((item, index) => {})

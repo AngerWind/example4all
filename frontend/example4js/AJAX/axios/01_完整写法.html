@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.js"></script>
+</head>
+<body>
+<button id="btn">点我发送请求</button>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl} from "./server/config.js"
+
+
+    // 可以直接调用axios来发送请求, 他接收一个对象作为请求的配置
+    // 并返回一个promise, 你可以在 then/catch 中处理 成功/失败 的回调
+
+    document.getElementById("btn").onclick = function () {
+        console.log("hhahah")
+        // get请求
+        axios({
+            method: 'GET',
+            url: requestUrl,
+            params: { // query string
+                id: "zhangsan",
+                age: 18
+            },
+            timeout: 5000,
+            headers: {
+                "aaa": "bbb"
+            }
+        }).then(response => {
+            console.log(response);
+        }).catch(err => {
+            console.log(err)
+        })
+
+        // post
+        axios({
+            method: 'POST',
+            url: requestUrl,
+            data: { // 请求体
+                title: "今天天气不错, 还挺风和日丽的",
+                author: "张三"
+            },
+            timeout: 5000,
+            headers: {
+                "aaa": "bbb"
+            }
+        }).then(response => {
+            console.log(response);
+        }).catch(err => {
+            console.log(err)
+        })
+
+        // put
+        axios({
+            method: 'PUT',
+            url: requestUrl,
+            data: {
+                title: "今天天气不错, 还挺风和日丽的",
+                author: "李四"
+            }
+        }).then(response => {
+            console.log(response);
+        }).catch(err => {
+            console.log(err)
+        })
+
+        // delete
+        axios({
+            method: 'delete',
+            url: requestUrl,
+        }).then(response => {
+            console.log(response);
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+</script>
+</body>
+</html>

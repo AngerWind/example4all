@@ -1,7 +1,7 @@
 type RecordObj = Record<'a' | 'b' | 'c', string[]>
 
 // type RecordObj = {
-//   a: string[]
+//   a.js: string[]
 //   b: string[]
 //   c: string[]
 // }

@@ -6,10 +6,9 @@
     <div class="row">
       <div class="col-xs-2 col-xs-offset-2">
         <div class="list-group">
-          <!--原始使用a标签跳转多个页面,多页面应用-->
-<!--          <a.js class="list-group-item active" href="./about.html">About</a.js>-->
-<!--          <a.js class="list-group-item" href="./home.html">Home</a.js>-->
+
           <!--vue中借助router=link标签实现路由的切换-->
+          <!-- 这里是一级路由 -->
           <router-link class="list-group-item" active-class="active" to="/about">About</router-link>
           <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
         </div>

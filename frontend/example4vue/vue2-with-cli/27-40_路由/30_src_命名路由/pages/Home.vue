@@ -19,14 +19,6 @@
 <script>
 export default {
   name: "Home",
-  // mounted() {
-  //   console.log('Home组件挂载完毕', this);
-  //   window.homeRoute = this.$route;
-  //   window.homeRouter = this.$router;
-  // },
-  // // beforeDestroy() {
-  // //   console.log('Home组件将要被销毁');
-  // // }
 }
 </script>
 

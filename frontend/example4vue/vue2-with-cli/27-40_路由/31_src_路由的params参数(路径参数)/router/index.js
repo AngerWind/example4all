@@ -11,30 +11,13 @@ import Detail from "@/pages/Detail";
 export default new VueRouter({
    routes:[
        {
-           name: 'regard',
-           path:'/about',
+           name: 'about',
+           path:'/about/:id/:title',
            component: About
        },
        {
-           path:'/home',
+           path:'/home/:id/:title', // 这里定义两个路径参数
            component: Home,
-           children:[
-               {
-                   path: 'news',
-                   component: News
-               },
-               {
-                   path: 'message',
-                   component: Message,
-                   children:[
-                       {
-                           name: 'particulars',
-                           path: 'detail/:id/:title', // 接收两个路径参数
-                           component: Detail
-                       }
-                   ],
-               }
-           ]
        }
    ]
 });

@@ -6,10 +6,12 @@
     <!-- 通过@xxx 来监听子组件上的自定义事件 -->
     <!--<Student @personalEvent="getStudentName" />-->
 
-    <!--第二种写法使用ref绑定事件, 然后通过ref来监听子组件的自定义时间  -->
+    <!--第二种写法使用ref绑定事件, 然后通过$refs来监听子组件的自定义时间  -->
     <Student ref="student" />
 
-    <!-- 如果要监听Student的自定义事件, 必须要使用.native修饰符, 表示元素的click事件, 否则vue会解析为自定义的click事件 -->
+    <!-- 如果要监听Student原生事件, 比如click, 必须要使用.native修饰符,
+         否则vue会以为你监听的是一个自定义的名为click的事件 -->
+    <!-- vue3已弃用 .native -->
     <Student @click.native="show"/>
 
   </div>
@@ -45,7 +47,7 @@ export default {
     }
   },
   mounted() {
-    // 通过ref拿到组件实例, 绑定事件, 第二种方式, 注意这里使用的是function的形式
+    // 通过$refs拿到组件实例, 绑定事件, 第二种方式, 注意这里使用的是function的形式
     // this.$refs.student.$on('personalEvent', this.getStudentName);
     // this.$refs.student.$once('personalEvent', this.getStudentName); // 监听一次
 

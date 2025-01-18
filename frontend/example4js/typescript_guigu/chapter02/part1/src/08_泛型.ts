@@ -1,6 +1,6 @@
 /*
-function fn(a: any): any{
-    return a;
+function fn(a.js: any): any{
+    return a.js;
 }*/
 
 /*

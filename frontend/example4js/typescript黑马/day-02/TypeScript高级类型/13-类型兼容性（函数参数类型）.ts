@@ -1,8 +1,8 @@
 // 2 参数类型： 相同位置的参数类型要相同或兼容
 
 // 原始类型：
-// type F1 = (a: number) => void
-// type F2 = (a: number) => void
+// type F1 = (a.js: number) => void
+// type F2 = (a.js: number) => void
 
 // let f1: F1
 // let f2: F2

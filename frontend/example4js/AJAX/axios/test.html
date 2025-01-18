@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axios Request with Shared Cancellation</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<button id="startRequests">开始请求</button>
+<button id="cancelRequests">取消请求</button>
+
+<script type="module">
+    import {requestUrl} from "./server/config.js";
+
+    let abortController = null;
+
+    // 处理开始请求的逻辑
+    document.getElementById('startRequests').addEventListener('click', () => {
+        abortController = new AbortController();
+        const signal = abortController.signal; // 获取 signal
+
+        // 发送第一个请求
+        axios.get(requestUrl, { signal })
+            .then(response => {
+                console.log('第一个请求成功:', response.data);
+            })
+            .catch(error => {
+                if (error.name === 'AbortError') {
+                    console.log('第一个请求被取消');
+                } else {
+                    console.error('第一个请求失败:', error);
+                }
+            });
+
+        // 发送第二个请求
+        axios.get(requestUrl, { signal })
+            .then(response => {
+                console.log('第二个请求成功:', response.data);
+            })
+            .catch(error => {
+                if (error.name === 'AbortError') {
+                    console.log('第二个请求被取消');
+                } else {
+                    console.error('第二个请求失败:', error);
+                }
+            });
+    });
+
+    // 处理取消请求的逻辑
+    document.getElementById('cancelRequests').addEventListener('click', () => {
+        if (abortController) {
+            abortController.abort(); // 取消两个请求
+        }
+    });
+</script>
+
+</body>
+</html>

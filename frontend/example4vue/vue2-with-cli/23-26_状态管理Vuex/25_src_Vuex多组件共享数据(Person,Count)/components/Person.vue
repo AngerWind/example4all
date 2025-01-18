@@ -32,13 +32,7 @@ export default {
      }
   },
   computed:{
-    // ...mapState(['personList']),
-    personList(){
-      return this.$store.state.personList;
-    },
-    sum(){
-      return this.$store.state.sum;
-    }
+    ...mapState(['personList', "sum"]),
   },
 }
 </script>

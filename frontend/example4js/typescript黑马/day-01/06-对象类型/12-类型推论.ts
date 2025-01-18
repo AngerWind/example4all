@@ -7,7 +7,7 @@ let age = 18
 let a: number
 
 a = 19
-// a = ''
+// a.js = ''
 
 // --
 

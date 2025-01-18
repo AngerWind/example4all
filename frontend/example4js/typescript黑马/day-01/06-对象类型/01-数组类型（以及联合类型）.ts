@@ -12,5 +12,5 @@ let b: boolean[] = [true, false]
 let arr: (number | string)[] = [1, 3, 5, 'a', 'b']
 
 // 不添加小括号，表示：arr1 既可以是 number 类型，又可以是 string[]
-// let arr1: number | string[] = ['a', 'b']
+// let arr1: number | string[] = ['a.js', 'b']
 // let arr1: number | string[] = 123

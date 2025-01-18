@@ -11,45 +11,54 @@
   </head>
   <body>
     <script type="text/javascript">
-      let number = 18;
+      /**
+       * 在默认情况下, 每个定义的属性都有如下属性:
+       *     1. value: 即属性的值
+       *     2. enumerable: 控制属性是否可以枚举, 即使用for in是否可以遍历这个属性, 同时Object.keys()是否会返回这个属性
+       *     3. writable: 属性是否可变的, 如果为false, 那么这个属性就不能通过obj.property = xxx来修改
+       *     4. configurable: 属性是否可以删除, 如果为false, 那么 delete obj.property 无效
+       *     5. get: 通过 obj.property 来调用属性的时候, 会调用get方法来返回属性的值
+       *     6. set: 通过 obj.property = xxx 来修改属性的时候, 会调用set方法
+       */
+
+      // 直接定义对象, 那么enumerable, writable, configuration三个属性都为true
       let person = {
-        name: "张三", // enumerable writable configurable为true
+        name: "张三",
         sex: "男",
       };
 
-      //此时age是不可以枚举的
-      //往person对象里添加属性
-      //关联
+      // defineProperty的作用是给一个对象添加属性, 默认情况下enumerable, writable, configuration都为false
       Object.defineProperty(person, "age", {
-        // value: 18,
-        // enumerable: true, //此时代表这个属性是可以枚举的, 默认为false
-        // writable: true, //代表可以重写该属性(控制属性是否被修改), 默认为false
-        // configurable:true, //控制属性是否可以被删除 默认为false
+          value: number,
+          enumerable: true,
+          writable: true,
+          configurable: true
+      })
 
-        //当读取person的age属性时get属性就会被调用，且返回值就是age的值
-        //invoke property proxy映射数据代理
-        get: function () {
-          //测试它的调用情况
-          console.log("@@@ GET AGE");
-          //此时age的值依赖number的值
-          return age;
-        },
-        //当修改person的age属性时set(setter)属性就会被调用，且会收到修改的具体值
-        set(v) {
-          //测试
-          console.log("CHANGE AGE");
-          number = v;
-        },
+      // 通过get, set 来实现双向绑定
+      let weight = 19
+      Object.defineProperty(person, "weight", {
+          // 通过 person.weight 来读取属性的属性, 会调用这个方法
+          get: function () {
+              //测试它的调用情况
+              console.log("@@@ GET AGE");
+              //此时age的值依赖number的值
+              return age;
+          },
+          // 通过 person.weight = xxx 来修改属性的时候, 会调用这个方法
+          set(v) {
+              //测试
+              console.log("CHANGE AGE");
+              weight = v;
+          },
       });
 
-      // console.log(Object.keys(person))
+      weight = 100
+      console.log(person.weight) // 修改weight的时候, person.weight也同步修改了
 
-      //遍历
-      // for(var p  in  person){
-      //     console.log('@@', person[p])
-      // }
+      person.weight = 999
+      console.log(weight); // 修改 person.weight 的时候, weight 也修改了
 
-      console.log(person);
     </script>
   </body>
 </html>

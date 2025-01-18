@@ -1,0 +1,15 @@
+es6-es11: https://www.bilibili.com/video/BV1uK411H7on/
+js基础: https://www.bilibili.com/video/BV1YW411T7GX/
+typescript尚硅谷: https://www.bilibili.com/video/BV1Xy4y1v7S2/
+typescript黑马: https://www.bilibili.com/video/BV14Z4y1u7pi/
+nodejs: https://www.bilibili.com/video/BV1bs411E7pD
+js高级: https://www.bilibili.com/video/BV14s411E7qf/
+    资料: https://pan.baidu.com/e/15XMjurfvLcigCiAvfWeuAA   验证码: yyds
+    js高级部分笔记已经写到JS基础中, 包括作用域, 事件循环, 原型, 变量提升等等
+ajax: https://www.bilibili.com/video/BV1WC4y1b78y/
+
+vue2+vue3: https://www.bilibili.com/video/BV1Zy4y1K7SH/
+   资料:  https://pan.baidu.com/s/1XqIRt-QKQjMo1sJAsd93nA?pwd=yyds#list/path=%2Fsharelink4035995002-565810062936917%2F%E5%B0%9A%E7%A1%85%E8%B0%B7%E5%89%8D%E7%AB%AF%E5%AD%A6%E7%A7%91%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B%2F2.%E5%B0%9A%E7%A1%85%E8%B0%B7%E5%89%8D%E7%AB%AF%E5%AD%A6%E7%A7%91--%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF%2FVue%E6%8A%80%E6%9C%AF%E5%85%A8%E5%AE%B6%E6%A1%B6%2F%E5%B0%9A%E7%A1%85%E8%B0%B7Vue2%E6%95%99%E7%A8%8B%EF%BC%88%E5%A4%A9%E7%A6%B9%E8%80%81%E5%B8%88%E4%B8%BB%E8%AE%B2%EF%BC%89&parentPath=%2Fsharelink4035995002-565810062936917
+
+vue3: https://www.bilibili.com/video/BV1Za4y1r7KE
+    资料:  https://pan.baidu.com/s/1XqIRt-QKQjMo1sJAsd93nA?pwd=yyds#list/path=%2Fsharelink4035995002-565810062936917%2F%E5%B0%9A%E7%A1%85%E8%B0%B7%E5%89%8D%E7%AB%AF%E5%AD%A6%E7%A7%91%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B%2F2.%E5%B0%9A%E7%A1%85%E8%B0%B7%E5%89%8D%E7%AB%AF%E5%AD%A6%E7%A7%91--%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF%2FVue%E6%8A%80%E6%9C%AF%E5%85%A8%E5%AE%B6%E6%A1%B6%2F%E5%B0%9A%E7%A1%85%E8%B0%B7Vue3%E6%95%99%E7%A8%8B%EF%BC%88%E5%A4%A9%E7%A6%B9%E8%80%81%E5%B8%88%E4%B8%BB%E8%AE%B2%EF%BC%89&parentPath=%2Fsharelink4035995002-565810062936917

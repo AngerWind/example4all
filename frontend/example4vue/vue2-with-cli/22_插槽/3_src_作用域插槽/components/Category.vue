@@ -1,8 +1,8 @@
 <template>
   <div class="category">
     <h3>{{ title }}</h3>
-    <!-- 插槽, 并且给插槽的使用者一些数据 -->
-    <slot :games="games">
+    <!-- 插槽, 可以给插槽的使用者传递数据 -->
+    <slot :games="games" name="zhangsan">
       我是默认值
     </slot>
   </div>

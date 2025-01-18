@@ -1,7 +1,8 @@
  <template>
   <div>
     <h1>当前求和为:{{ sum }}</h1>
-    <!--让其收集到的数据全是number类型的 number修饰符-->
+
+    <!--收集用户选择的数字, 转换为number-->
     <select v-model.number="n">
       <!--让所有的value全部绑定为数字-->
       <option value="1">1</option>

@@ -5,9 +5,9 @@ module.exports = {
   mode: "production", // 设置打包的模式，production表示生产模式, 会混淆文件,   development 开发模式, 尽量保留源码
 
   entry: "./src/index.js", // 用来指定打包时的主文件 默认 ./src/index.js
-  // entry: ["./src/a.js", "./src/b.js"], // 可以打包多个, 打包后的多个文件js合并成一个js文件
+  // entry: ["./src/a.js.js", "./src/b.js"], // 可以打包多个, 打包后的多个文件js合并成一个js文件
   // entry: {                             // 可以是对象, 每个文件打包成一个单独的文件
-  //     a1: "./src/a.js", // 打包a.js生成a1.js
+  //     a1: "./src/a.js.js", // 打包a.js生成a1.js
   //     b1: "./src/b.js" // 打包b.js生成b1.js
   // },
 

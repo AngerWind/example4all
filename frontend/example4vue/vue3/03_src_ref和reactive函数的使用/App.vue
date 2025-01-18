@@ -31,7 +31,14 @@ export default {
       type: 'frontend developer',
       salary: '30'
     });
+
+    // 对于数组, 在vue2中直接通过下标修改是没有响应式的, 但是在vue3中是有的
+    // 因为vue3中响应式原理是ES6中的Proxy, 而不是Object.defineProperty
     let hobby = reactive(["抽样", "喝酒"])
+
+    // 在vue2中, 后添加的属性是没有响应式的, 必须通过Vue.set(obj, "key", "value")来添加才有响应式
+    // 在vue3中, 后添加的属性有响应式
+    job.gender = "男"
 
     function changeInfo(){
       name.value = '李四'; // ref 定义的需要通过 .value 来调用
@@ -39,6 +46,7 @@ export default {
       job.value.type = 'UI developer';
       job2.type = "Java Developer" // reactive 定义的不需要通过 .value 来调用
 
+      hobby[1] = "劈叉" // 有响应式, 在vue2中没有
     }
 
 
@@ -48,6 +56,7 @@ export default {
       age,
       job,
       job2,
+      hobby,
       changeInfo
     }
   }

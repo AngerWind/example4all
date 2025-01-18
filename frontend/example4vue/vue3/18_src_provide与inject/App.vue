@@ -16,7 +16,7 @@ export default {
       name: 'benz',
       price: 40
     });
-    provide('car', car); //给自己的后代组件递数据 后代都可以
+    provide('car', car); // 给自己的后代组件传递一个key="car", value=car的数据
     return {
       ...toRefs(car)
     }

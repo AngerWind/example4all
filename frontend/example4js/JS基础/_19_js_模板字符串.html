@@ -30,7 +30,7 @@
         // 定义一个标签函数
         function myTag(strings, personExp, ageExp) {
             let str0 = strings[0]; // "That "
-            let str1 = strings[1]; // " is a "
+            let str1 = strings[1]; // " is a.js "
             let str2 = strings[2]; // "."
 
             let ageStr;
@@ -41,9 +41,9 @@
             }
             return `${str0}${personExp}${str1}${ageStr}${str2}`;
         }
-        // 下面这一行会调用myTag方法, 并将That, is a , ., 作为数组传递给strings, 将person的值传递给personExp, 将age的值传递给ageExp
+        // 下面这一行会调用myTag方法, 并将That, is a.js , ., 作为数组传递给strings, 将person的值传递给personExp, 将age的值传递给ageExp
         var output = myTag`That ${person} is a ${age}.`;
-        console.log(output); // That Mike is a youngster.  
+        console.log(output); // That Mike is a.js youngster.
 
 
 

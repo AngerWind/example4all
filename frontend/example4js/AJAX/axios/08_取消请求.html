@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.js"></script>
+</head>
+<body>
+<div>
+    <button id="send1">点我通过方式1发送请求</button>
+    <button id="cancel1">点我取消方式1的请求</button>
+</div>
+<div>
+    <button id="send2">点我通过方式2发送请求</button>
+    <button id="cancel2">点我取消方式2的请求</button>
+</div>
+<div>
+    <button id="send3">点我通过方式3发送请求</button>
+    <button id="cancel3">点我取消方式3的请求</button>
+</div>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl, port, url} from "./server/config.js"
+
+    /**
+     * 方式1
+     */
+        // 创建一个用于取消的控制器
+    const controller = new AbortController();
+    const signal = controller.signal;
+    document.getElementById("send1").onclick = function () {
+        axios.get(requestUrl, {
+            signal // 通过signal传入控制器
+        }).then(function (response) {
+            //...
+        }).catch(err => {
+            if (axios.isCancel(err)) {
+                console.log("get请求1被取消了", err.message);
+            } else {
+                console.log("其他异常", err)
+            }
+        })
+        axios.post(requestUrl, {}, { // !!!!!!这里还要传入一个data
+            signal // 通过signal传入控制器
+        }).then(function (response) {
+            //...
+        }).catch(err => {
+            if (axios.isCancel(err)) {
+                console.log("post请求1被取消了", err.message);
+            } else {
+                console.log("其他异常", err)
+            }
+        })
+    }
+    document.getElementById('cancel1').addEventListener('click', () => {
+        controller.abort(); // 取消两个请求, 无法传递取消理由
+    });
+
+
+    /**
+     * 方式2
+     */
+    const source = axios.CancelToken.source() // 创建一个取消令牌
+    document.getElementById("send2").onclick = function () {
+        axios.get(requestUrl, {
+            cancelToken: source.token // 传递取消令牌
+        }).then(function (response) {
+            //...
+        }).catch(err => {
+            if (axios.isCancel(err)) {
+                console.log("get请求2被取消了", err.message);
+            } else {
+                console.log("其他异常", err)
+            }
+        })
+        axios.post(requestUrl, {}, { // !!!!!!这里还要传入一个data
+            cancelToken: source.token // 传递取消令牌
+        }).then(function (response) {
+            //...
+        }).catch(err => {
+            if (axios.isCancel(err)) {
+                console.log("post请求2被取消了", err.message);
+            } else {
+                console.log("其他异常", err)
+            }
+        })
+    }
+    document.getElementById("cancel2").onclick = function () {
+        source.cancel('cancel2被点击了'); // 通过取消令牌同时取消两个请求, 可以传递一个可选any作为取消理由
+    }
+
+
+    /**
+     * 方式3
+     */
+    let cancel1
+    let cancel2
+    document.getElementById("send3").onclick = function () {
+        axios.get(requestUrl, {
+            cancelToken: new axios.CancelToken(function executor(c) {
+                // 这个函数会被传入一个取消函数
+                // 我们需要保存这个取消函数, 并在必要的时候调用, 来取消请求
+                cancel1 = c;
+            })
+        }).then(function (response) {
+            //...
+        }).catch(err => {
+            if (axios.isCancel(err)) {
+                console.log("get请求3被取消了", err.message);
+                cancel1 = undefined // 重置变量
+            } else {
+                console.log("其他异常", err)
+            }
+        })
+        axios.post(requestUrl, {}, { // !!!!!!这里还要传入一个data
+            cancelToken: new axios.CancelToken(function executor(c) {
+                // 这个函数会被传入一个取消函数
+                // 我们需要保存这个取消函数, 并在必要的时候调用, 来取消请求
+                cancel2 = c;
+            })
+        }).then(function (response) {
+            //...
+        }).catch(err => {
+            if (axios.isCancel(err)) {
+                console.log("post请求3被取消了", err.message);
+                cancel2 = undefined // 重置变量
+            } else {
+                console.log("其他异常", err)
+            }
+        })
+    }
+    document.getElementById("cancel3").onclick = function () {
+        // 调用两个取消函数, 来取消请求
+        cancel1()
+        cancel2()
+    }
+
+</script>
+</body>
+</html>

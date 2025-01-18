@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.min.js"></script>
+</head>
+<body>
+<button id="btn">点我下载</button>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl, port, url, upload, download} from "./server/config.js"
+
+    document.getElementById("btn").onclick = function () {
+        // 调用函数，下载文件
+        downloadFile(download, 'aaa.js');
+    }
+
+    function downloadFile(url, fileName) {
+        axios.get(`${download}/${fileName}`, {
+            responseType: 'blob' // 设置响应类型为 blob（二进制数据）
+        })
+            .then(response => {
+                // 创建一个 URL 对象，用于生成可下载的文件链接
+                const blob = response.data;
+                const link = document.createElement('a'); // 创建一个临时的 <a> 标签
+                link.href = URL.createObjectURL(blob); // 创建一个下载链接
+                link.download = fileName || 'download'; // 设置下载文件的名称
+                link.click(); // 模拟点击，开始下载
+                URL.revokeObjectURL(link.href); // 清除创建的 URL 对象
+            })
+            .catch(error => {
+                console.error('下载文件失败:', error);
+            });
+    }
+
+</script>
+</body>
+</html>

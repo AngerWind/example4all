@@ -23,25 +23,54 @@
 <script type="text/javascript">
     Vue.config.productionTip = false;
 
-    let data = {
-        name: "panyue"
-    };
-
     const vm = new Vue({
         el: "#root",
-        data() {
-            return data;
+        data: {
+            name: "panyue"
         },
     });
 
-    console.log(data === vm._data) // true
-    console.log(data == vm._data) // true
+    function Observer(obj) {
+        let keys = Object.keys(obj)
+        for (let key of keys) {
+            // 如果value是一个数组, 对属性的每一个元素都创建一个Observer
+            if (obj[key] instanceof Array) {
+                for (let index in obj[key]) {
+                    obj[key][index] = new Observer(obj[key][index])
+                }
+            }
 
-    vm.name = "zhangsan"
-    console.log(data.name) // zhangsan
+            // 如果value是一个对象, 递归监听
+            if (obj[key] instanceof Object) {
+                this[key] = new Observer(obj[key])
+            }
 
-    data.name = "lisi"
-    console.log(vm.name) // lisi
+            // 否则
+            Object.defineProperty(this, key, {
+                get() {
+                    return obj[key]
+                },
+                set(value) {
+                    obj[key] = value
+
+                    // 重新渲染页面
+                }
+            })
+        }
+    }
+
+    // new Vue()的时候, Vue会拿到data返回的对象, 然后创建一个Observer
+    // 这个Observer会递归监听所有对象的属性的变化, 以及数组的变化
+    let observer = new Observer(data())
+
+    // 然后赋值给vm._data
+    vm._data = observer
+    data = observer
+
+    // 然后将data对象上的所有的属性都赋值一份到vm身上, 并且每个属性都实现getter/setter
+    // 在getter/setter中实现data属性的修改
+    // 这样就可以方便通过this来修改属性了
+
 </script>
 </body>
 </html>

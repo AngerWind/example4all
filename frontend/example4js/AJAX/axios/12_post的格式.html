@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.7.2/axios.min.js"></script>
+</head>
+<body>
+<button id="btnGlobal">点我通过axios发送请求</button>
+<button id="btnInstance">点我通过instance发送请求</button>
+
+<script type="module">
+    // import axios from "axios" // 导入axios, 在浏览器中不需要这一行, 在nodejs中需要
+    import {requestUrl, port, url} from "./server/config.js"
+
+    // 在发送post的请求的时候, 默认情况下axios会将对象转换为json字符串放在请求体中, 并设置Content-Type:application/json; charset=utf-8
+    axios.post(requestUrl, {
+        name: "zhangsan",
+        age: 18
+    }).then(response => {
+        console.log(response.config.headers["Content-Type"]) // application/json
+        console.log(response.config.data) // {"name":"zhangsan","age":18}
+    })
+
+    // 当然你也可以将对象转换为application/x-www-form-urlencoded格式的字符串,
+    // 并自动添加header: content-type:application/x-www-form-urlencoded
+    const params = new URLSearchParams({foo: 'bar'}); // 创建一个urlencoded格式的参数
+    params.append('extraparam', 'value'); // 再添加一个参数
+    axios.post(requestUrl, params)
+        .then(response => {
+            console.log(response.config.headers["Content-Type"]) // application/x-www-form-urlencoded;charset=utf-8
+            console.log(response.config.data) // foo=bar&extraparam=value
+        })
+
+    // 或者你也可以使用multipart/form-data格式来发送数据, 使用这种格式相较于json的是, 他可以用来进行文件上传
+    // axios提供了postFrom, putForm, patchForm三个方法来发送multipart/form-data格式的数据
+    axios.postForm(requestUrl, {
+        "aaa": "bbb",
+        "111": "222"
+    }).then(response => {
+        console.log(response.config.headers["Content-Type"]) // multipart/form-data
+        console.log(response.config.data)
+    })
+
+
+</script>
+</body>
+</html>

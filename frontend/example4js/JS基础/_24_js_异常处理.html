@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+
+        /**
+         * 在js中, 可以使用try-catch-finally
+         * throw后面可以跟任何值
+         */
+        try {
+            throw "hello world"
+        } catch (e) { // catch的时候, 不需要指定类型, 也没有类型
+            console.log(e)
+        }
+
+        /**
+         * 虽然throw后面可以跟任何值, 但是还是推荐后面抛出异常
+         *
+         * js中自带了如下几种异常类型
+         *     - Error（通用错误）
+         *     - TypeError（类型错误）
+         *     - ReferenceError（引用错误）
+         *     - SyntaxError（语法错误）
+         *     - RangeError（范围错误）
+         *     - EvalError（与 eval 相关的错误）
+         */
+        try {
+            throw Error("message"); // 使用函数创建异常
+            throw new Error("message"); // 使用构造函数创建异常
+        } catch (e){
+            console.log(e)
+        }
+
+        /**
+         * 你还可以自定义异常类型
+         */
+        class MyException extends Error {
+            constructor(message) {
+                super();
+                this.message = message;
+            }
+        }
+
+    </script>
+</head>
+
+</html>

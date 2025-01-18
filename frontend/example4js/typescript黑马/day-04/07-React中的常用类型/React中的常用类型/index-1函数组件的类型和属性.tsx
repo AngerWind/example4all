@@ -15,7 +15,7 @@ type Props = { name: string; age?: number }
 //   </div>
 // )
 
-// 说明：完全利用 JS（TS） 自身的能力来编写组件
+// 说明：完全利用 JS高级（TS） 自身的能力来编写组件
 const Hello = ({ name, age }: Props) => (
   <div>
     您好，我叫：{name}，我 {age} 岁了

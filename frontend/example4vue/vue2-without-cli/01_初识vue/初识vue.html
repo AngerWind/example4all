@@ -1,52 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>第一次使用vue</title>
-    <!--vue js生产版本development版本-->
-    <script src="../js/vue.js"></script>
-  </head>
-  <body>
-    <div id="root">
-      <!--插值语法-->
-      <!--vue模版-->
-      <h1>hello, {{ name }}</h1>
-    </div>
-    <div class="test">
-      <!--注意双花括号中可以写js表达式-->
-      <h1>{{name.toUpperCase()}},{{address}} {{1+1}} {{Date.now()}}</h1>
-    </div>
-    <script type="text/javascript">
-      // hello小案例
-      Vue.config.productionTip = false; // 使用开发版本不提示默认不提示
-      //创建vue事例对象
-      /**
-       * 注意:一个vue实例不可能去接管多个容器，如果有多个容器的情况，vue事例永远只接管第一个容器
-       * 不能多个vue实例同时来接管同一个容器，如果有多个的情况下永远是第一个vue实例来接管该容器
-       * vue实例与容器直接的对应关系是一对一的
-       */
-      new Vue({
-        //配置对象
-        el: "#root", // document.getElementById('root') //element el指定当前vue实例为哪一个容器服务，值通常为css选择器格式
-        data: {
-          //data用来存储数据，以后会用函数来表示
-          name: "panyue",
-          age: 21,
-        },
-      });
 
-      new Vue({
-        el: ".test",
-        data: {
-          name: "test",
-          address: "Tokyo",
-        },
-      });
-    </script>
-  </body>
+    <!-- 引入生成版本的vue -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16"></script> -->
+
+    <!-- 引入开发版本的vue -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script> -->
+
+    <!-- 你也可以将开发和生产版本的vue.js下载下来, 放到本地, 然后导入 -->
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="root">
+
+</div>
+
+<script type="text/javascript">
+    // 使用开发版本的话, console会打印一个warning, 要你确保这是开发环境
+    // 这里关闭这个警告
+    Vue.config.productionTip = false;
+
+
+    //创建vue实例对象, 并绑定到对应的容器上
+    // 那么在id为root的div中, 就可以使用vue的语法了, vue会进行解析
+    new Vue({
+        el: "#root"
+    });
+
+</script>
+</body>
 </html>

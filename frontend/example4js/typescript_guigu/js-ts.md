@@ -298,14 +298,14 @@ ts-node可以直接运行ts代码(也是编译成js然后给node执行)
     - 第一种
 
       - ```typescript
-        let someValue: unknown = "this is a string";
+        let someValue: unknown = "this is a.js string";
         let strLength: number = (someValue as string).length;
         ```
 
     - 第二种
 
       - ```typescript
-        let someValue: unknown = "this is a string";
+        let someValue: unknown = "this is a.js string";
         let strLength: number = (<string>someValue).length;
         ```
 
@@ -679,7 +679,7 @@ function add(n1:number = 1, n2:number = 2) {}
                minimize: false // 关闭代码压缩，可选
            },
        
-           entry: "./src/index.ts",
+           entry: "./src/index.js",
            
            devtool: "inline-source-map",
            
@@ -857,7 +857,7 @@ moduleResolution：指定ts在处理import的时候按照 什么逻辑去查找�
     `/root/src/moduleB.tsx`
     `/root/src/moduleB.d.ts`
     `/root/src/moduleB/package.json (如果指定了 types 属性)`
-    `/root/src/moduleB/index.ts`
+    `/root/src/moduleB/index.js`
     ``/root/src/moduleB/index.tsx`
     `/root/src/moduleB/index.d.ts`
 
@@ -873,7 +873,7 @@ moduleResolution：指定ts在处理import的时候按照 什么逻辑去查找�
 
   `/root/src/node_modules/moduleB/package.json (如果指定了 types 属性)`
 
-  `/root/src/node_modules/moduleB/index.ts`
+  `/root/src/node_modules/moduleB/index.js`
 
   `/root/src/node_modules/moduleB/index.tsx`
 
@@ -887,7 +887,7 @@ moduleResolution：指定ts在处理import的时候按照 什么逻辑去查找�
 
   `/root/node_modules/moduleB/package.json (如果指定了 types 属性)`
 
-  `/root/node_modules/moduleB/index.ts`
+  `/root/node_modules/moduleB/index.js`
 
   `/root/node_modules/moduleB/index.tsx`
 
@@ -901,7 +901,7 @@ moduleResolution：指定ts在处理import的时候按照 什么逻辑去查找�
 
   `/root/node_modules/moduleB/package.json (如果指定了 types 属性)`
 
-  `/root/node_modules/moduleB/index.ts`
+  `/root/node_modules/moduleB/index.js`
 
   `/root/node_modules/moduleB/index.tsx`
 
@@ -915,7 +915,7 @@ moduleResolution：指定ts在处理import的时候按照 什么逻辑去查找�
    当然也可以将ts加入到package.json的scripts中
    ```json
    "scripts": {
-      "start": "ts-node ./src/index.ts"
+      "start": "ts-node ./src/index.js"
     }
    ```
 3. `npm install -D @types/node`
@@ -1731,7 +1731,7 @@ https://juejin.cn/post/6907428111332147208
         let b = 2;
         module.export.a = a // 使用module.export
         export.b = b // 使用export
-        // export = {a, b} // 千万不能使用这种方式, 因为export只是module.export的一个引用, 修改export引用并不能修改module.export
+        // export = {a.js, b} // 千万不能使用这种方式, 因为export只是module.export的一个引用, 修改export引用并不能修改module.export
 
         module.export = {a, b} // 这种属于一次性导出, 修改了module.export将会导致上面的导出无效
    ~~~
@@ -1778,13 +1778,13 @@ https://juejin.cn/post/6994224541312483336
 3. es6中使用import导入的变量是只读的, 不能进行修改, 可以理解为被const修饰了
    并且import导入的变量无论是否是基础变量, 他都将是引用, 否则下面的num输出将不会是2
    ~~~js
-   // a.js
+   // a.js.js
    export let num = 1
    export const addNumber = ()=>{
     num++
    }
    // main.js
-   import {  num , addNumber } from './a'
+   import {  num , addNumber } from './a.js'
    // num = 2 // 该语句报错, num is read-only, 可以理解 为被const修饰了
    // 但是可以通过函数修改
    addNumber() 
@@ -2015,7 +2015,7 @@ declare module "a" {
 ~~~
 test.ts
 ~~~ts
-const a = require("./a"); // 引用不需要后缀
+const a = require("./a.js"); // 引用不需要后缀
 console.log(a.xa);
 a.sayHi("hello");
 ~~~

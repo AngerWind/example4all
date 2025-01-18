@@ -109,7 +109,7 @@
             var a = o(e.insert || "head");
             if (!a)
               throw new Error(
-                "Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid."
+                "Couldn't find a.js style target. This probably means that the value for the 'insert' parameter is invalid."
               );
             a.appendChild(n);
           }
@@ -262,7 +262,7 @@
         function e() {
           !(function (e, n) {
             if (!(e instanceof n))
-              throw new TypeError("Cannot call a class as a function");
+              throw new TypeError("Cannot call a.js class as a.js function");
           })(this, e),
             (this.element = document.getElementById("snake")),
             (this.head = document.querySelector("#snake > div")),
@@ -350,7 +350,7 @@
         function e() {
           !(function (e, n) {
             if (!(e instanceof n))
-              throw new TypeError("Cannot call a class as a function");
+              throw new TypeError("Cannot call a.js class as a.js function");
           })(this, e),
             (this.element = document.getElementById("food"));
         }
@@ -385,7 +385,7 @@
       })();
       function c(e, n) {
         if (!(e instanceof n))
-          throw new TypeError("Cannot call a class as a function");
+          throw new TypeError("Cannot call a.js class as a.js function");
       }
       function l(e, n) {
         for (var t = 0; t < n.length; t++) {
@@ -449,7 +449,7 @@
         function e() {
           !(function (e, n) {
             if (!(e instanceof n))
-              throw new TypeError("Cannot call a class as a function");
+              throw new TypeError("Cannot call a.js class as a.js function");
           })(this, e),
             (this.direction = ""),
             (this.isLive = !0),

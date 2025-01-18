@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义指令</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+
+
+<div id="root">
+    <h2>当前的n值是：<span v-text="n"></span></h2>
+    <h2>放大10倍后的n值是: <span v-big="n"></span></h2>
+    <button @click="n++">点我n+1</button>
+    <p>测试指令函数所调用的时机: {{ name }} </p>
+    <hr/>
+    <input type="text" v-fbind:value="n"/>
+</div>
+<script type="text/javascript">
+
+    // 此时自定义fbind指令使全局指令了，其他vue实例所管理的容器也可以使用
+    Vue.directive('fbind', {
+        bind(el, binding){
+            // console.log('bind')
+            el.value = binding.value;
+        },
+        //指令被插入页面时
+        inserted(el, binding){
+            // console.log('inserted')
+            el.focus();
+        },
+        //指令所在模版被重新解析时
+        update(el, binding){
+            // console.log('update');
+            el.value = binding.value;
+        }
+    })
+
+    Vue.directive("big-number", function(element,binding){
+        element.innerText = binding.value * 10;
+    })
+
+    const vm = new Vue({
+        el:"#root",
+        data: {
+            name: '上海',
+            n:1
+        },
+    });
+</script>
+</body>
+</html>

@@ -9,66 +9,83 @@
 </head>
 
 <body>
-    <!-- 
-        表单：
-            - 在现实生活中表单用于提交数据
-            - 在网页中也可以使用表单，网页中的表单用于将本地的数据提交给远程的服务器
-            - 使用form标签来创建一个表单
+<!--
+    表单：
+        - 在现实生活中表单用于提交数据
+        - 在网页中也可以使用表单，网页中的表单用于将本地的数据提交给远程的服务器
+        - 使用form标签来创建一个表单
 
+ -->
+<!--
+    form的属性
+        action 表单要提交的服务器的地址
+        method 提交的形式
+        enctype 数据的编码格式
+ -->
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <!-- 文本框 -->
+    <!-- 注意：数据要提交到服务器中，必须要为元素指定一个name属性值 -->
+    文本框 <input type="text" name="username">
+    <br><br>
+
+
+    <!-- 密码框 -->
+    密码框 <input type="password" name="password">
+    <br><br>
+
+    <!--
+         单选按钮
+            - 像这种选择框，必须要指定一个value属性，value属性最终会作为用户的填写的值传递给服务器
+            - checked 可以将单选按钮设置为默认选中
+       -->
+    单选按钮 <input type="radio" name="hello" value="a">
+    <input type="radio" name="hello" value="b" checked>
+    <br><br>
+
+    <!--
+        多选框
      -->
-    <!-- 
-        form的属性
-            action 表单要提交的服务器的地址
-     -->
-    <form action="target.html">
-        <!--
-           文本框
-           注意：数据要提交到服务器中，必须要为元素指定一个name属性值
-        -->
-        文本框 <input type="text" name="username">
-        <br><br>
-        <!-- 
-            密码框
-         -->
-        密码框 <input type="password" name="password">
-        <br><br>
+    多选框 <input type="checkbox" name="test" value="1">
+    <input type="checkbox" name="test" value="2">
+    <input type="checkbox" name="test" value="3" checked>
+    <br><br>
 
-        <!--
-             单选按钮
-                - 像这种选择框，必须要指定一个value属性，value属性最终会作为用户的填写的值传递给服务器
-                - checked 可以将单选按钮设置为默认选中
-           -->
-        单选按钮 <input type="radio" name="hello" value="a">
-        <input type="radio" name="hello" value="b" checked>
-        <br><br>
+    <!-- 下拉列表 -->
+    <select name="haha">
+        <option value="i">选项一</option>
+        <!-- selected表示默认选中 -->
+        <option selected value="ii">选项二</option>
+        <option value="iii">选项三</option>
+    </select>
+    <br><br>
 
-        <!-- 
-            多选框
-         -->
-        多选框 <input type="checkbox" name="test" value="1">
-        <input type="checkbox" name="test" value="2">
-        <input type="checkbox" name="test" value="3" checked>
+    <!-- 上传文件, multiple表示可以选择多个文件, 默认只能选择一个文件 -->
+    <input type="file" accept="" multiple>
+    <br><br>
 
-        <br><br>
+    <!-- 用于输入电子邮件地址，浏览器会自动验证输入内容是否符合有效的电子邮件格式。 -->
+    <input type="email">
+    <br><br>
 
-        <!-- 下拉列表 -->
-        <select name="haha">
-            <option value="i">选项一</option>
-            <option selected value="ii">选项二</option>
-            <option value="iii">选项三</option>
-        </select>
+    <!-- 提交按钮 -->
+    <input type="submit" value="注册">
+
+    <!-- image与submit类似, 只不过是使用图片来作为提交按钮, 还会附带两个额外的参数：x 和 y，它们表示用户点击的图像上的位置 -->
+    <input type="image" src="submit-button.png" alt="Submit" />
+
+    <!-- 重置按钮 -->
+    <input type="reset">
+
+    <!-- 普通的按钮 -->
+    <input type="button" value="按钮">
 
 
+    <button type="submit">提交</button>
+    <button type="reset">重置</button>
+    <button type="button">按钮</button>
+    <button>普通的按钮</button>
 
-        <br><br>
-        <!-- 
-            提交按钮
-         -->
-        <input type="submit" value="注册">
-
-<!--        <input type="file" accept="">-->
-        <!--        <input type="image" >-->
-    </form>
+</form>
 </body>
 
 </html>

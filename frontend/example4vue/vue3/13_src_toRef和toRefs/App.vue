@@ -1,31 +1,62 @@
 <template>
-  <!--vue3的组件模版结构可以没有根标签-->
-  <button @click="isShowDemo = !isShowDemo">{{ isShowDemo ? '隐藏' : '显示'}}</button>
-  <Demo v-if="isShowDemo"/>
+  <h4>{{ person }}</h4>
+  <h2>姓名:{{ name }}</h2>
+  <h2>年龄:{{ age }}</h2>
+  <h2>薪资:{{ salary }}K</h2>
+  <button @click="name = name + '~'">修改姓名</button>
+  <button @click="age++">增长年龄</button>
+  <button @click="salary++">增长薪资</button>
 </template>
 
 <script>
-import Demo from "./components/Demo";
-import { ref } from "vue";
+import { ref, reactive, toRef, toRefs} from 'vue';
 export default {
   name: 'App',
-  components: {Demo},
   setup(){
-    let isShowDemo = ref(true);
+    let person = reactive({
+      name: '张三',
+      age: 18,
+      job:{
+        j1:{
+          salary: 20
+        }
+      }
+    });
+
+    /**
+     * 为了方便在template中使用属性, 而不用每次都带上person前缀, 可以吧person中的属性也暴露出去
+     * 但是千万不能像下面这种写法
+     * 因为JS是传值的类型, 暴露出去的值和person中的属性已经没有关系了
+     */
+    // return {
+    //   person,
+    //   name: person.name
+    //   age: ref(person.age),
+    //   salary: ref(person.job.j1.salary)
+    // };
+    /**
+     * 正确的做法是把person的属性包装成一个refImpl, 然后暴露出去
+     * toRef将一个属性包装成refImpl, toRefs包装一堆属性, 然后结构赋值
+     */
     return {
-      isShowDemo
-    }
+      person,
+      // name: toRef(person, "name"),
+      // age: toRef(person, "age"),
+      // salary: toRef(person.job.j1, "salary"),
+
+      ...toRefs(person), // 将person的所有属性都暴露出去
+      salary: toRef(person.job.j1, 'salary')  // 将person.job.j1.salary 暴露出去
+    };
+
+
+    /**
+     * toRef和toRefs只在setup函数中有用, 如果你使用的是setup语法糖, 那么就不要使用两个函数了
+     */
+
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
+

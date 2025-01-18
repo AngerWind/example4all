@@ -49,15 +49,15 @@
           },
         },
         watch: {
-          //监测多级结构里面的属性 深度监视
-          // 'numbers.a':{
-          //     handler(){
-          //       console.log('a发生改变了')
-          //     }
-          // }
+          // 监测多级结构中的当个属性
+          'numbers.a':{
+              handler(){
+                console.log('a发生改变了')
+              }
+          },
           //深度监视numbers中的所有属性
           numbers: {
-            deep: true, //监视多级结构的属性
+            deep: true, // 默认为false, 只会监视一层, 比如 numbers = {} 这种改变, 而不会监视 numbers.xxx = xxx 这种改变
             handler() {
               console.log("numbers 发生改变");
             },
