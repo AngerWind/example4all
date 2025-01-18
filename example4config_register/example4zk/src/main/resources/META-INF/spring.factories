@@ -1,0 +1,5 @@
+org.springframework.context.ApplicationContextInitializer=\
+  com.gupaoedu.example.zookeepercuratordemo.config.ZookeeperApplicationContextInitializer
+com.gupaoedu.example.zookeepercuratordemo.config.PropertySourceLocator=\
+  com.gupaoedu.example.zookeepercuratordemo.config.ZookeeperPropertySourceLocator,\
+  com.gupaoedu.example.zookeepercuratordemo.config.CustomPropertySourceLocator

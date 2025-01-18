@@ -1,14 +1,10 @@
 package com.tiger.jdbc;
 
-import com.google.common.collect.Sets;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.RandomUtils;
+import java.sql.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.sql.*;
-import java.util.HashSet;
 
 /**
  * @author tiger.shen
@@ -23,7 +19,7 @@ public class JDBCTest {
 
     @Before
     public void init() {
-        String url = "jdbc:mysql://localhost:3308/tenma_test?useTimezone=true&serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost:3306/test?useTimezone=true&serverTimezone=UTC";
         String username = "root";
         String password = "871403165";
 
@@ -48,103 +44,96 @@ public class JDBCTest {
 
     @Test
     public void ddl() {
-        try (PreparedStatement ps = conn.prepareStatement("create table delete_in (id bigint(20), name varchar(256))")) {
-            // PreparedStatement ps = conn.prepareStatement("create table xxx");//创建表
-            // PreparedStatement ps = conn.prepareStatement("backup database shen to disk='F:/123.bak'");//备份数据库
+        PreparedStatement ps = null;
+        try  {
+            // 创建表
+            ps = conn.prepareStatement("create table jdbc_test (id bigint(20), name varchar(256))");
+            // 修改表
+            // ps = conn.prepareStatement("alter table jdbc_test add primary key pm(id)");
+            // 备份数据库
+            // ps = conn.prepareStatement("backup database shen to disk='F:/123.bak'");
+            // 删除表
+            // ps = conn.prepareStatement("drop table jdbc_test");
 
-            // 如果执行的是ddl语句
-            boolean b = ps.execute();
-            if (b) {
-                System.out.println("创建成功！");
-            } else {
-                System.out.println("失败");
-            }
+            // execute可以执行任何类型的sql
+            // 如果返回true, 表示第一个参数是ResultSet, 说明该sql为dql
+            // 如果返回false, 表示的影响的行, 或者没有返回值, 说明该语句为ddl, dml
+            ps.execute();
         } catch (SQLException e) {
-            // TODO: handle exception
-        }
-    }
-
-    @Test
-    public void ddl2() {
-        try (PreparedStatement ps = conn.prepareStatement("alter table delete_in add primary key pm(id)")) {
-            // PreparedStatement ps = conn.prepareStatement("create table xxx");//创建表
-            // PreparedStatement ps = conn.prepareStatement("backup database shen to disk='F:/123.bak'");//备份数据库
-
-            // 如果执行的是ddl语句
-            boolean b = ps.execute();
-            if (b) {
-                System.out.println("创建成功！");
-            } else {
-                System.out.println("失败");
-            }
-        } catch (SQLException e) {
-            // TODO: handle exception
-        }
-    }
-
-    @Test
-    public void dql() {
-        try (PreparedStatement ps = conn.prepareStatement("select id from delete_in limit 10000");){
-            // ps.setString(1, "11");
-            // ps.setString(2, "22");
-            StringBuilder sb = new StringBuilder("select * from delete_in where id in (");
-            try (ResultSet resultSet = ps.executeQuery()) {
-                boolean i = false;
-                while (resultSet.next()) {
-                    if (i) {
-                        sb.append(",");
-                    } else {
-                        i = true;
-                    }
-                    long id = resultSet.getLong("id");
-                    sb.append(id);
+            // 如果表存在, 或者删除表失败, 那么会直接报错
+            throw new RuntimeException(e);
+        }finally {
+            if (ps!= null) {
+                try {
+                    ps.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
-                sb.append(");");
-                System.out.println(sb.toString());
-
             }
+        }
+    }
 
+    @Test
+    public void insert() {
+        PreparedStatement ps = null;
+        try {
+            // 插入数据
+            ps = conn.prepareStatement("insert into jdbc_test(id, name) values(?,?)");
+            ps.setLong(1, 1);
+            ps.setString(2, "zhangsna");
+            // excuteUpdate只能执行dml语句, 并返回影响的行数
+            int executeUpdate = ps.executeUpdate();
+            System.out.println("影响的行数: " + executeUpdate);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (ps!= null) {
+                try {
+                    ps.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    @Test
+    public void select() {
+        try (PreparedStatement ps = conn.prepareStatement("select name, id from jdbc_test where name like concat('%',?, '%')");) {
+            ps.setString(1, "zhang");
+            // !!!!! ResultSet是需要关闭的
+            try(ResultSet rs = ps.executeQuery();){
+                while (rs.next()) {
+                    System.out.printf("name: %s, id: %s\n", rs.getString("name"), rs.getLong("id"));
+                }
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    @SneakyThrows
     @Test
-    public void dml() {
-
-        HashSet<Long> ids = Sets.newHashSet();
-        while (ids.size() < 4000000) {
-            ids.add(RandomUtils.nextLong(10000, Long.MAX_VALUE));
+    public void update() {
+        try (PreparedStatement ps = conn.prepareStatement("update jdbc_test set name = ? where id = ?");) {
+            ps.setString(1, "王五");
+            ps.setLong(2, 1);
+            int executeUpdate = ps.executeUpdate();
+            System.out.println("影响的行数: " + executeUpdate);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        int size = 0;
-        StringBuilder sb = new StringBuilder("insert into delete_in values ");
-        for (Long i : ids) {
-            sb.append("(");
-            sb.append(i);
-            sb.append(", '");
-            sb.append(RandomUtils.nextLong(1000, Long.MAX_VALUE));
-            sb.append("')");
+    }
 
-            if (size < 10000) {
-                sb.append(",");
-                size++;
-            } else {
-                size = 0;
-                sb.append(";");
-                PreparedStatement preparedStatement = conn.prepareStatement(sb.toString());
-                boolean execute = preparedStatement.execute();
-                sb = new StringBuilder();
-                sb.append("insert into delete_in values ");
-                if (execute) {
-                    System.out.println("success");
-                } else {
-                    System.out.println("fail");
-                }
-            }
-
+    @Test
+    public void delete() {
+        try (PreparedStatement ps = conn.prepareStatement("delete from jdbc_test where id = ?");) {
+            ps.setLong(1, 1);
+            int executeUpdate = ps.executeUpdate();
+            System.out.println("影响的行数: " + executeUpdate);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-
     }
 
 }

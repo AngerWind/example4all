@@ -26,17 +26,25 @@ public class _5_TableAndStreamTransform {
         DataStreamSource<Event> streamSource = streamEnv.addSource(new MultiParallelSource());
 
 
-        // 按照Event类的结构进行转换
+        // stream转换为table对象,  按照Event类的结构进行转换
         Table event1 = tableEnv.fromDataStream(streamSource);
 
+        // 将table对象注册为表
+        tableEnv.createTemporaryView("event1", event1);
 
-        // 转换的过程中, 可以对Event中的字段重命名, 也可以调整字段的位置, 还可以只选取部分字段
+        // stream转换为table对象, 转换的过程中, 可以对Event中的字段重命名, 也可以调整字段的位置, 还可以只选取部分字段
         Table event2 = tableEnv.fromDataStream(streamSource, $("timestamp").as("ts"),
                 $("user").as("user_name"));
 
-        // stream转换成table的时候同时注册表
-        tableEnv.createTemporaryView("event", streamSource, $("timestamp").as("ts"),
+
+        // stream直接转换为表, 并讲字段进行重命名
+        tableEnv.createTemporaryView("event4", streamSource, $("timestamp").as("ts"),
                 $("user").as("user_name"));
+
+
+        // 有时候传过来的流是没有结构的, 那么我们可以直接传入一个Express对象, 来给这个字段命名
+        DataStream<String> stream = streamEnv.fromElements("12, 34, 56", "78, 90");
+        tableEnv.createTemporaryView("event", stream, $("str"));
     }
 
     @Test
@@ -48,8 +56,9 @@ public class _5_TableAndStreamTransform {
         tableEnv.executeSql("create table `event` (`user` STRING, `url` string, `timestamp` bigint)"
                 + "with ('connector' = 'filesystem', 'path' = 'input/click.txt', 'format' = 'csv')");
 
-        // table转换成stream
+        // 从表转换为table对象
         Table eventTable = tableEnv.from("event");
+        // 将table对象转换为stream
         DataStream<Row> eventStream = tableEnv.toDataStream(eventTable);
         eventStream.print();
 

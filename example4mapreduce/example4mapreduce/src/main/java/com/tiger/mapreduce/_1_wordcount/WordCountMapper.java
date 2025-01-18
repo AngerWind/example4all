@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._1_wordcount;
+package com.tiger.mapreduce._1_wordcount;
 
 /**
  * @author Shen

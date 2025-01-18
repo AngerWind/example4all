@@ -1,7 +1,9 @@
 package com.tiger.tableapi;
 
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.junit.Test;
 
 /**
@@ -11,10 +13,12 @@ public class _4_PrintTableToConsole {
 
     @Test
     public void test1() throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         EnvironmentSettings settings = EnvironmentSettings.newInstance()
-                // 使用流处理模式
-                .inStreamingMode().useBlinkPlanner().build();
-        TableEnvironment tableEnv = TableEnvironment.create(settings);
+                .withBuiltInCatalogName("default_catalog") // 指定默认使用的catalog, 一个catalog下面可以有多个数据库
+                .withBuiltInDatabaseName("default_database") // 指定默认使用的database
+                .inStreamingMode().build();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, settings);
 
 
         // 通过sql创建表

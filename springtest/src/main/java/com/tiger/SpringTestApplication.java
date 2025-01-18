@@ -1,16 +1,15 @@
 package com.tiger;
 
-import com.google.common.collect.Maps;
-import com.tiger.springtest.SpringtestApplication;
+import java.io.Serializable;
+import java.util.Map;
+
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.Serializable;
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 @Configuration
 // @ComponentScan(basePackageClasses = SpringTestApplication.class, nameGenerator = SimpleBeanNameGenerator.class, scopeResolver = SimpleScopeMetadataResolver.class, lazyInit = false, resourcePattern = "**/*Test.class")
@@ -34,8 +33,10 @@ public class SpringTestApplication implements BeanNameAware, Serializable {
     }
 
 
+
+
     public static void main(String[] args) {
-        // ConfigurableApplicationContext context = SpringApplication.run(new Class[]{SpringtestApplication.class}, args);
+        ConfigurableApplicationContext context = SpringApplication.run(new Class[]{SpringTestApplication.class}, args);
 
         Map<String, Object> defaultProperties = Maps.newHashMap();
         defaultProperties.put("spring.main.cloud-platform", "KUBERNETES");
@@ -43,9 +44,9 @@ public class SpringTestApplication implements BeanNameAware, Serializable {
         // defaultProperties.put("spring.config.additional-location", "aa");
         // defaultProperties.put("spring.config.on-not-found", "ignore");
         // defaultProperties.put("spring.config.name", "application, config");
-        ConfigurableApplicationContext context = new SpringApplicationBuilder(SpringApplication.class)
-            .properties(defaultProperties)
-            .run(args);
+        // ConfigurableApplicationContext context = new SpringApplicationBuilder(SpringApplication.class)
+        //     .properties(defaultProperties)
+        //     .run(args);
         System.out.println(context.getEnvironment().getProperty("my"));
         System.out.println(context.getEnvironment().getProperty("my.arrayProp[0]"));
         System.out.println(context.getEnvironment().getProperty("my.arrayProp1[1]"));
@@ -60,5 +61,13 @@ public class SpringTestApplication implements BeanNameAware, Serializable {
         // Collection<Student1> values = context.getBeansOfType(Student1.class).values();
         // System.out.println(values.size());
         // System.out.println(springtestApplication.name);
+    }
+
+    public void test() {
+        ThreadLocal<Boolean> threadLocal = new ThreadLocal<>(); // 创建1个ThreadLocal
+        ThreadLocal<Boolean> threadLocal1 = ThreadLocal.withInitial(() -> true); // 创建一个带初始值的ThreadLocal
+        threadLocal.set(true); // 设置当前线程的ThreadLocal变量的值
+        Boolean result = threadLocal.get(); // 获取当前线程的ThreadLocal变量的值
+        threadLocal.remove(); // 移除当前线程的ThreadLocal变量的值
     }
 }

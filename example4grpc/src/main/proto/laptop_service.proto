@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package techschool.pcbook;
+
+option go_package = "pb";
+option java_package = "com.gitlab.techschool.pcbook.pb";
+option java_multiple_files = true;
+
+import "laptop_message.proto";
+import "filter_message.proto";
+
+
+message CreateLaptopRequest { Laptop laptop = 1; }
+message CreateLaptopResponse { string id = 1; }
+
+
+message SearchLaptopRequest { Filter filter = 1; }
+message SearchLaptopResponse { Laptop laptop = 1; }
+
+message UploadImageRequest {
+  oneof data {
+    ImageInfo info = 1;
+    bytes chunk_data = 2;
+  };
+}
+
+message ImageInfo {
+  string laptop_id = 1;
+  string image_type = 2;
+}
+
+message UploadImageResponse {
+  string id = 1;
+  uint32 size = 2;
+}
+
+message RateLaptopRequest {
+  string laptop_id = 1;
+  double score = 2;
+}
+
+message RateLaptopResponse {
+  string laptop_id = 1;
+  uint32 rated_count = 2;
+  double average_score = 3;
+}
+
+service LaptopService {
+
+  // 使用一元通讯, 提交一个创建Laptop的请求, 返回Laptop的id
+  rpc CreateLaptop(CreateLaptopRequest) returns (CreateLaptopResponse) {};
+
+  // 服务器推流方式, 客户端向服务器发送一个search请求, 服务器返回多个符合条件的响应
+  rpc SearchLaptop(SearchLaptopRequest) returns (stream SearchLaptopResponse) {};
+
+  // 客户端推流方式, 客户端通过多个请求, 上传一个完整的图片, 之后服务器返回接收到的所有数据块的大小
+  rpc UploadImage(stream UploadImageRequest) returns (UploadImageResponse) {};
+
+  // 客户端可以流式的对多个laptop进行打分, 服务端也会流式的返回平均分
+  rpc RateLaptop(stream RateLaptopRequest) returns (stream RateLaptopResponse) {};
+}

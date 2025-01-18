@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package com.tiger.rpc;
+
+// 导入其他proto文件,
+import "student.proto";
+
+option java_multiple_files = false;
+option java_outer_classname = "ClassroomProto";
+
+option java_package = "com.tiger.grpc.proto";
+
+message Classroom {
+  repeated package1.Student students = 1;
+}

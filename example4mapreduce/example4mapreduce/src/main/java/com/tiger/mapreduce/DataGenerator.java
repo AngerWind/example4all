@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce;
+package com.tiger.mapreduce;
 
 import cn.hutool.core.util.RandomUtil;
 

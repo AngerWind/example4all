@@ -1,0 +1,28 @@
+// 使用proto3语法
+syntax = "proto3";
+
+option java_multiple_files = false;
+option java_outer_classname = "SmsProto";
+
+option java_package = "com.tiger.grpc.demo2.proto";
+
+
+package com.tiger.grpc;
+
+
+service SmsService {
+  // 发送一个phoneNumber的list, 每个phoneNumber都会返回一个SmsResponse结果
+
+  // stream表示发送一个请求之后, 会源源不断的返回多个SmsResponse回来, 被称为服务器流式响应
+  rpc sendSms (SmsRequest) returns (stream SmsResponse) {}
+}
+
+message SmsRequest {
+  repeated string phoneNumber = 1;
+}
+
+message SmsResponse {
+  string result = 1;
+}
+
+

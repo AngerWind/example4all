@@ -20,8 +20,19 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>transmittable-thread-local</artifactId>
+            <version>2.14.4</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.86.Final</version>
         </dependency>
 
         <dependency>
@@ -221,16 +232,16 @@
 
 
     <distributionManagement>
-<!--        <repository>-->
-<!--            <id>local-nexus-releases</id>-->
-<!--            <name>maven-releases</name>-->
-<!--            <url>http://localhost:12345/repository/maven-releases/</url>-->
-<!--        </repository>-->
-<!--        <snapshotRepository>-->
-<!--            <id>local-nexus-snapshots</id>-->
-<!--            <name>maven-snapshots</name>-->
-<!--            <url>http://localhost:12345/repository/maven-snapshots/</url>-->
-<!--        </snapshotRepository>-->
+        <!--        <repository>-->
+        <!--            <id>local-nexus-releases</id>-->
+        <!--            <name>maven-releases</name>-->
+        <!--            <url>http://localhost:12345/repository/maven-releases/</url>-->
+        <!--        </repository>-->
+        <!--        <snapshotRepository>-->
+        <!--            <id>local-nexus-snapshots</id>-->
+        <!--            <name>maven-snapshots</name>-->
+        <!--            <url>http://localhost:12345/repository/maven-snapshots/</url>-->
+        <!--        </snapshotRepository>-->
     </distributionManagement>
 
 
@@ -259,6 +270,26 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <compilerArgs>
+                        <arg>--add-exports=java.base/sun.security.pkcs=ALL-UNNAMED</arg>
+                        <arg>--add-exports=java.base/jdk.internal.loader=ALL-UNNAMED</arg>
+                        <arg>--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED</arg>
+                        <arg>--add-exports=java.base/jdk.internal.module=ALL-UNNAMED</arg>
+                        <arg>--add-exports=java.base/jdk.internal.reflect=ALL-UNNAMED</arg>
+                        <arg>--add-exports=java.base/sun.reflect.misc=ALL-UNNAMED</arg>
+                        <arg>--add-exports=java.base/sun.security.action=ALL-UNNAMED</arg>
+                        <arg>--add-exports=java.base/sun.security.util=ALL-UNNAMED</arg>
+                        <arg>--add-exports=java.base/sun.security.pkcs=ALL-UNNAMED</arg>
+                    </compilerArgs>
+                </configuration>
             </plugin>
         </plugins>
     </build>

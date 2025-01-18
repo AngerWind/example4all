@@ -1,4 +1,4 @@
-package com.tiger.tableapi;
+package com.tiger.tableapi.window;
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;

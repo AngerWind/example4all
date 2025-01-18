@@ -14,6 +14,8 @@ import com.tiger.pojo.Event;
 /**
  * 非按键分区的滚动窗口
  * 非按键分区的窗口, 导致任务的并行度只能是1
+ *
+ * 非按键分区窗口与按键分区窗口的使用没有什么区别, 窗口分配函数一样, 聚合函数也一样, 全窗口函数也一样
  */
 public class NonKeyedWindowTest {
 

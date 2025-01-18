@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Jul 09 16:07:55 CST 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0190-9688-f039-00001f2692e0 
+on database directory J:\desktop-shortcut\example\example4all\spark-scala\metastore_db with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@61064425 
+Loaded from file:/E:/apache-maven/apache-maven-repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=11.0.7+8-LTS
+user.dir=J:\desktop-shortcut\example\example4all\spark-scala
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

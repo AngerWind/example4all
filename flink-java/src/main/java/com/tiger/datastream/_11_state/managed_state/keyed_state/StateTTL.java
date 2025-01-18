@@ -44,9 +44,14 @@ public class StateTTL {
                         ValueStateDescriptor<Event> valueState = new ValueStateDescriptor<>("valueState", Event.class);
                         StateTtlConfig ttlConfig = StateTtlConfig
                                 .newBuilder(Time.seconds(10))
-                                // 设置ttl的更新类型
+                                // 设置ttl的更新类型, 有一下3中类型
+                                // OnCreateAndWrite: 在创建和写入状态的时候, 会重置ttl
+                                // OnReadAndWrite: 在读取和写入状态的时候, 会重置ttl
+                                // Disabled: 状态永久有效, 不会过期
                                 .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
                                 // 清除操作并不是实时的，所以当状态过期之后还有可能基于存在, 这里设置过期但是未清除的状态是否可读
+                                // ReturnExpiredIfNotCleanedUp: 如果过期的状态没有被清除, 那么就返回
+                                // NeverReturnExpired:  不要返回过期的状态
                                 .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
                                 .build();
                         ValueStateDescriptor<String> stateDescriptor = new ValueStateDescriptor<>("my state", String.class);

@@ -12,6 +12,12 @@ import org.apache.flink.util.Collector;
 import com.tiger.pojo.Event;
 import org.junit.Test;
 
+
+/**
+ * A.intervalJoin(B), 就是针对A中的每一个元素, 都创建一个窗口[a.timestamp - lowerBound, a.timestamp + upperBound]
+ * 然后查看B中有哪些数据落在了这个窗口中,
+ *
+ */
 public class _06_IntervalJoin {
 
     /**

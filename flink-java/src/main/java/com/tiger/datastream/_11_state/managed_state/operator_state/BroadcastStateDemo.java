@@ -27,12 +27,16 @@ public class BroadcastStateDemo {
         // 读取用户行为事件流
         DataStreamSource<Action> actionStream = env.fromElements(new Action("Alice", "login"),
             new Action("Alice", "pay"), new Action("Bob", "login"), new Action("Bob", "buy"));
+
         // 定义行为模式流，代表了要检测的标准
         DataStreamSource<Pattern> patternStream =
             env.fromElements(new Pattern("login", "pay"), new Pattern("login", "buy"));
+
         // 定义广播状态的描述器，创建广播流
         MapStateDescriptor<Void, Pattern> bcStateDescriptor =
             new MapStateDescriptor<>("patterns", Types.VOID, Types.POJO(Pattern.class));
+
+
         BroadcastStream<Pattern> bcPatterns = patternStream.broadcast(bcStateDescriptor);
         // 将事件流和广播流连接起来，进行处理
         DataStream<Tuple2<String, Pattern>> matches =
@@ -41,6 +45,12 @@ public class BroadcastStateDemo {
         env.execute();
     }
 
+    /**
+     * 第一个泛型为 第一条流key的类型
+     * 第二个泛型为 第一条流value的类型
+     * 第三个泛型为 广播流value的类型
+     * 第四个泛型为 process输出的输出类型
+     */
     public static class PatternEvaluator
         extends KeyedBroadcastProcessFunction<String, Action, Pattern, Tuple2<String, Pattern>> {
         // 定义一个值状态，保存上一次用户行为

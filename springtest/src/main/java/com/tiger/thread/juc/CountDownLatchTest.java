@@ -1,4 +1,4 @@
-package com.tiger.juc;
+package com.tiger.thread.juc;
 
 import com.tiger.thread.TerminationTest;
 import lombok.SneakyThrows;

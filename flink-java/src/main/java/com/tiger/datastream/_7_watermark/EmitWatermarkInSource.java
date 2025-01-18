@@ -42,6 +42,7 @@ public class EmitWatermarkInSource {
                 // 使用 collectWithTimestamp 方法将数据发送出去，并指明数据中的时间戳的字段
                 sourceContext.collectWithTimestamp(event, event.getTimestamp());
                 // 发送水位线
+                // watermark是一个毫秒数!!!!!!!!!!!!!
                 sourceContext.emitWatermark(new Watermark(event.getTimestamp() - 1L));
                 Thread.sleep(1000L);
             }

@@ -14,17 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.kafka.server.util.timer;
+package com.tiger.timewheel.kafka;
 
 public abstract class TimerTask implements Runnable {
+
+    // 指向TimerTaskEntry对象，一个TimerTaskEntry包含一个TimerTask
     private volatile TimerTaskEntry timerTaskEntry;
-    // timestamp in millisecond
+
+    //表示当前任务延迟多久后执行(单位ms)，比如说延迟3s，则此值为3000
     public final long delayMs;
 
     public TimerTask(long delayMs) {
         this.delayMs = delayMs;
     }
 
+    // 取消当前任务，就是将TimerTask和TimerTaskEntry之间的引用断开,
+    // 然后从TimerTaskList中将TimerTaskEntry移除
     public void cancel() {
         synchronized (this) {
             if (timerTaskEntry != null) timerTaskEntry.remove();
@@ -32,6 +37,7 @@ public abstract class TimerTask implements Runnable {
         }
     }
 
+    //设置当前任务绑定的TimerTaskEntry
     final void setTimerTaskEntry(TimerTaskEntry entry) {
         synchronized (this) {
             // if this timerTask is already held by an existing timer task entry,

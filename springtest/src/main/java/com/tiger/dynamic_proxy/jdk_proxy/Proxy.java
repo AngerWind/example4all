@@ -388,6 +388,7 @@ public class Proxy implements java.io.Serializable {
             final List<Class<?>> intfs = Arrays.asList(intfsArray);
             return proxyCache.sub(intfs).computeIfAbsent(
                     loader,
+                    // build()构建动态代理类的class, 并返回构造函数
                     (ld, clv) -> new Proxy.ProxyBuilder(ld, clv.key()).build()
             );
         }
@@ -454,22 +455,27 @@ public class Proxy implements java.io.Serializable {
              * proxy class will be defined in the same package.  Verify that
              * all non-public proxy interfaces are in the same package.
              */
+            // 判断代理接口中是否有非public接口, 如果有那么所有的非public接口要在同一个包中
+            // 并且生成的代理类也会在那个包中, 防止无法调用的情况
             for (Class<?> intf : interfaces) {
                 int flags = intf.getModifiers();
+                // 代理类不是public的
                 if (!Modifier.isPublic(flags)) {
                     accessFlags = Modifier.FINAL;  // non-public, final
                     String pkg = intf.getPackageName();
                     if (proxyPkg == null) {
-                        proxyPkg = pkg;
+                        proxyPkg = pkg; // 代理类的package和非public接口的包一样, 防止无法调用
                     } else if (!pkg.equals(proxyPkg)) {
+                        // 两个非public的代理接口不在同一个包中
                         throw new IllegalArgumentException(
                                 "non-public interfaces from different packages");
                     }
                 }
             }
-
+            // 如果所有的代理接口都是public的, 那么代理类的package为com.sum.proxy
             if (proxyPkg == null) {
                 // all proxy interfaces are public
+                // 计算代理类的包名
                 proxyPkg = m.isNamed() ? PROXY_PACKAGE_PREFIX + "." + m.getName()
                         : PROXY_PACKAGE_PREFIX;
             } else if (proxyPkg.isEmpty() && m.isNamed()) {
@@ -486,6 +492,7 @@ public class Proxy implements java.io.Serializable {
             /*
              * Choose a name for the proxy class to generate.
              */
+            // 生成代理类的类名
             long num = nextUniqueNumber.getAndIncrement();
             String proxyName = proxyPkg.isEmpty()
                     ? proxyClassNamePrefix + num
@@ -497,9 +504,11 @@ public class Proxy implements java.io.Serializable {
             /*
              * Generate the specified proxy class.
              */
+            // 生成代理类的class字节码
             byte[] proxyClassFile = ProxyGenerator.generateProxyClass(
                     proxyName, interfaces.toArray(EMPTY_CLASS_ARRAY), accessFlags);
             try {
+                // 通过class字节码生成代理类的class对象
                 Class<?> pc = UNSAFE.defineClass(proxyName, proxyClassFile,
                         0, proxyClassFile.length,
                         loader, null);
@@ -610,9 +619,11 @@ public class Proxy implements java.io.Serializable {
          * before calling this.
          */
         Constructor<?> build() {
+            // 构造class对象
             Class<?> proxyClass = defineProxyClass(module, interfaces);
             final Constructor<?> cons;
             try {
+                // 回去构造函数
                 cons = proxyClass.getConstructor(constructorParams);
             } catch (NoSuchMethodException e) {
                 throw new InternalError(e.toString(), e);
@@ -677,8 +688,10 @@ public class Proxy implements java.io.Serializable {
                 for (Method m : intf.getMethods()) {
                     if (!Modifier.isStatic(m.getModifiers())) {
                         addElementType(types, m.getReturnType());
-                        addElementTypes(types, m.getSharedParameterTypes());
-                        addElementTypes(types, m.getSharedExceptionTypes());
+                        // addElementTypes(types, m.getSharedParameterTypes());
+                        // addElementTypes(types, m.getSharedExceptionTypes());
+                        addElementTypes(types, m.getParameterTypes());
+                        addElementTypes(types, m.getExceptionTypes());
                     }
                 }
             }
@@ -968,8 +981,10 @@ public class Proxy implements java.io.Serializable {
         /*
          * Look up or generate the designated proxy class and its constructor.
          */
+        // 获取动态代理类的构造函数
         Constructor<?> cons = getProxyConstructor(caller, loader, interfaces);
 
+        // 创建代理对象
         return newProxyInstance(caller, cons, h);
     }
 

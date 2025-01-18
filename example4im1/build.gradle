@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id "com.google.protobuf" version "0.9.4"
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'io.netty:netty-all:4.1.33.Final'
+
+    annotationProcessor 'io.projectlombok:lombok:1.18.34'
+    implementation 'org.projectlombok:lombok:1.18.34'
+    implementation 'ch.qos.logback:logback-classic:1.5.7'
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    implementation 'com.alibaba:fastjson:2.0.52'
+
+    // protobuf依赖
+    implementation 'com.google.protobuf:protobuf-java:4.29.0-RC1'
+    // 用于将protobuf序列化和反序列化为json的工具包
+    implementation 'com.google.protobuf:protobuf-java-util:4.29.0-RC1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}
+
+protobuf {
+
+    protoc {
+        // 从maven仓库搜索protoc可以查到这个jar包, 直接将gav放在这里就好了
+        artifact = 'com.google.protobuf:protoc:4.29.0-RC1'
+    }
+
+
+    generateProtoTasks {
+        all().configureEach { task ->
+            task.builtins {
+                // java表示要生成java代码, 这会添加 --java_out=/path/to/output 的选项到protoc命令行中
+                // 所以要生成java代码, 一定要指定 java {}
+                java {}
+
+            }
+        }
+    }
+}

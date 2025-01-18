@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._3_spilt;
+package com.tiger.mapreduce._3_spilt;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;

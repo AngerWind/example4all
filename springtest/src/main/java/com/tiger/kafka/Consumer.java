@@ -5,6 +5,7 @@ import ch.qos.logback.classic.LoggerContext;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
@@ -24,6 +25,7 @@ public class Consumer {
     private static final String TOPIC = "alarm_center_dev";
     private static final String BROKER_LIST = "10.2.0.213:9092,10.2.0.212:9092,10.2.0.214:9092";
     private static KafkaConsumer<String, String> consumer = null;
+    private static KafkaProducer<String, String> producer;
 
     static {
         Properties configs = initConfig();

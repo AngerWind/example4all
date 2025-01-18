@@ -1,4 +1,4 @@
-package com.tiger.spark._2_rdd.operator.transform.single_rdd_transform.key_value_rdd
+package com.tiger.spark._2_rdd.operator.transform.double_rdd_transform.key_value_rdd
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
@@ -8,16 +8,23 @@ class SubtractByKeyOperator {
 
   @Test
   def combineByKey(): Unit = {
-    val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("xxx")
-    val context: SparkContext = new SparkContext(sparkConf)
 
-    val list1: RDD[(String, Int)] = context.makeRDD(List(("a", 1), ("a", 2), ("a", 3), ("b", 4)), 2)
+    // 初始化 SparkContext
+    val conf = new SparkConf().setAppName("SubtractByKey Example").setMaster("local")
+    val sc = new SparkContext(conf)
 
-    // 按照字典序降序排列
-    val result: RDD[(String, Int)] = list1.sortByKey(ascending = false)
-    result.collect().foreach(println)
+    // 创建两个 PairRDD
+    val rdd1 = sc.parallelize(Seq((1, "apple"), (2, "banana"), (3, "cherry")))
+    val rdd2 = sc.parallelize(Seq((1, "fruit"), (3, "berry")))
 
-    context.stop()
+    // 使用 subtractByKey 从 rdd1 中移除在 rdd2 中出现的键
+    val result = rdd1.subtractByKey(rdd2)
+
+    // 查看结果
+    result.collect().foreach(println) // (2,banana)
+
+
+    sc.stop()
   }
 
 }

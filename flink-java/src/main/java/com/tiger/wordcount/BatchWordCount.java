@@ -47,5 +47,8 @@ public class BatchWordCount {
 
         // 6. 打印输出
         sum.print();
+
+        // 批处理不需要调用execute方法, 流处理需要
+        // env.execute();
     }
 }

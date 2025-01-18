@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._4_partitioner;
+package com.tiger.mapreduce._4_partitioner;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;

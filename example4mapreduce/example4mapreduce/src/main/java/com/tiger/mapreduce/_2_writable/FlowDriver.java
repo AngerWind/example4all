@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._2_writable;
+package com.tiger.mapreduce._2_writable;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;

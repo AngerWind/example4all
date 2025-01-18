@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._1_wordcount;
+package com.tiger.mapreduce._1_wordcount;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -46,6 +46,10 @@ public class WordCountDriver {
         // 在本地跑的时候path是当前机器的路径
         FileInputFormat.setInputPaths(job, new Path("C:\\Users\\Administrator\\Desktop\\aa.txt"));
         FileOutputFormat.setOutputPath(job, new Path("C:\\Users\\Administrator\\Desktop\\output"));
+
+        // 设置输入和输出的文件格式
+        job.setInputFormatClass(FileInputFormat.class);
+        job.setOutputFormatClass(FileOutputFormat.class);
 
         // 提交到hadoop集群上跑的时候是hdfs的路径
         // hadoop -jar 当前包名 当前类全类名 args...

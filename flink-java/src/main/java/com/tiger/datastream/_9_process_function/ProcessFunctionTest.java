@@ -1,7 +1,7 @@
 package com.tiger.datastream._9_process_function;
 
-import com.tiger.datastream._3_source.custom.MultiParallelSource;
-import com.tiger.pojo.Event;
+import java.time.Duration;
+
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.configuration.Configuration;
@@ -11,7 +11,8 @@ import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
 import org.junit.Test;
 
-import java.time.Duration;
+import com.tiger.datastream._3_source.custom.MultiParallelSource;
+import com.tiger.pojo.Event;
 
 public class ProcessFunctionTest {
 
@@ -45,6 +46,16 @@ public class ProcessFunctionTest {
                 super.onTimer(timestamp, ctx, out);
             }
 
+            /**
+             * processElement()方法在每个元素到来的时候都会被调用
+             *
+             * @param value, 到来的元素
+             * @param ctx 上下文对象, 可以使用这个对象来
+             *            1. 获取时间戳
+             *            2. 将数据发送到侧输出流
+             *            3. 获取TimerService, 用于查询时间和注册定时器
+             * @param out 用来发送数据到下游
+             */
             @Override
             public void processElement(Event value, Context ctx, Collector<String> out) throws Exception {
                 if (value.getUser().equals("Mary")) {
@@ -55,12 +66,15 @@ public class ProcessFunctionTest {
                 }
                 out.collect(value.toString());
 
-                // 获取当前的处理时间
+                // 获取当前的处理时间和wartermark
                 System.out.println("timestamp: " + ctx.timestamp());
                 System.out.println("watermark: " + ctx.timerService().currentWatermark());
 
                 // 在普通的dataStream不能注册定时器, 下面的语句报错
                 // ctx.timerService().registerEventTimeTimer(50000);
+
+                // 将数据发送到侧输出流
+                // ctx.output(new OutputTag<>("side-output"), value);
             }
         }).print();
 

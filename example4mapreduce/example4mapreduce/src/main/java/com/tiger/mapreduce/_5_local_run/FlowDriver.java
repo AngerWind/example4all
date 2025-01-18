@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._5_local_run;
+package com.tiger.mapreduce._5_local_run;
 
 import java.net.URI;
 import java.util.Random;

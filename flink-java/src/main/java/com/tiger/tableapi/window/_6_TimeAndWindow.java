@@ -1,4 +1,4 @@
-package com.tiger.tableapi;
+package com.tiger.tableapi.window;
 
 import com.tiger.datastream._3_source.custom.MultiParallelSource;
 import com.tiger.pojo.Event;
@@ -26,6 +26,7 @@ public class _6_TimeAndWindow {
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(streamEnv);
 
         // 直接在定义表的时候, 指定当前事件时间的生成策略和watermark的生成策略
+        // watermark必须使用一个timestamp(3)数据类型的字段!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // 这里to_timestamp需要传入一个yyyy-MM-dd HH:mm:ss的字符串, 所以需要先调用from_unixtime将bigint转换成string,
         // 而from_unixtime需要传入的是秒, 所以需要根据直接的需求判断如何将bigint转换成秒级别的精度
         tableEnv.executeSql("create table `event` (`user` STRING, `url` string, `timestamp` bigint,"

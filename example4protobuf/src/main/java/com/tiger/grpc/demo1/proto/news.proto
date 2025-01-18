@@ -1,0 +1,41 @@
+// 使用proto3语法
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_outer_classname = "NewsProto";
+
+option java_package = "com.tiger.grpc.proto";
+
+
+package com.tiger.grpc;
+
+// 定义一个RPC服务, 对于service的定义, 每个service都会生成一个同名的类
+// 一般service的命名都是以Service结尾
+service NewsService {
+  // rpc表示定义一个rpc方法
+  // getNews表示方法名, 这个方法名可以随便写,
+  // NewsRequest表示参数的类型, 如果有多个参数, 使用逗号分割
+  // returns表示返回
+  // NewsResponse表示返回值类型, 只能有一个
+  rpc getNews (NewsRequest) returns (NewsResponse);
+}
+
+message NewsResponse {
+  // repeated表示这是一个News集合, 在编译的时候, 会根据不同的语言, 生成不同的集合类型
+  // 比如在java中是List<News>, 在js中是Array<News>
+  repeated News news = 1;
+}
+
+message NewsRequest {
+  string date = 1;
+}
+
+message News {
+  int32 id = 1;
+  string title = 2;
+  string content = 3;
+  // optional表示这是一个可选字段, 可以为空
+  optional int64 createTime = 4;
+}
+
+

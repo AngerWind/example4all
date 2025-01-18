@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <!-- 推荐的做法是把hbase的配置文件直接拷贝过来 -->
+  <!-- 有一部分是server端的配置, 客户端用不到, 但是不管三七二十一, 也拷贝一份 -->
+  <property>
+    <!-- zookeeper的地址 -->
+    <name>hbase.zookeeper.quorum</name>
+    <value>hadoop102,hadoop103,hadoop104</value>
+  </property>
+</configuration>

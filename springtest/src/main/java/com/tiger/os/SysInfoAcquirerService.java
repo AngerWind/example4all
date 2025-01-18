@@ -1,11 +1,6 @@
 package com.tiger.os;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
+import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.*;
@@ -13,15 +8,13 @@ import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.sun.management.OperatingSystemMXBean;
+
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 网管信息信息信息采集类 * *

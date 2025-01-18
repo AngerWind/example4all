@@ -1,18 +1,16 @@
 package com.tiger.quartz;
 
-import cn.hutool.core.date.DateUnit;
-import cn.hutool.core.date.DateUtil;
-import lombok.SneakyThrows;
-import org.junit.Test;
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
-import org.springframework.boot.autoconfigure.quartz.QuartzProperties;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.quartz.TriggerBuilder.newTrigger;
+import org.junit.Test;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
+
+import lombok.SneakyThrows;
 
 /**
  * @author tiger.shen
@@ -42,7 +40,8 @@ public class SimpleTriggerTest {
 
         Scheduler scheduler = new StdSchedulerFactory().getScheduler();
         scheduler.start();
-
+        System.out.println(scheduler.getSchedulerName());
+        System.out.println(scheduler.getSchedulerInstanceId());
 
 
         scheduler.scheduleJob(jobDetail, simpleTrigger);

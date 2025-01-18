@@ -1,0 +1,25 @@
+plugins {
+    id 'groovy'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation fileTree('E:/groovy-3.0.9/lib') {
+        include '*.jar'
+        include '*/*.jar'
+    }
+    implementation 'org.ow2.asm:asm-commons:9.7'
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

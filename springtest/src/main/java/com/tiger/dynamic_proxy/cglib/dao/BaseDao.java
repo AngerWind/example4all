@@ -1,5 +1,9 @@
 package com.tiger.dynamic_proxy.cglib.dao;
 
+import com.tiger.dynamic_proxy.cglib.Dao;
+
+import java.rmi.AccessException;
+
 /**
  * @author tiger.shen
  * @version v1.0
@@ -7,27 +11,32 @@ package com.tiger.dynamic_proxy.cglib.dao;
  * @date 2021/9/15 14:25
  * @description
  */
-public class Dao implements StudentMapper{
+public class BaseDao extends Dao {
 
     public String update() {
         System.out.println("Dao.update()");
         return "Dao.update()";
     }
 
-    public Dao() {}
+    protected void select(){};
 
-    public Dao(int arg1, int arg2) {}
+    public BaseDao() {}
 
-    private Dao(int arg1, String arg2) {}
+    public BaseDao(int arg1, int arg2) {}
+
+    private BaseDao(int arg1, String arg2) {}
 
     public final void finalMethod() {}
 
     public static void staticMethod() {}
 
-    protected void defaultMethod(){}
+    protected void protectedMethod(){}
+
+    void defaultMethod(){}
 
     private void privateMethod(){}
 
-    @Override
-    public void selectStudentById(Long id) { }
+    public void  exceptionMethod() throws AccessException {};
+
+
 }

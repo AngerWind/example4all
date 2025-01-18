@@ -328,8 +328,10 @@ class ProxyGenerator {
                                      int accessFlags)
     {
         ProxyGenerator gen = new ProxyGenerator(name, interfaces, accessFlags);
+        // 生成代理类的class字节码的byte数组
         final byte[] classFile = gen.generateClassFile();
 
+        // 是否要保存class字节码到文件中
         if (saveGeneratedFiles) {
             java.security.AccessController.doPrivileged(
                     new java.security.PrivilegedAction<Void>() {
@@ -393,6 +395,9 @@ class ProxyGenerator {
     /**
      * maps method signature string to list of ProxyMethod objects for
      * proxy methods with that signature
+     *
+     * key表示函数签名, value表示对应的代理方法, 因为多个接口可以有相同的接口方法
+     * 所以同一个函数签名, 可能会有多个ProxyMethod
      */
     private Map<String, List<ProxyGenerator.ProxyMethod>> proxyMethods = new HashMap<>();
 
@@ -421,6 +426,8 @@ class ProxyGenerator {
         /* ============================================================
          * Step 1: Assemble ProxyMethod objects for all methods to
          * generate proxy dispatching code for.
+         *
+         * 为所有的方法生成代理方法
          */
 
         /*
@@ -430,8 +437,11 @@ class ProxyGenerator {
          * java.lang.Object take precedence over duplicate methods in the
          * proxy interfaces.
          */
+        // 为hashCode方法创建ProxyMethod对象
         addProxyMethod(hashCodeMethod, Object.class);
+        // 为equals方法创建ProxyMethod对象
         addProxyMethod(equalsMethod, Object.class);
+        // 为toString方法创建ProxyMethod对象
         addProxyMethod(toStringMethod, Object.class);
 
         /*
@@ -439,6 +449,7 @@ class ProxyGenerator {
          * earlier interfaces precedence over later ones with duplicate
          * methods.
          */
+        // 为其他自定义方法创建ProxyMethod对象
         for (Class<?> intf : interfaces) {
             for (Method m : intf.getMethods()) {
                 if (!Modifier.isStatic(m.getModifiers())) {
@@ -451,6 +462,9 @@ class ProxyGenerator {
          * For each set of proxy methods with the same signature,
          * verify that the methods' return types are compatible.
          */
+        // 针对多个函数签名相同的接口函数, 如果返回值不一样, 那么看看他们的返回值能否兼容
+        // 比如Animal say() 和 Dog say()就可以合并成Dog say()
+        // Dog say()和Cat say() 就无法合并返回值, 就要报错
         for (List<ProxyGenerator.ProxyMethod> sigmethods : proxyMethods.values()) {
             checkReturnTypes(sigmethods);
         }
@@ -459,22 +473,27 @@ class ProxyGenerator {
          * Step 2: Assemble FieldInfo and MethodInfo structs for all of
          * fields and methods in the class we are generating.
          */
+        // 为所有字段生成FieldInfo和MethodInfo
         try {
+            // 方法添加构造函数
             methods.add(generateConstructor());
 
             for (List<ProxyGenerator.ProxyMethod> sigmethods : proxyMethods.values()) {
                 for (ProxyGenerator.ProxyMethod pm : sigmethods) {
 
                     // add static field for method's Method object
+                    // 每生成一个方法, 就会生成一个对应方法名字的private static类型的Method字段
+                    // 比如生成一个add方法, 就会有一个private static的add字段
                     fields.add(new ProxyGenerator.FieldInfo(pm.methodFieldName,
                             "Ljava/lang/reflect/Method;",
                             ACC_PRIVATE | ACC_STATIC));
 
                     // generate code for proxy method and add it
+                    // ProxyMethod生成MethodInfo, 其中包括方法的字节码
                     methods.add(pm.generateMethod());
                 }
             }
-
+            // 添加静态代码块, 为之前添加的 对应方法的字段 添加初始化块
             methods.add(generateStaticInitializer());
 
         } catch (IOException e) {
@@ -490,11 +509,14 @@ class ProxyGenerator {
 
         /* ============================================================
          * Step 3: Write the final class file.
+         *
          */
 
         /*
          * Make sure that constant pool indexes are reserved for the
          * following items before starting to write the final class file.
+         *
+         * 静态常量池相关
          */
         cp.getClass(dotToSlash(className));
         cp.getClass(superclassName);
@@ -515,6 +537,8 @@ class ProxyGenerator {
             /*
              * Write all the items of the "ClassFile" structure.
              * See JVMS section 4.1.
+             *
+             * 生成字节码的完整格式
              */
             // u4 magic;
             dout.writeInt(0xCAFEBABE);
@@ -544,14 +568,14 @@ class ProxyGenerator {
             dout.writeShort(fields.size());
             // field_info fields[fields_count];
             for (ProxyGenerator.FieldInfo f : fields) {
-                f.write(dout);
+                f.write(dout); // 写字段
             }
 
             // u2 methods_count;
             dout.writeShort(methods.size());
             // method_info methods[methods_count];
             for (ProxyGenerator.MethodInfo m : methods) {
-                m.write(dout);
+                m.write(dout); // 写方法
             }
 
             // u2 attributes_count;
@@ -578,15 +602,19 @@ class ProxyGenerator {
      * set of duplicate methods.
      */
     private void addProxyMethod(Method m, Class<?> fromClass) {
-        String name = m.getName();
-        Class<?>[] parameterTypes = m.getParameterTypes();
-        Class<?> returnType = m.getReturnType();
-        Class<?>[] exceptionTypes = m.getExceptionTypes();
+        String name = m.getName(); // 获取方法名字
+        Class<?>[] parameterTypes = m.getParameterTypes(); // 获取方法参数
+        Class<?> returnType = m.getReturnType(); // 获取方法返回值
+        Class<?>[] exceptionTypes = m.getExceptionTypes(); // 获取方法的返回类型
 
-        String sig = name + getParameterDescriptors(parameterTypes);
+        String sig = name + getParameterDescriptors(parameterTypes); // 根据名字和参数类型生成函数签名
         List<ProxyGenerator.ProxyMethod> sigmethods = proxyMethods.get(sig);
+        // 如果代理对象已经有相同的函数签名的函数了(两个接口的方法签名冲突了)
         if (sigmethods != null) {
             for (ProxyGenerator.ProxyMethod pm : sigmethods) {
+                // 如果返回类型都一样, 那么就要把他们抛出的异常类型叠加在一起
+                // 比如 add(int, int) throw XXXException和add(int, int) throw YYYException
+                // 生成add(int, int) throw XXXException, YYYException
                 if (returnType == pm.returnType) {
                     /*
                      * Found a match: reduce exception types to the
@@ -609,6 +637,7 @@ class ProxyGenerator {
             sigmethods = new ArrayList<>(3);
             proxyMethods.put(sig, sigmethods);
         }
+        // 添加到proxyMethods中
         sigmethods.add(new ProxyGenerator.ProxyMethod(name, parameterTypes, returnType,
                 exceptionTypes, fromClass));
     }
@@ -641,6 +670,8 @@ class ProxyGenerator {
         nextNewReturnType:
         for (ProxyGenerator.ProxyMethod pm : methods) {
             Class<?> newReturnType = pm.returnType;
+            // 如果返回值是基础类型(int, double...) 和void, 那么肯定不能和别的返回值兼容
+            // 直接报错
             if (newReturnType.isPrimitive()) {
                 throw new IllegalArgumentException(
                         "methods with same signature " +
@@ -663,6 +694,8 @@ class ProxyGenerator {
                  * If an existing uncovered return type is assignable
                  * to this new one, then we can forget the new one.
                  */
+                // 判断newReturnType是否是uncoveredReturnType的父类, 或者相同
+                // 如果是的话, 那么我们直接过掉父类, 保留子类(选返回范围小的)
                 if (newReturnType.isAssignableFrom(uncoveredReturnType)) {
                     assert !added;
                     continue nextNewReturnType;
@@ -674,10 +707,12 @@ class ProxyGenerator {
                  * with the new one (or just forget the existing one,
                  * if the new one has already be put in the list).
                  */
+                // 如果uncoveredReturnType是newReturnType的父类的话
+                // 那么我们将
                 if (uncoveredReturnType.isAssignableFrom(newReturnType)) {
                     // (we can assume that each return type is unique)
                     if (!added) {
-                        liter.set(newReturnType);
+                        liter.set(newReturnType); // 用子类替换掉父类
                         added = true;
                     } else {
                         liter.remove();
@@ -690,6 +725,7 @@ class ProxyGenerator {
              * types without an assignability relationship, then add
              * the new return type to the list of uncovered ones.
              */
+            // 将第一个返回值
             if (!added) {
                 uncoveredReturnTypes.add(newReturnType);
             }
@@ -699,6 +735,7 @@ class ProxyGenerator {
          * We shouldn't end up with more than one return type that is
          * not assignable from any of the others.
          */
+        // 如果到最后, 返回类型有大于1个, 即有不能兼容的返回值, 那么就报错
         if (uncoveredReturnTypes.size() > 1) {
             ProxyGenerator.ProxyMethod pm = methods.get(0);
             throw new IllegalArgumentException(
@@ -726,6 +763,7 @@ class ProxyGenerator {
             /*
              * Make sure that constant pool indexes are reserved for the
              * following items before starting to write the final class file.
+             * 常量池相关
              */
             cp.getUtf8(name);
             cp.getUtf8(descriptor);

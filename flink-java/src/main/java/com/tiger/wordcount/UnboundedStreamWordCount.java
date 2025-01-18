@@ -26,7 +26,7 @@ public class UnboundedStreamWordCount {
         // 所以要在命令行参数中指定--host localhost --port 7777
         ParameterTool parameterTool = ParameterTool.fromArgs(args);
         String host = parameterTool.get("host");
-        Integer port = parameterTool.getInt("port");
+        int port = parameterTool.getInt("port");
 
         // 2. 从网络端口中读取文本, 需要通过linux的nc -lk 7777启动这个socket服务器
         DataStreamSource<String> textFile = env.socketTextStream(host, port);

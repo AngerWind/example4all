@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._3_spilt;
+package com.tiger.mapreduce._3_spilt;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;

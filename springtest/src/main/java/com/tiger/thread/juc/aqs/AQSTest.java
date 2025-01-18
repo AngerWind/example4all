@@ -1,4 +1,4 @@
-package com.tiger.juc;
+package com.tiger.thread.juc.aqs;
 
 import lombok.SneakyThrows;
 import org.junit.Test;

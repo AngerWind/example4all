@@ -10,6 +10,9 @@ import org.apache.flink.util.Collector;
 
 import java.time.Duration;
 
+/**
+ * 合并两条流, 要求流的元素类型是一样的
+ */
 public class _01_Union {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

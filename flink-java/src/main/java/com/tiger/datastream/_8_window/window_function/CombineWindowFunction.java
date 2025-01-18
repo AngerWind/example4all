@@ -20,7 +20,14 @@ import java.time.Duration;
 import java.util.Set;
 
 /**
- * 增量聚合函数和全窗口函数结合使用
+ * 增量聚合函数是每来一个数据就对窗口内的数据进行一次聚合, 然后再窗口关闭的时候, 将结果进行输出
+ * 如果要使用增量聚合函数, 可以调用aggregate和reduce方法
+ * 使用聚合函数, 只能输出一条结果
+ *
+ * 而全窗口函数, 是在窗口关闭的时候, 对窗口内的所有数据进行处理, 然后将结果进行输出, 可以输出多个结果
+ *
+ * 所以我们可以结合增量聚合函数和全窗口函数来使用
+ * 即使用增量聚合函数对每来一条的数据进行聚合, 然后再窗口关闭的时候, 获取增量聚合函数的结果, 传入到全窗口函数中进行处理
  */
 public class CombineWindowFunction {
 
@@ -48,7 +55,9 @@ public class CombineWindowFunction {
         source
             // 所有Event发送到同一个分区中
             .keyBy(event -> "key").window(TumblingEventTimeWindows.of(Time.seconds(10)))
-            // AggregateFunction的输出作为ProcessWindowFunction的输入
+            /**
+             * AggregateFunction的输出作为ProcessWindowFunction的输入
+             */
             .aggregate(new AggregateFunction<Event, Set<String>, Long>() {
 
                 @Override
@@ -83,6 +92,8 @@ public class CombineWindowFunction {
                     throws Exception {
 
                     // 获取uv值
+
+                    // 这里因为在AggregateFunction函数中已经将窗口中的所有数据都已经聚合在了一起, 所以Iterable中其实只有一个值
                     Long userCount = input.iterator().next();
 
                     // 获取当前窗口的相关信息

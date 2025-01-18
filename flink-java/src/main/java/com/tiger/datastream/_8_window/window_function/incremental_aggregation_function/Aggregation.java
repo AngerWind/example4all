@@ -72,7 +72,7 @@ public class Aggregation {
                 }
 
                 /**
-                 * 只在会话窗口中设计merge操作
+                 * 只在会话窗口中涉及merge操作
                  */
                 @Override
                 public Tuple3<String, Long, Integer> merge(Tuple3<String, Long, Integer> a,
@@ -123,6 +123,7 @@ public class Aggregation {
 
                 /**
                  * 每来一个数据调用一次, 传入累加器和当前的数据, 并且返回一个累加器
+                 * 这里必须使用一个Set去重
                  */
                 @Override
                 public Tuple2<Long, Set<String>> add(Event value, Tuple2<Long, Set<String>> accumulator) {

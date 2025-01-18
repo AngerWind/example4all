@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._6_compress;
+package com.tiger.mapreduce._6_compress;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.io.IntWritable;

@@ -1,20 +1,53 @@
 package com.tiger.tableapi;
 
+import static org.apache.flink.table.api.Expressions.$;
+
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.TableResult;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.junit.Test;
-
-import static org.apache.flink.table.api.Expressions.$;
 
 public class _3_CreateTable {
 
     @Test
-    public void test1() throws Exception {
+    public void test() {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         EnvironmentSettings settings = EnvironmentSettings.newInstance()
-                // 使用流处理模式
-                .inStreamingMode().useBlinkPlanner().build();
-        TableEnvironment tableEnv = TableEnvironment.create(settings);
+                .withBuiltInCatalogName("default_catalog") // 指定默认使用的catalog, 一个catalog下面可以有多个数据库
+                .withBuiltInDatabaseName("default_database") // 指定默认使用的database
+                .inStreamingMode().build();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, settings);
+
+        tableEnv.executeSql("create table `event` (`user` STRING, `url` string, `timestamp` bigint)"
+                + "with ('connector' = 'filesystem', 'path' = 'input/click.txt', 'format' = 'csv')");
+        tableEnv.executeSql("create table `console` (`user` string, url string, `timestamp` bigint)"
+                + "with ('connector' = 'print')");
+
+        /**
+         * 在tableEnv中有两种执行sql的方式
+         */
+        // 通过executeSql可以执行DDL, DML, DQL
+        TableResult result = tableEnv.executeSql("select * from event");
+
+
+        // 通过sqlQuery会获得一个table对象
+        Table table = tableEnv.sqlQuery("select * from event");
+        table.executeInsert("console"); // 输出到控制台
+        table.execute().print(); // 拉取到client端并打印
+
+    }
+
+    @Test
+    public void test1() throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        EnvironmentSettings settings = EnvironmentSettings.newInstance()
+                .withBuiltInCatalogName("default_catalog") // 指定默认使用的catalog, 一个catalog下面可以有多个数据库
+                .withBuiltInDatabaseName("default_database") // 指定默认使用的database
+                .inStreamingMode().build();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, settings);
 
 
         // 通过sql创建表

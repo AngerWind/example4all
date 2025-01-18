@@ -20,11 +20,18 @@ class _2_Spill {
     val context: SparkContext = new SparkContext(sparkConf)
 
     /**
-     * 这种方式使用默认的最小并行度, 默认最小并行度的值为 math.min(spark.default.parallelism, 2)
-     * 可以通过sparkConf来设置默认的最小并行度
-     * 需要注意的是, 这里只是指定了最小的并行度, 实际的并行度还是要通过计算才能得知
-     * 因为spark读取文件底层还是使用了mapreduce的 [[org.apache.hadoop.mapred.TextInputFormat]]
-     * 所以具体的分区规则还是[[org.apache.hadoop.mapred.TextInputFormat#getSplits(org.apache.hadoop.mapreduce.JobContext]]
+     * 1. 先获取最小分区个数
+     *      1. 通过参数指定最小分区个数
+     *      2. 如果没有通过参数指定分区个数, 那么默认使用math.min(defaultParallelism, 2)
+     * 2. 获取了最小分区个数后, 计算真实的分区个数
+     *      spark读取文件底层还是使用了mapreduce的 [[org.apache.hadoop.mapred.TextInputFormat]]
+     *      所以具体的分区规则还是[[org.apache.hadoop.mapred.TextInputFormat#getSplits(org.apache.hadoop.mapreduce.JobContext]]
+     *      具体规则如下:
+     *        1. 计算所有文件的大小totalSize
+     *        2. 计算每个分区的读取的数据大小 goalSize = totalSize / minPartitions
+     *        3. 计算剩余文件大小 totalSize % goalSize, 如果该剩余文件大小超过0.1 * goalSize, 那么就成立新分区, 否则和最后一个分区合并
+     *      比如总文件大小totalSize=7bytes, minPartitions=2, 那么目标分区大小goalSize=7/2=3bytes
+     *      那么分两个区就还剩下1字节, 这1字节超过了目标分区大小的0.1, 那么就新成立一个分区, 所以总共需要3个分区
      */
     val fileRDD1: RDD[String] = context.textFile("input/")
     fileRDD1.saveAsTextFile("output1/")
@@ -49,14 +56,19 @@ class _2_Spill {
 
     val context: SparkContext = new SparkContext(sparkConf)
 
-    // 这种方式使用默认的并行度, 默认并行度的值为 spark.default.parallelism, 如果没有那就是cpu线程数
-    // 可以通过sparkConf来设置默认的并行度
-    // 数据的分区规则是: i为第n个分区数, 从0开始, numSlices为分区数
-    //        基本的思想就是按照顺序平均分配
-    //        val start = ((i * length) / numSlices).toInt
-    //        val end = (((i + 1) * length) / numSlices).toInt
-    //        如果7个数据分三个区, 那么三个分区的数据下标分别的[0, 1] [2, 3] [4, 5, 6]
-    //        分区不均匀的话就是前面的少一点数据
+    /**
+     * 1. 先获取分区个数
+     *    1. 先获取参数中指定的分区个数
+     *    2. 如果参数中没有指定分区个数, 那么就获取配置中spark.default.parallelism设置的分区个数
+     *    3. 如果spark.default.parallelism也没有设置, 那么就获取cpu核心数作为分区个数
+     * 2. 获取了分区个数之后, 就是对数据进行分区了, 具体的数据分区规则如下:
+     *       数据的分区规则是: i为第n个分区数, 从0开始, numSlices为分区数
+     *       基本的思想就是按照顺序平均分配
+     *       val start = ((i * length) / numSlices).toInt
+     *       val end = (((i + 1) * length) / numSlices).toInt
+     *       如果7个数据分三个区, 那么三个分区的数据下标分别的[0, 1] [2, 3] [4, 5, 6]
+     *       分区不均匀的话就是前面的少一点数据
+     */
     val rdd: RDD[Int] = context.makeRDD(list)
 
     // 指定读取后的记录的分区个数

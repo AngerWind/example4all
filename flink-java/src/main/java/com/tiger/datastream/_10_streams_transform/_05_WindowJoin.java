@@ -19,7 +19,8 @@ import java.time.Duration;
 public class _05_WindowJoin {
 
     /**
-     * 同一个窗口内的数据做笛卡尔积
+     * windows join就是对两条流同时进行开窗
+     * 然后等到!!!!!窗口关闭时, 落在同一个窗口的数据进行!!!!inner join
      */
     @Test
     public void join() throws Exception {

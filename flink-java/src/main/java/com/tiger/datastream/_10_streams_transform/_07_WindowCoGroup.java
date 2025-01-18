@@ -15,6 +15,11 @@ import org.junit.Test;
 
 import java.time.Duration;
 
+
+/**
+ * 和Window Join类似, 执行传入的不是一个一个的键值对
+ * 传入的是, 同一个窗口中两条流的集合, 可以自己来实现inner join, outer join
+ */
 public class _07_WindowCoGroup {
 
     @Test

@@ -1,0 +1,87 @@
+
+plugins {
+    id 'java'
+    // google的protobuf-gradle-plugin插件
+    // https://github.com/google/protobuf-gradle-plugin
+    // 添加了该插件之后, 他会自动识别每个sourceSet下proto目录下的proto文件
+    // 从https://plugins.gradle.org/search可以搜索到这个插件的各个版本
+    id "com.google.protobuf" version "0.9.4"
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // protobuf依赖
+    implementation 'com.google.protobuf:protobuf-java:4.29.0-RC1'
+    // 用于将protobuf序列化和反序列化为json的工具包
+    implementation 'com.google.protobuf:protobuf-java-util:4.29.0-RC1'
+
+    // grpc依赖
+    implementation 'io.grpc:grpc-all:1.68.0'
+    // grpc生成的代码需要依赖的包
+    implementation 'org.apache.tomcat:annotations-api:6.0.53'
+    // grpc reflection
+    implementation 'io.grpc:grpc-services:1.68.0'
+
+    // jjwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc-java'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}
+
+protobuf {
+
+    protoc {
+        // 从maven仓库搜索protoc可以查到这个jar包, 直接将gav放在这里就好了
+        artifact = 'com.google.protobuf:protoc:4.29.0-RC1'
+    }
+
+    // 指定protoc使用的插件
+    // 注意这里只是导入插件, 并不会使用
+    plugins {
+        "grpc-java" {
+            // 从maven仓库搜索protoc-gen-grpc-java可以查到这个jar包, 直接将gav放在这里就好了
+            // 该插件用于生成grpc代码
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.68.0'
+        }
+    }
+
+    generateProtoTasks {
+        all().configureEach { task ->
+            task.builtins {
+                // java表示要生成java代码, 这会添加 --java_out=/path/to/output 的选项到protoc命令行中
+                // 所以要生成java代码, 一定要指定 java {}
+                java {}
+
+            }
+            task.plugins {
+                "grpc-java" {
+                    outputSubDir = 'grpc-java'
+                }
+            }
+
+        }
+    }
+}

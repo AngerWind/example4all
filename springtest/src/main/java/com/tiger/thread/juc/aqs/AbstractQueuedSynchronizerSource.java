@@ -33,7 +33,7 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package com.tiger.thread.juc;
+package com.tiger.thread.juc.aqs;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;

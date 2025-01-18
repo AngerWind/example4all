@@ -1,0 +1,23 @@
+
+syntax = "proto3";
+
+package com.tiger.rpc;
+
+option java_multiple_files = true;
+option java_outer_classname = "ClassroomProto";
+
+option java_package = "com.tiger.grpc.proto";
+
+
+// 定义枚举
+enum PhoneType {
+  PHONE_TYPE_UNSPECIFIED = 0;
+  PHONE_TYPE_MOBILE = 1;
+  PHONE_TYPE_HOME = 2;
+  PHONE_TYPE_WORK = 3;
+}
+message PhoneNumber {
+  optional string number = 1;
+  // 使用枚举, 并设置默认值
+  optional PhoneType type = 2 [default = PHONE_TYPE_HOME];
+}

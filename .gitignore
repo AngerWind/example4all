@@ -88,4 +88,6 @@ vue-template/
 
 **/node_modules/
 
+**/tmp/*
+
 

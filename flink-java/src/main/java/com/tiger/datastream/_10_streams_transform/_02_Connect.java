@@ -20,7 +20,6 @@ import org.junit.Test;
 
 /**
  * connect连接两条流, 其实内部是一国两制的形式
- * 可以用来实现inner join, left join, right join
  */
 public class _02_Connect {
 

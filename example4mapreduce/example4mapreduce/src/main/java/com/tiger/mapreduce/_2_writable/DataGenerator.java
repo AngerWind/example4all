@@ -1,4 +1,4 @@
-package com.tiger.hadoop.mapreduce._2_writable;
+package com.tiger.mapreduce._2_writable;
 
 import org.apache.commons.lang3.RandomUtils;
 

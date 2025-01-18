@@ -1,0 +1,111 @@
+import java.util.function.BiFunction
+
+plugins {
+    id 'java'
+    // google的protobuf-gradle-plugin插件
+    // https://github.com/google/protobuf-gradle-plugin
+    // 添加了该插件之后, 他会自动识别每个sourceSet下proto目录下的proto文件
+    id "com.google.protobuf" version "0.9.4"
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // protobuf依赖
+    implementation 'com.google.protobuf:protobuf-java:4.27.5'
+
+    // grpc依赖
+    implementation 'io.grpc:grpc-all:1.68.0'
+    // grpc生成的代码需要依赖的包
+    implementation 'org.apache.tomcat:annotations-api:6.0.53'
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+sourceSets {
+    main {
+        proto {
+            // In addition to the default 'src/main/proto'
+            srcDir 'src/main/protobuf'
+            srcDir 'src/main/protocolbuffers'
+            // In addition to the default '**/*.proto' (use with caution).
+            // Using an extension other than 'proto' is NOT recommended,
+            // because when proto files are published along with class files, we can
+            // only tell the type of a file from its extension.
+            include '**/*.protodevel'
+        }
+        java {
+            //
+        }
+    }
+    test {
+        proto {
+            // In addition to the default 'src/test/proto'
+            srcDir 'src/test/protocolbuffers'
+        }
+    }
+}
+
+protobuf {
+    // 指定protoc使用的插件
+    // 注意这里只是导入插件, 并不会使用
+    plugins {
+        "grpc-java" {
+            // 可以通过 Maven 坐标指定插件
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.0.0-pre2'
+            // 或者直接指定插件的本地路径
+            // path = 'tools/protoc-gen-grpc-java'
+        }
+        // 可以在这里配置其他插件
+
+    }
+
+    generateProtoTasks {
+        // all()用来获取所有的task
+        all().configureEach { task ->
+            // 每个task都有两个集合属性: builtins, plugins
+            // builtins用于指定生成特定代码的选项
+            task.builtins {
+                // java表示要生成java代码, 这会添加 --java_out=/path/to/output 的选项到protoc命令行中
+                // 所以要生成java代码, 一定要指定 java {}
+                java {
+                    // option 会生成 --java_opt=example_option1=true,example_option2 的选项
+                    option 'example_option1=true'
+                    option 'example_option2'
+                    outputSubDir = 'java'
+                }
+                // 生成cpp代码, 这会添加一个 --cpp_out=/path/to/output 选项到protoc命令行中
+                cpp {
+                    outputSubDir = 'cpp'
+                }
+                python {}
+                go {}
+
+            }
+            task.plugins {
+                // 启用grpc-java插件, 这个插件一定要现在protobuf.plugins中配置
+                // 这会添加 --grpc_out=/path/to/output 选项到protoc命令行中
+                "grpc-java" {
+                    outputSubDir = 'grpc-java'
+                }
+            }
+
+        }
+
+        // 获取main SourceSet的任务
+        ofSourceSet('main').configureEach { task ->
+
+        }
+    }
+}

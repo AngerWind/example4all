@@ -36,7 +36,5 @@ object WordCount {
 
     // 9. 关闭连接
     context.stop()
-
-
   }
 }

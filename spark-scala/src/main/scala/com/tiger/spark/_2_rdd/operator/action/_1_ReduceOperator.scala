@@ -11,7 +11,6 @@ class _1_ReduceOperator {
     val sparkConf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("xxx")
     val context: SparkContext = new SparkContext(sparkConf)
 
-    // 设置分区数为1, 发现需要所有的算子处理完一个数据才会开始处理下一个数据
     val list: RDD[Int] = context.makeRDD(List(1, 2, 3, 4), 1)
 
     val i: Int = list.reduce(_ + _)
