@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box1 {
+            width: 200px;
+            height: 200px;
+            background-color: #bfa;
+        }
+
+        /* 在box1的最前面插入一个空格文本, 是的box2和box1的外边距不重叠 */
+        /* .box1::before{
+            content: '';
+            display: table;
+        } */
+
+        .box2 {
+            width: 100px;
+            height: 100px;
+            background-color: orange;
+            margin-top: 100px; /* 默认情况下, 应为box2的上外边界和box1的上外边距重叠了, 所有会将margin-top传导到box1上*/
+        }
+
+        /* clearfix 这个样式可以同时解决高度塌陷和外边距重叠的问题，当你在遇到这些问题时，直接使用clearfix这个类即可 */
+
+        /* 解决外边距重叠问题 */
+        .clearfix::before{ /* ::before选中的是box1最前面的空白 */
+            content: ''; /* 这里给box1最前面添加一个空白字符串, 但是如果是空白字符串的话, 不能将box1和box2隔开 */
+            display: table; /* 这里使用table, 可以将box1和box2隔开, 同时content是空白字符串, 不会占空间 */
+        }
+        /* 解决高度塌陷问题 */
+        .clearfix::after { /* ::after选中的box1最后面的空白 */
+            content: ''; /* 在box1最后面添加一个空白字符串 */
+            display: table; /* 默认情况下, 空白字符串是行内元素, 会环绕在浮动元素周围, 这里设置为table, 和block一样, 让他不要环绕在浮动元素周围 */
+            clear: both; /* 通过clear属性, 来清除浮动元素对空白字符串的影响, 让他在本身的位置, 这样就撑开了box1, 解决了高度塌陷问题 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box1 clearfix">
+        <div class="box2"></div>
+    </div>
+
+</body>
+
+</html>

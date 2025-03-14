@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .box1{
+            border: 10px red solid;
+        }
+
+        .box2{
+            width: 100px;
+            height: 100px;
+            background-color: #bfa;
+            float: left;
+        }
+
+        .box3{
+            clear: both;
+        }
+
+        /* 方式2: 不需要在box2后面添加一个div, 直接通过css来给box1的最后面添加一个空的字符串, 并通过clear来清除浮动的影响 */
+        /* ::after 表示选中标签最后面的空白内容 */
+        .box1::after{
+            content: ''; /* 设置一个空的字符串在box1的最后面 */
+            clear: both; /* 通过clear来清除box2的浮动, 对内容的影响 */
+            display: block; /* 因为添加的content 是行内元素, 默认会环绕在浮动元素周围, 所以要将他设置为块元素, 这样就可以撑起box1的高度了 */
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="box1">
+        <div class="box2"></div>
+
+        <!-- 方式1: 给box2后面添加一个div, 并设置clear, 这样box3就会在原来的位置, 然后撑大box1, 这样就解决了高度塌陷问题 -->
+        <!-- <div class="box3"></div> -->
+    </div>
+    
+</body>
+</html>

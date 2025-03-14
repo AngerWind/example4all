@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!--
+        视口其实就是这个浏览器能够展示页面的大小
+
+        不同的设备的视口的大小是不一样的
+            iphone6 -- 375
+            iphone6plus -- 414
+
+        由于不同设备视口和像素比不同，所以同样的375个像素在不同的设备下意义是不一样，
+            比如在iphone6中 375就是全屏，而到了plus中375就会缺一块
+
+        所以在移动端开发时，就不能再使用px来进行布局了, 此时可以使用vw和vh来布局
+        1vw表示视口宽度的1%, 1vh表示视口宽度的1%
+
+        (
+            100%和100vh是不同的, 100%表示元素占父元素的全部, 100vh表示浏览器的窗口大小
+            如果父元素的高度为1000px, 那么100%就是1000px
+            如果浏览器的能够展示的页面大小是100px, 那么100vh就是100px
+            这里内容已经比窗口大小更大了, 所以会展示滚动栏
+        )
+
+    -->
+    <div class="box1" style="height: 100vh; border: red 20px solid;">
+        <div class="box2" style="height: 1000px; background: yellow">
+            <div class="box3" style="height: 100%; background: #2b542c"></div>
+        </div>
+    </div>
+    
+</body>
+</html>

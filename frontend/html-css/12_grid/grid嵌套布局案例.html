@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+        /* 重置所有元素和body的margin, padding */
+        *,body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .logo, .header, .footer, .sidebar-item {
+            font-size: 14px;
+            font-weight: bold;
+            color: black;
+
+            /* flex让内容弹起来, 尽量占满单元格 */
+            display: flex;
+            /* 让内容水平和垂直居中 */
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+
+        .parent {
+            display: grid;
+            /* 定义两列, 第一列最小150px或者12%窗口大小,  第二轮占用剩余宽度 */
+            grid-template-columns: max(150px, 12%) 1fr;
+            /* 定义三行, 第一行50px, 第二行最小100p, 或者剩余宽度, 第三行30px */
+            grid-template-rows: 50px minmax(200px, 1fr) 30px;
+            background: #1bc4fb;
+
+            /* 容器由网格内容撑开, 但是最小也是100vh */
+            min-height: 100vh;
+        }
+        /* logo在第1个格子 */
+        .logo {
+            grid-area: 1 / 1 / 2 / 2;
+            background: red;
+        }
+
+        /* header在第一行, 从第二个格子开始到最后 */
+        .header {
+            grid-area: 1 / 2 / 2 / -1;
+            background: #2b542c;
+        }
+        /* footer在最后一行 */
+        .footer {
+            grid-area: -2 / 1 / -1 / -1;
+            background: #4cae4c;
+        }
+        /* sidebar在第一列, 从第二个格子开始到倒数第二个格子 */
+        .sidebar {
+            grid-area: 2 / 1 / -2 / 2;
+            background: #8c8c8c;
+
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-auto-rows: 50px;
+            row-gap: 1px;
+        }
+        .sidebar-item {
+            background: #8a6d3b;
+        }
+
+        .main {
+            /* main从第二行第二列开始, 到倒数第二行最后一列 */
+            grid-area: 2 / 2 / -2 / -1;
+            background: rebeccapurple;
+            margin: 20px;
+
+            display: grid;
+            gap: 12px;
+            grid-template-columns: repeat(auto-fill, 150px);
+            grid-auto-rows: 230px;
+            justify-content: space-between;
+            align-content: start;
+            border-radius: 12px;
+        }
+        .item {
+            background: pink;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .item:hover {
+            /* 鼠标放在item上的时候, 向上浮动5px */
+            transform: translateY(-5px);
+        }
+
+        .item > img {
+            /* 消除图片下面的一点空白 */
+            vertical-align: top;
+            height: 180px;
+            width: 100%;
+            /* 图片圆角 */
+            border-radius: 12px;
+        }
+        .info {
+            /* 文字向左对齐 */
+            text-align: start;
+            padding-left: 3px;
+        }
+
+        .info h3 {
+            font-size: 16px;
+            margin: 4px;
+        }
+
+        .info p {
+            /* 文字大小 */
+            font-size: 14px;
+            color: #ff9800;
+            /* 文字加粗 */
+            font-weight: bold;
+            margin: 4px ;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="parent">
+    <div class="logo">
+        <span>logo</span>
+    </div>
+    <div class="header">
+        header
+    </div>
+    <div class="sidebar">
+        <div class="sidebar-item">sidebar-1
+        </div>
+        <div class="sidebar-item">sidebar-1</div>
+        <div class="sidebar-item">sidebar-1</div>
+        <div class="sidebar-item">sidebar-1</div>
+        <div class="sidebar-item">sidebar-1</div>
+        <div class="sidebar-item">sidebar-1</div>
+        <div class="sidebar-item">sidebar-1</div>
+        <div class="sidebar-item">sidebar-1</div>
+        <div class="sidebar-item">sidebar-1</div>
+        <div class="sidebar-item">sidebar-1</div>
+
+    </div>
+    <div class="main">
+        <div class="item">
+            <img src="img-practice/img.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="img-practice/img_2.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="img-practice/img_3.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="img-practice/img_4.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="img-practice/img_5.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="img-practice/img_6.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="img-practice/img_7.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="img-practice/img_8.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="img-practice/img_9.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+        <div class="item">
+            <img src="img-practice/img_10.png" />
+            <div class="info">
+                <h3>标题</h3>
+                <p>评分: <span>9.8</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        footer
+    </div>
+</div>
+</body>
+</html>

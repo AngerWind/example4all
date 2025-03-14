@@ -43,7 +43,7 @@ https://blog.csdn.net/WHF__/article/details/129362462
    我们可以通过如下方式来设置prefix来修改全局安装的路径
 
    ~~~shell
-   npm config set prefix "C:\node\node_global"
+   npm config set prefix "E:\node\node_global"
    ~~~
 
    同时我们还要删除掉node安装时添加到用户环境变量path下的`C:\Users\Administrator\AppData\Roaming\npm`路径, 并把修改后的prefix的值设置到系统的环境变量path下, 这样我们才可以在cmd中使用全局安装的工具
@@ -58,7 +58,7 @@ https://blog.csdn.net/WHF__/article/details/129362462
 
    ~~~shell
    npm config get cache # 查看缓存路径
-   npm config set cache "C:\node\node_cache" # 设置缓存路径
+   npm config set cache "E:\node\node_cache" # 设置缓存路径
    npm cache clean --force # 清理全局的缓存
    ~~~
 
@@ -297,8 +297,8 @@ https://juejin.cn/post/7094576504243224612
 7. 设置npm相关配置
 
    ~~~shell
-   npm config set cache "C:\node\node_cache" # 设置缓存路径
-   npm config set prefix "C:\node\node_global"
+   npm config set cache "E:\node\node_cache" # 设置缓存路径
+   npm config set prefix "E:\node\node_global"
    ~~~
 
    并添加`NODE_PATH`环境变量, 值是`node root -g`命令执行的结果, 这样我们就可以require全局安装的包了
@@ -338,7 +338,8 @@ nvm root <path> # 设置nvm应在其中存储不同版本的node.js的目录。�
 
 nvm install <version> # 该版本可以是node.js版本，也可以是最新的稳定版本的“最新”版本。
 nvm install latest # 安装最新版本
-nvm list [available] # 列出node.js安装。available在末尾键入以显示可供下载的版本列表。
+nvm list  # 列出已经安装的node.js。
+nvm list available # 列出能够安装的node.js
 nvm on # 启用node.js版本管理。
 nvm off # 禁用node.js版本管理（不卸载任何内容）。
 nvm uninstall <version> # 卸载特定版本。

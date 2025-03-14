@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <!--
+          过渡(transition)的主要作用是当css发生变化的时候, 让他慢慢的变化, 提高用户的体验
+          过渡主要有四个属性:
+              - transition-property: 指定在什么属性的变化要进行过渡
+                多个属性间使用,隔开
+                如果所有属性都需要过渡，则使用all关键字
+                大部分属性都支持过渡效果
+                    transition-property: height, width;
+                    transition-property: all;
+              - transition-duration: 过渡的持续时间
+                    transition-duration: 100ms;
+                    transition-duration: 2s;
+
+              - transition-timing-function: 过渡的时序函数
+                可选值：
+                  ease 默认值，慢速开始，先加速，再减速
+                  linear 匀速运动
+                  ease-in 加速运动
+                  ease-out 减速运动
+                  ease-in-out 先加速 后减速
+                  cubic-bezier(x1, y1, x2, y2)：自定义贝塞尔曲线
+              - transition-delay: 过渡效果的延迟，等待一段时间后在执行过渡
+                    transition-delay: 2s;
+
+            transition 可以同时设置这四个属性, 顺序无所谓, 如果有两个时间, 那么duration在前面
+                       任意一个属性都可以省略;
+                       如果要设置多个属性, 使用逗号隔开
+
+                transition: background-color 1s ease-in-out, height 0.5s;
+     -->
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+        text-align: center; /* 字体水平居中 */
+        line-height: 100px; /* 行高填满父元素 */
+        color: white; /* 字体颜色为蓝色 */
+        font-weight: bold; /* 字体加粗 */
+
+        /* 1秒钟从蓝色变为红色, 先加速后减速变化, 同时高度在0.5s内变为200px, 函数为默认值ease */
+        transition: background-color 1s ease-in-out, height 0.5s;
+      }
+
+      .box:hover {
+        background-color: red;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+  <div class="box">Hover me</div>
+  </body>
+</html>
