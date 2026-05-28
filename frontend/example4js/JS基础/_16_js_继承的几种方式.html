@@ -26,8 +26,11 @@
       /**
        * 方式2: 构造函数继承
        */
-      // 优点: 解决了方式1中所有Child实例的 __proto__ 都指向同一个Parent对象的问题
-      // 缺陷: 子类无法继承父类的方法, 同时instanceof也无法使用
+      // 使用这种方式, 实际上就是把Parent当做普通函数来用, 而不是当做一个构造函数
+      // 在Child2创建对象的时候, 会获得一个this对象, 然后立马把this和name传递到Parent函数中
+      // 这样在Parent函数中, 就会执行this.name = name 这个代码, 然后给创建的this添加一个name属性
+      // 这样创建出来的child2对象, 实际上只是经过Parent被添加了一个name属性, 实际上这和继承没有半毛钱关系
+      // 无法使用instanceof
       function Child2(name){
         Parent.call(this, name)
       }
@@ -36,12 +39,10 @@
 
       /**
        * 方式3: 组合继承
-       *
-       * 优点: 避免了方式1和方式2的缺点
-       *
-       * 缺点: 子类实例以及子类原型对象上都会存在name属性
-       *      虽然根据原型链机制，并不会访问到原型对象上的同名属性，但总归是不美。
        */
+      // 这种方式和方式2类似, 先把Parent当做普通函数, 在Child3中将this传给Parent函数,
+      // 然后在Parent函数中执行this.name = name 给创建出来的child3对象添加一个name属性
+      // 但是后面的Child3.prototype = new Parent() 又让child3继承了一个Parent对象, 这样会child3对象上面有2个name属性, 尽管其中一个是undefined
       function Child3(name) {
         Parent.call(this, name) // 继承Parent的属性
       }
@@ -58,24 +59,29 @@
        *
        * 缺点: 没啥特别的缺点
        */
-      function inherit(child, parent) {
-        function F(){}
-        F.prototype = parent.prototype
-        var prototype = new F()
-        prototype.constructor = child
-        child.prototype = prototype
-      }
-      // 这个函数的作用可以理解为复制了一份父类的原型对象
-      // 如果直接将子类的原型对象赋值为父类原型对象
-      // 那么修改子类原型对象其实就相当于修改了父类的原型对象
-      function object(o) {
-        function F() {}
-        F.prototype = o;
-        return new F();
-      }
+
+      /**
+       * 这种继承的方式分为两个部分
+       * 第一部分: 继承Parent的属性
+       *        首先通过在Child4中调用Parent函数, 并传入this,
+       *        这样创建出来的child4就会被执行this.name = name, 然后被扩展出来一个name属性
+       * 第二部分, 继承Parent的方法
+       *       创建一个新对象，让这个新对象的原型指向 Parent.prototype，然后把这个新对象赋值给 Child4.prototype
+       *       new Child4() -> Child4.prototype -> new F() ->  Parent.prototype -> Object.prototype -> null
+       *       所以实例可以访问Parent上面的getName方法
+       */
       function Child4(name){
         Parent.call(this, name)
       }
+      function inherit(child, parent) {
+        function F(){}
+        F.prototype = parent.prototype // 这一步让F身上, 有Parent身上的getName函数, 因为他们的prototype都是一样的
+        var prototype = new F() // new F(), 所以new出来的对象身上也有getName函数了
+        prototype.constructor = child
+        child.prototype = prototype // 设置Child的prototype, 所以new出来的child也有getName函数了
+      }
+
+
       inherit(Child4, Parent)
 
       /**

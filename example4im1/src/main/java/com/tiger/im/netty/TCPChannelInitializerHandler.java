@@ -2,8 +2,8 @@ package com.tiger.im.netty;
 
 
 
-import com.tiger.im.HeartbeatRespHandler;
-import com.tiger.im.LoginAuthRespHandler;
+import com.tiger.im.handler.HeartbeatRespHandler;
+import com.tiger.im.handler.LoginAuthRespHandler;
 import com.tiger.im.protobuf.MessageProtobuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

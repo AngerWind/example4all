@@ -3,7 +3,6 @@ package com.tiger.thread.juc.aqs;
 import lombok.SneakyThrows;
 import org.junit.Test;
 
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**

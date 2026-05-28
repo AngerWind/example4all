@@ -105,6 +105,15 @@ public class JDBCTest {
             // !!!!! ResultSet是需要关闭的
             try(ResultSet rs = ps.executeQuery();){
                 while (rs.next()) {
+                    // 在使用rs.getLong, rs.getInt, rs.getFloat等方法获取到数据之后, 一定要通过rs.wasNull方法判断获取到的是不是null
+                    // 因为这些方法会把null转换为0, 这样你就不知道获取到的具体是0还是null
+                    // rs.getInt("id");
+                    // rs.wasNull();
+
+                    // 推荐使用getObject方法, 然后传入对应的包装类型, 这样如果数据为null, 那么你就知道了
+                    // rs.getObject("id", Integer.class);
+
+
                     System.out.printf("name: %s, id: %s\n", rs.getString("name"), rs.getLong("id"));
                 }
             }

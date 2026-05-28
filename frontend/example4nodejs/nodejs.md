@@ -36,8 +36,8 @@ https://blog.csdn.net/WHF__/article/details/129362462
    我们可以使用如下命令来获得prefix的值, 和全局安装包的具体路径
 
    ~~~shell
-   node config get prefix # C:\Users\Administrator\AppData\Roaming\npm
-   node root -g # C:\Users\Administrator\AppData\Roaming\npm\node_module
+   npm config get prefix # C:\Users\Administrator\AppData\Roaming\npm
+   npm root -g # C:\Users\Administrator\AppData\Roaming\npm\node_module
    ~~~
 
    我们可以通过如下方式来设置prefix来修改全局安装的路径
@@ -125,7 +125,7 @@ npm config delete registry # 删除镜像
 npm config get proxy # 查看代理
 npm config get https-proxy
 
-npm config set proxy http://127.0.0.1:7890/ # 设置使用淘宝镜像
+npm config set proxy http://127.0.0.1:7890/ 
 npm config set https-proxy http://127.0.0.1:7890/
 
 npm config delete proxy # 删除镜像
@@ -285,8 +285,15 @@ https://juejin.cn/post/7094576504243224612
 2. 下载nvm
         地址:https://github.com/coreybutler/nvm-windows/releases
 
+    ​    记得下载1.1.12的版本, 不要下载1.2.2版本的, 有bug
+    
 3. 安装nvm, 一直点击下一步即可
-         在这个过程中需要**指定下载的node的保存地址**, 以及nvm的安装路径
+
+    1.  在这个过程中, 需要指定nvm的安装路径
+
+    2. 还需要指定将当前生效的node放在哪里
+
+       
 
 4. 使用`nvm v`查看当前nvm的版本号
 
@@ -305,9 +312,9 @@ https://juejin.cn/post/7094576504243224612
 
 8. `node -v` 查看当前使用的node的版本
 
-8. `nvm ls` 查看当前已经安装的node
+9. `nvm ls` 查看当前已经安装的node
 
-9. `nvm use 14.17.4` 切换到指定的node版本
+10. `nvm use 14.17.4` 切换到指定的node版本
 
 ## nvm设置代理
 

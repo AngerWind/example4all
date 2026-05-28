@@ -27,18 +27,12 @@
     </properties>
     <dependencies>
 
+        <!-- 这个不能设置为provided, 因为集群flink/lib中上没有 -->
         <dependency>
             <!-- Datastream API -->
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-streaming-java</artifactId>
             <version>${flink.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-clients</artifactId>
-            <version>${flink.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -46,10 +40,9 @@
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-runtime-web</artifactId>
             <version>${flink.version}</version>
-            <scope>provided</scope>
         </dependency>
 
-        <!-- flink table api和data stream api 连接需要-->
+        <!-- flink table api和data stream api 连接需要, 可以设置为provided, 因为flink/lib中已经有了 -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-java-bridge</artifactId>
@@ -68,11 +61,35 @@
             <version>${flink.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- table api 和 sql 必须要要有这个依赖, 否则会报错, 之前没发现是因为flink-runtime-web中导入了 -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-clients</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+        <!-- 只要你导入了任何的connector包, 都要导入这个包, 不然报错java.lang.ClassNotFoundException: org.apache.flink.connector.base.source.reader.RecordEmitter -->
+        <!-- 之前没有发现这个问题是因为 flink-connector-kafka 中导入了这个包 -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-base</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+
+
         <!-- flink 自定义的数据格式想要做序列化, 还需要这个包-->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-common</artifactId>
             <version>${flink.version}</version>
+        </dependency>
+
+
+        <!-- flink 读取本地文件的connector, 在flink/lib下已经有了, 所以设置为provided, 但是在本地执行的时候需要 -->
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-files</artifactId>
+            <version>${flink.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -122,6 +139,20 @@
             <groupId>org.apache.bahir</groupId>
             <artifactId>flink-connector-redis_${scala.binary.version}</artifactId>
             <version>1.1.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>flink-streaming-java_2.12</artifactId>
+                    <groupId>org.apache.flink</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>flink-table-api-java</artifactId>
+                    <groupId>org.apache.flink</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>flink-table-api-java-bridge_2.12</artifactId>
+                    <groupId>org.apache.flink</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- flink sink到elasticsearch需要, 该包对应es7, 如果使用的是es6, 需要将elasticsearch7改成elasticsearch6-->
@@ -135,7 +166,7 @@
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-jdbc</artifactId>
-            <version>1.16.3</version>
+            <version>3.1.2-1.17</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -235,8 +266,15 @@
                 </configuration>
             </plugin>
 
-            <!-- We use the maven-shade plugin to create a fat jar that contains all necessary dependencies. -->
-            <!-- Change the value of <mainClass>...</mainClass> if your program entry point changes. -->
+            <!-- 使用shade来打一个fat包, 将所有的依赖都打进去
+
+                 千万不要使用maven-assembly-plugin来打fat包, 因为他的打包逻辑是将所有的jar包都解压, 然后在添加到fat包中
+                 如果多个jar包中都有 META-INF/services/org.apache.flink.table.factories.Factory 这种SPI文件
+                 那么他只会保留找到的第一个, 这样就会有些spi文件丢失, 导致flink无法找到对应的connector
+
+                 如果使用shade来打fat包的话, 通过指定<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                 那么如果发现多个同名的spi文件, 他会进行内容的合并, 这样就不会出现spi文件丢失的问题
+                 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

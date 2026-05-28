@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+
+        .parent {
+            display: grid;
+            /* minmax(xxx, 1fr) 是为了使得屏幕扩大的时候, 1fr不会显示出右侧多余的空白 */
+            /* min(200px, 100%) 是为了让窗口变得非常小的时候, 200px的元素不至于移除, 而是按照100%来缩小 */
+            /* 使用auto-fit 是为了让子元素少于一行的时候, 自动拉伸网格填完屏幕 */
+            --grid-min-col-size: 175px;
+            grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min-col-size), 100%), 1fr));
+            gap: 1rem;
+        }
+
+        div>div {
+            background: #1bc4fb;
+
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="parent">
+    <div>这里是第一</div>
+    <div>这里是第一</div>
+    <div>这里是第一</div>
+    <div>这里是第一</div>
+    <div>这里是第一</div>
+    <div>这里是第一</div>
+    <div>这里是第一</div>
+    <div>这里是第一</div>
+    <div>这里是第一</div>
+    <div>这里是第一</div>
+
+</div>
+</body>
+</html>

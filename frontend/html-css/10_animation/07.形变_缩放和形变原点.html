@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+    <style>
+
+        /*
+          缩放只会影响元素视觉上的大小, 不会改变元素在文档流中的大小
+          默认情况下, 缩放以元素的中心作为中心点进行缩放
+          可以使用transform-origin来修改缩放的中心点
+              center: 默认, 以元素的中心为缩放的中心点
+              top: 中心点在元素上面中间
+              bottom: 中心点在元素下面中间
+              left: 中心点在元素左边中间
+              right: 中心点在元素的右边中间
+              10px, 20px: 中心点在元素的右边10px, 下面20px
+
+          可以使用如下函数来进行缩放:
+              scaleX(x) 水平方向缩放
+              scaleY(y) 垂直方向缩放
+              scale(x, y) 双方向的缩放
+              scale(a) 两个方向都缩放相同倍数
+      */
+
+        .box1 {
+            width: 100px;
+            height: 100px;
+            background-color: #bfa;
+            transition: 2s;
+            margin: 100px auto;
+
+            /* 设置形变的原点在元素的左上角 */
+            transform-origin: 0 0;
+        }
+
+        .box1:hover {
+            transform: scale(2); /* 水平垂直都放大两倍 */
+        }
+
+        .img-wrapper {
+            width: 200px;
+            height: 200px;
+            border: 1px red solid;
+            /* 图片在缩放的过程中如果超过父元素就隐藏 */
+            overflow: hidden;
+        }
+
+        img {
+            transition: 0.2s;
+        }
+
+        .img-wrapper:hover img {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+<div class="box1"></div>
+
+<div class="img-wrapper">
+    <img src="an.jpg" width="100%"/>
+</div>
+</body>
+</html>

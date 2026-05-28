@@ -20,8 +20,8 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class ExecutorServiceFactory {
 
-    private ExecutorService bossPool;// 一个线程池, 负责执行重连任务
-    private ExecutorService workPool;// 一个线程池, 用于执行心跳任务
+    private ExecutorService connectExecutor;// 一个线程池, 负责执行重连任务
+    private ExecutorService heartBeatExecutor;// 一个线程池, 用于执行心跳任务
 
     /**
      * 初始化boss线程池
@@ -38,7 +38,7 @@ public class ExecutorServiceFactory {
      */
     public synchronized void initBossLoopGroup(int size) {
         destroyBossLoopGroup();
-        bossPool = Executors.newFixedThreadPool(size);
+        connectExecutor = Executors.newFixedThreadPool(size);
     }
 
     /**
@@ -56,40 +56,40 @@ public class ExecutorServiceFactory {
      */
     public synchronized void initWorkLoopGroup(int size) {
         destroyWorkLoopGroup();
-        workPool = Executors.newFixedThreadPool(size);
+        heartBeatExecutor = Executors.newFixedThreadPool(size);
     }
 
     /**
      * 执行boss任务
      */
     public void execBossTask(Runnable r) {
-        if (bossPool == null) {
+        if (connectExecutor == null) {
             initBossLoopGroup();
         }
-        bossPool.execute(r);
+        connectExecutor.execute(r);
     }
 
     /**
      * 执行work任务
      */
     public void execWorkTask(Runnable r) {
-        if (workPool == null) {
+        if (heartBeatExecutor == null) {
             initWorkLoopGroup();
         }
-        workPool.execute(r);
+        heartBeatExecutor.execute(r);
     }
 
     /**
      * 释放boss线程池
      */
     public synchronized void destroyBossLoopGroup() {
-        if (bossPool != null) {
+        if (connectExecutor != null) {
             try {
-                bossPool.shutdownNow();
+                connectExecutor.shutdownNow();
             } catch (Throwable t) {
                 log.trace("destroy boss loop group error, e: {}", t.getMessage());
             } finally {
-                bossPool = null;
+                connectExecutor = null;
             }
         }
     }
@@ -98,13 +98,13 @@ public class ExecutorServiceFactory {
      * 释放work线程池
      */
     public synchronized void destroyWorkLoopGroup() {
-        if (workPool != null) {
+        if (heartBeatExecutor != null) {
             try {
-                workPool.shutdownNow();
+                heartBeatExecutor.shutdownNow();
             } catch (Throwable t) {
                 log.error("destroy work loop group error, e: {}", t.getMessage());
             } finally {
-                workPool = null;
+                heartBeatExecutor = null;
             }
         }
     }

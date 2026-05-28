@@ -1,0 +1,43 @@
+package com.tiger._02_datastream._5_transform.basic;
+
+import org.apache.flink.api.common.typeinfo.TypeHint;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.util.Collector;
+import org.junit.Test;
+
+import java.util.Arrays;
+
+public class FlatMap {
+
+    @Test
+    public void flatMap() throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        DataStreamSource<String> source = env.fromElements("a b c", "xx ss gg");
+
+        source.flatMap((String str, Collector<String> collector) -> {
+            Arrays.stream(str.split(" ")).forEach(collector::collect);
+        }).returns(new TypeHint<String>() {}).print();
+
+        env.execute();
+    }
+
+    @Test
+    public void flatMap1() throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        DataStreamSource<String> source = env.fromElements("a b c", "xx ss gg");
+
+        source.flatMap((String str, Collector<String> collector) -> {
+            System.out.println(str);
+            Arrays.stream(str.split(" ")).forEach(collector::collect);
+        }).returns(new TypeHint<String>() {}).print();
+
+        source.flatMap((String str, Collector<String> collector) -> {
+            System.out.println(str);
+            Arrays.stream(str.split(" ")).forEach(collector::collect);
+        }).returns(new TypeHint<String>() {}).print();
+
+
+        env.execute();
+    }
+}

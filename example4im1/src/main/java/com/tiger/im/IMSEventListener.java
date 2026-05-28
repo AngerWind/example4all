@@ -48,9 +48,11 @@ public class IMSEventListener implements OnEventListener {
      */
     @Override
     public boolean isNetworkAvailable() {
+        // 针对安卓设备的, 注释掉
         // ConnectivityManager cm = (ConnectivityManager) NettyChatApp.sharedInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
         // NetworkInfo info = cm.getActiveNetworkInfo();
         // return info != null && info.isConnected();
+
         // todo
         return true;
     }

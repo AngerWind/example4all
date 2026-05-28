@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /**
+            translateZ() 只有在!!!!父级(祖先不行)!!!!!元素 设置了 perspective 时才可见，否则不会有 3D 效果。
+            perspective 的值越小，3D 效果越明显（类似人眼近距离观察）。
+            translateZ(100px) → 元素向人脸移动，变大。
+            translateZ(-100px) → 元素远离人脸移动，变小。
+         */
+        .container {
+            /* 设置当前网页的视距为100px，人眼距离网页的距离 */
+            perspective: 100px;
+        }
+
+        .box1 {
+            width: 20px;
+            height: 20px;
+            background-color: #bfa;
+            /*transition: transform 1s;*/
+            margin: 0 auto;
+        }
+
+        .box1:hover {
+            transform: translateZ(150px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="box1"></div>
+</div>
+
+</body>
+</html>

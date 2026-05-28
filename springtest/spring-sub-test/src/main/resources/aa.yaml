@@ -1,0 +1,47 @@
+global:
+  InputIntervalMs: 1000
+enable: true
+inputs:
+  - Type: input_file
+    FilePaths:
+      - /tmp/aa.log
+
+
+# processors:
+#   - Type: processor_parse_json_native
+#     SourceKey: content
+#
+#   - Type: processor_add_fields
+#     Fields:
+#       app: {{.Values.appname}}
+#       module: {{.Values.module}}
+#       service: {{.Values.watcher.name}}
+#     IgnoreIfExist: true
+#
+#   - Type: processor_rename
+#     SourceKeys:
+#       - "__tag__:__path__"
+#     DestKeys:
+#       - "log_file"
+#
+#   - Type: processor_drop
+#     DropKeys:
+#       - "__time__"
+#   - Type: processor_appender
+#     Key: hostname
+#     Value: {{$_node_name_ } }}
+#
+#
+#   - Type: processor_appender
+#     Key: ip
+#     Value: {{$_node_ip_ }}
+
+flushers:
+  - Type: flusher_stdout
+    OnlyStdout: true
+    Tags: true
+
+  - Type: flusher_stdout
+    OnlyStdout: false
+    Tags: true
+    FileName: /tmp/bb.log

@@ -1,0 +1,1 @@
+{"level":"INFO","ts":"2026-02-06T10:00:06.764Z","caller":"app/main.go:279","msg":"[DELETE FILE]","namespace":"service-software","name":"loongcollector-configmap-watcher-log","module":"logcenter-extension","service":"loongcollector-configmap-watcher","app":"logcenter","__time__":"1770372008"}

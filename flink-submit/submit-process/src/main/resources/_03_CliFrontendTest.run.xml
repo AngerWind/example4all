@@ -1,0 +1,26 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="_03_CliFrontendTest" type="Application" factoryName="Application" nameIsGenerated="true">
+    <classpathModifications>
+      <entry path="J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\lib" />
+    </classpathModifications>
+    <envs>
+      <env name="FLINK_CONF_DIR" value="J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\conf" />
+      <env name="FLINK_BIN_DIR" value="J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\bin" />
+      <env name="FLINK_OPT_DIR" value="J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\opt" />
+      <env name="FLINK_PLUGINS_DIR" value="J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\plugins" />
+      <env name="FLINK_LIB_DIR" value="J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\lib" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="test._03_CliFrontendTest" />
+    <module name="submit-process" />
+    <option name="PROGRAM_PARAMETERS" value="-Dlog.file=file:///J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\log\log1.log -Dlog4j.configuration=file:///J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\conf\log4j-cli.properties -Dlog4j.configurationFile=file:///J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\conf\log4j-cli.properties -Dlogback.configurationFile=file:///J:\desktop-shortcut\example\example4all\flink-submit\submit-process\src\main\resources\flink\conf\logback.xml" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="test.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

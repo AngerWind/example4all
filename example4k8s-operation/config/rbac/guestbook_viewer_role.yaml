@@ -1,0 +1,23 @@
+# permissions for end users to view guestbooks.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: example4k8s-operation
+    app.kubernetes.io/managed-by: kustomize
+  name: guestbook-viewer-role
+rules:
+- apiGroups:
+  - webapp.tiger.com
+  resources:
+  - guestbooks
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - webapp.tiger.com
+  resources:
+  - guestbooks/status
+  verbs:
+  - get

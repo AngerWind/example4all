@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        :root {
+            /* 自定义全局变量, 在任何元素上都可以使用 */
+            --custom-bgcolor: red;
+        }
+        .container {
+            /* 在任何的 .container 元素及其子元素身上都可以使用 */
+            --custom-height: 100px;
+            --custom-width: 100px;
+
+        }
+        .box {
+            /* 使用变量 */
+            width: var(--custom-width);
+            height: var(--custom-height);
+            background: var(--custom-bgcolor);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="box">hello world</div>
+</div>
+
+</body>
+</html>
