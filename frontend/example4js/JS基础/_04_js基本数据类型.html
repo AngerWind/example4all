@@ -16,12 +16,29 @@
          * 其中String Number Boolean Null Undefined属于基本数据类型
          * Object属于引用数据类型
          */
+
+        /**
+         * 默认值一览表
+         * 因为js是动态类型的, 所有没有办法根据类型来推断默认值, 所以他是undefined !!!!!!!!!!!!!!
+         * | 类型    | 未赋值时的默认值 |
+         * |---------|-----------------|
+         * | String  | undefined       |
+         * | Number  | undefined       |
+         * | Boolean | undefined       |
+         * | Null    | undefined       |
+         * | Undefined| undefined      |
+         * | Symbol  | 语法错误        |
+         * | BigInt  | 语法错误        |
+         */
+        var str4 // undefined
+
         /**
          * 字符串
          * - 使用单引号和双引号都可以
          * - 引号不能嵌套
          * - 如果需要在双引号中使用双引号, 请使用转义字符
          */
+        var str3 // undefined
         var str = "hello world"
         var str1 = 'hello world'
         var str2 = '我说: "今天天气真不错"'
@@ -65,7 +82,7 @@
         /**
          * Null: 只有一个值, null
          * - null表示一个空对象
-         * - 使用typeof检测一个null时, 会返回object 
+         * - 使用typeof检测一个null时, 会返回object(历史bug)
          */
         var a = null
         var atype = typeof a // object
@@ -73,7 +90,7 @@
         /**
          * Undefined: 只有一个值, undefined
          * - 当一个变量只是声明但是没有初始化的时候, 他的值就是undefined
-         * - 使用typeof 检测一个undefined时, 会返回undefined
+         * - 使用typeof 检测一个undefined时, 会返回undefined字符串
          */ 
         var un; // undefined
         var untype = typeof un;

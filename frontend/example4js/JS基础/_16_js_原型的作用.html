@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script type="text/javascript">
+
+
+      /**
+       * 原型对象就相当于一个公共的区域, 所有同一个类的实例都可以访问这个原型对象, 我们可以将对象中共有的内容统一设置到原型对象中.
+       *
+       * 当我们访问一个对象的属性和方法时, 他会在自身中查找, 之后去原型中查找, 再之后去原型的原型中查找
+       * 如果到最后都没有找到, 就返回undefined
+       */
+      function Person(name, age, gender) {
+        this.name = name; // 给类添加实例对象
+        this.age = age;
+        this.gender = gender;
+      }
+      // 向Person的原型独享中添加了一个属性, 相当于java中给Person类添加了一个static的属性
+      // 因为所有的Person对象都可以访问到这个color属性
+      Person.prototype.color = "yello";
+
+      // 向Person的原型对象中添加一个方法, 相当与java中给Person类添加了一个方法
+      // 这个方法既可以是普通方法, 因为他可以通过this来访问对象的属性
+      // 也可以是static方法, 因为他可以直接访问原型上的static属性
+      Person.prototype.info = function () {
+        // 即访问实例属性, 又访问static属性
+        return `name: ${this.name}, age: ${this.age}, gender: ${this.gender}, color: ${this.color}`;
+      };
+
+      var person1 = new Person("zhangsan", 12, "男");
+      var person2 = new Person("lisi", 19, "男");
+      console.log(
+        `${Person.prototype === person1.__proto__},
+        ${Person.prototype === person2.__proto__}`
+      ); // true, true
+
+      // 在调用属性或者方法的时候, 如果发现自身没有, 那么会去__proto__ 中查找
+      console.log(person1.info()); // name: zhangsan, age: 12, gender: 男, color: yello
+      console.log(person2.info()); // name: lisi, age: 19, gender: 男, color: yello
+
+      // 使用in判断一个属性是否在一个对象中的时候, 也会去原型中查找
+      console.log("info" in person1); // true
+
+      // 如果需要判断一个属性是否是对象自身拥有的, 可以使用hasOwnProperty
+      console.log(person1.hasOwnProperty("info")); // false
+
+    </script>
+  </head>
+</html>

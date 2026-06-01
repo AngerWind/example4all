@@ -3,56 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <script type="text/javascript">
+
       /**
-       * 我们所创建的每个函数, 解析器都会向函数中添加一个属性prototype
-       * 这个属性对应一个对象, 这个对象就是所谓的原型对象
+       * !!!!!!!!!!!!!!!!!!!!!!!!!!!
+       * 推荐结合同目录下的两个图片来配合理解, 并向ai提问
+       * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       */
+
+      /**
+       * 在JS中, 所有的函数都有一个prototype属性
+       * 他是一个Object类型的对象, 这个对象就是所谓的原型对象
        * 同时prototype上面也有一个属性constructor指向函数自身
        */
       function Dog() {}
-      console.log(Dog.prototype.constructor === Dog)
+      console.log(Dog.prototype instanceof Object) // 原型对象是Object类型
+      console.log(Dog.prototype.constructor === Dog) // 原型对象身上有一个constructor, 指向函数本身
 
       /**
        * 如果函数作为普通函数调用, 那么prototype没有任何作用
        * 当函数以构造函数的形式调用时, 他所创建的每个对象中都有一个隐含的属性 __proto__ 指向该构造函数的prototype对象
-       *
-       * 原型对象就相当于一个公共的区域, 所有同一个类的实例都可以访问这个原型对象, 我们可以将对象中共有的内容统一设置到原型对象中.
-       *
-       * 当我们访问一个对象的属性和方法时, 他会在自身中查找, 之后去原型中查找, 再之后去原型的原型中查找
-       * 如果到最后都没有找到, 就返回undefined
        */
-      function Person(name, age, gender) {
-        this.name = name;
-        this.age = age;
-        this.gender = gender;
-      }
-      // 向Person的原型独享中添加了一个属性, 相当于java中给Person类添加了一个static的属性
-      // 因为所有的Person对象都可以访问到这个color属性
-      Person.prototype.color = "yello";
+      function Apple(){}
+      const app1 = new Apple();
+      const app2 = new Apple();
 
-      // 向Person的原型对象中添加一个方法, 相当与java中给Person类添加了一个方法
-      // 这个方法既可以是普通方法, 因为他可以通过this来访问对象的属性
-      // 也可以是static方法, 因为他可以直接访问原型上的static属性
-      Person.prototype.info = function () {
-        // 即访问实例属性, 又访问static属性
-        return `name: ${this.name}, age: ${this.age}, gender: ${this.gender}, color: ${this.color}`;
-      };
+      console.log(app1.__proto__ === Apple.prototype) // true
+      console.log(app2.__proto__ === Apple.prototype) // true
+      console.log(app1.__proto__ === app2.__proto__) // true
 
-      var person1 = new Person("zhangsan", 12, "男");
-      var person2 = new Person("lisi", 19, "男");
-      console.log(
-        `${Person.prototype === person1.__proto__},
-        ${Person.prototype === person2.__proto__}`
-      ); // true, true
 
-      // 调用方法和属性会去原型对象中查找
-      console.log(person1.info()); // name: zhangsan, age: 12, gender: 男, color: yello
-      console.log(person2.info()); // name: lisi, age: 19, gender: 男, color: yello
+      /**
+       * 同时因为函数也是对象, 所以函数有prototype之外, 也和对象一样有__proto__属性
+       * 你可以认为, 一个函数就是一个Function类型的实例, 只是他们的nativeCode不一样而已
+       */
+      const appleFunction = Apple
+      console.log(appleFunction instanceof Function) // true
+      console.log(Apple.__proto__ === Function.prototype) // true
+      console.log(Dog.__proto__ === Function.prototype) // true
 
-      // 使用in判断一个属性是否在一个对象中的时候, 也会去原型中查找
-      console.log("info" in person1); // true
 
-      // 如果需要判断一个属性是否是对象自身拥有的, 可以使用hasOwnProperty
-      console.log(person1.hasOwnProperty("info")); // false
+      /**
+       * 对于Object函数, 以及他创建出来的object对象, 他们原型指向的是最开始的那个原型
+       * 这个最开始的原型也是一个Object类型的对象, 但是他的__proto__是null, 这和其他的Object类型的对象不一样
+       */
+      console.log(Object.prototype instanceof Object) // true, Object函数的原型是也是Object类型
+      console.log(Object.prototype.__proto__ === null) // true, 这个最开始的原型上面没有别的原型了
+      const obj1 = {}
+      // true, 其他的object的__proto__是有值的,
+      // 但是最开始的原型的__proto__是null, 虽然都是Object类型, 但是这是他们的区别
+      console.log(obj1.__proto__ === Object.prototype)
+
+
+      // !!!!!!!!!!!!!!!!!!!!!!!!!
+      // 具体的可以查看目录下的两个图片
+      // !!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
     </script>
   </head>

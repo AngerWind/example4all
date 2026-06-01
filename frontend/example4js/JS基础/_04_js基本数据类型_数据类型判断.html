@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        /**
+         * JS 类型判断方法
+         */
+
+        /**
+         * 1. typeof - 基本类型判断
+         * - 返回一个字符串，表示值的类型
+         */
+        console.log(typeof "abc");           // "string"
+        console.log(typeof 123);             // "number"
+        console.log(typeof true);            // "boolean"
+        console.log(typeof undefined);      // "undefined"
+        console.log(typeof Symbol());        // "symbol"
+        console.log(typeof 123n);             // "bigint"
+        console.log(typeof {});               // "object"
+        console.log(typeof []);              // "object"
+        console.log(typeof function(){});    // "function"
+
+        // ⚠️ 历史 bug：null 返回 "object"
+        console.log(typeof null);            // "object"
+
+
+        /**
+         * 2. instanceof - 对象类型判断
+         * - 判断对象是否是某个构造函数的实例
+         * - 不能判断基本类型
+         */
+        console.log([] instanceof Array);        // true
+        console.log([] instanceof Object);        // true
+        console.log({} instanceof Object);        // true
+        console.log(new Date() instanceof Date);  // true
+
+        // 基本类型返回 false
+        console.log("abc" instanceof String);    // false
+        console.log(123 instanceof Number);       // false
+
+
+        /**
+         * 3. Array.isArray() - 数组专属判断
+         * - 最可靠判断数组的方法
+         */
+        console.log(Array.isArray([]));           // true
+        console.log(Array.isArray({}));           // false
+        console.log(Array.isArray("abc"));         // false
+
+
+        /**
+         * 4. Object.prototype.toString.call() - 精确判断
+         * - 返回 "[object Type]" 格式的字符串
+         * - 最全面的类型判断方法
+         */
+        console.log(Object.prototype.toString.call(123));      // "[object Number]"
+        console.log(Object.prototype.toString.call("abc"));     // "[object String]"
+        console.log(Object.prototype.toString.call(true));      // "[object Boolean]"
+        console.log(Object.prototype.toString.call([]));        // "[object Array]"
+        console.log(Object.prototype.toString.call({}));        // "[object Object]"
+        console.log(Object.prototype.toString.call(null));       // "[object Null]"
+        console.log(Object.prototype.toString.call(undefined)); // "[object Undefined]"
+        console.log(Object.prototype.toString.call(new Date())); // "[object Date]"
+        console.log(Object.prototype.toString.call(function(){})); // "[object Function]"
+
+
+        /**
+         * 实用封装函数
+         */
+        function getType(value) {
+            // 先排除 null
+            if (value === null) return "null";
+
+            // 使用 toString 判断
+            const type = Object.prototype.toString.call(value);
+            // 提取类型名称，如 "[object Array]" -> "Array"
+            return type.slice(8, -1).toLowerCase();
+        }
+
+        console.log(getType(123));           // "number"
+        console.log(getType("abc"));         // "string"
+        console.log(getType([]));            // "array"
+        console.log(getType({}));            // "object"
+        console.log(getType(null));           // "null"
+        console.log(getType(undefined));     // "undefined"
+        console.log(getType(function(){}));  // "function"
+    </script>
+</head>
+
+</html>

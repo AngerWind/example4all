@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        /**
+         * ES6 新增的原始数据类型
+         */
+
+        /**
+         * Symbol
+         * - 表示独一无二的值
+         * - 用于创建对象的唯一属性键
+         */
+        let s1 = Symbol('id');
+        let s2 = Symbol('id');
+        console.log(s1 === s2); // false
+        console.log(typeof s1); // "symbol"
+
+        // 用作对象属性
+        const obj = {
+            [s1]: 'value1',
+            [s2]: 'value2'
+        };
+
+        // Symbol 不会出现在 for...in 和 Object.keys() 中
+        // 需要用 Object.getOwnPropertySymbols() 获取
+
+
+        /**
+         * BigInt
+         * - 表示大于 Number.MAX_SAFE_INTEGER 的整数
+         * - Number.MAX_SAFE_INTEGER = 9007199254740991
+         */
+        const bigNum = 9007199254740993n;
+        const bigNum2 = BigInt(9007199254740993);
+        console.log(typeof bigNum); // "bigint"
+
+        // BigInt 运算
+        const sum = 100n + 200n; // 300n
+        const product = 10n * 5n; // 50n
+
+        // BigInt 不能和 Number 混合运算
+        // 100n + 100  // TypeError
+
+
+
+    </script>
+</head>
+
+</html>
