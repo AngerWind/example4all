@@ -471,136 +471,445 @@ nvm npm_mirror <npm_mirror_url> # 设置npm镜像。
 
 ## CommonJS标准
 
-在CommonJS标准中, 可以使用`request()`来导入一个文件
 
-- 使用相对路径, `.js`后缀可以省略
 
-- 这会执行a.js文件, 并使用`module.exports`作为返回值, 同时`exports = module.exports`
+### 简单使用
 
-  ~~~js
-  var a = require("./a.js"); 
-  ~~~
+在CommonJS中, 你可以使用module.exports 或者 exports来导出变量
 
-- 在执行a.js的时候, 会将文件中的代码放到一个函数中执行
-
-  ~~~js
-  function (exports, require, module, __filename, __dirname) {
-      // 将a文件的内容放到其中
-  }
-  ~~~
-
-  可以通过如下的方式来打印这个函数
-
-  ~~~js
-  // a.js.js
-  console.log(arguments.callee + "") // 输出当前函数本身的代码
-  
-  // b.js
-  require("./b.js")
-  ~~~
-
-- 导出变量其实就是设置`module.exports`参数
-
-  1. 方式1
-
-     ~~~js
-     function test() {
-         console.log("test-a.js.file")
-     }
-     module.exports = test // 直接将module.export设置为test函数
-     
-     // 不能使用 exports = test来导出test, 虽然exports和module.exports指向同一个对象
-     // 但是exports = xxx并不会导致module.export修改, 因为是引用类型
-     // 但是可以使用export.xxx = test会导致module.export修改
-     ~~~
-
-     后续使用如下方式来使用该文件
-
-     ~~~js
-     var test = require("./a.js")
-     test()
-     ~~~
-
-  2. 方式2
-
-     ~~~js
-     // 如果需要一次性导出多个对象, 可以将这些对象打包为一个对象
-     var test = "xxx"
-     var upper = "xxx"
-     module.exports = {
-          test: test,
-          upper: upper
-     }
-     
-     // 上面的方法可以使用es6的对象简写形式
-     // moudle.exports = {
-     //     test,
-     //     upper
-     // }
-     
-     // 还可以使用这种方式将要导入的对象作为exports的属性
-     module.exports.test = test;
-     module.upper = upper;
-     
-     // 还可以使用如下方式导出
-     exports.test = test;
-     ~~~
-
-     后续使用如下方式来使用
-
-     ~~~js
-     var b = require("./b")
-     console.log(b.test)
-     
-     // 或者通过解构赋值
-     var {test, upper} = require("./b.js")
-     
-     // 结构赋值的时候还可以重命名变量
-     var {test:test1, upper:upper1} = require("./b.js")
-     ~~~
-
-- 多次导入只会执行一次文件
-
-  ~~~js
-  // a.js.js
-  console.log("hello")
-  
-  // b.js
-  var a = require("./a.js")
-  
-  // main.js
-  var a = require("./a.js") // 执行a文件
-  var b = require("./b") // 执行b文件的时候, 再次require a文件, 不会执行
-  ~~~
-
-## 依赖的版本号说明
-
-在nodejs中, 每个模块都有版本号, 一般是三个数字   `主版本号.副版本号.补丁号(majro.minor.patch)`
+**exports实际上就是module.exports (exports = module.exports)**
 
 ~~~js
-范围指定: 使用< <= > >=
-     >=1.2.7 <1.3 表示只能使用大于等于1.2.7小于1.3.0的版本
-     =1.2.7, 1.2.7  表示只能使用1.2.7版本
-横杆:
-     1.2.3 - 2.3.4 表示 >=1.2.3 <=2.3.4
-     1.2 - 2.3.4 表示 >=1.2.0 <=2.3.4
-     1.2.3 - 2.3 表示 >=1.2.3 <2.4.0
-     1.2.3 - 2 表示 >=1.2.3 <3.0.0
-波浪号:
-     只能修改最后一个非零的数字
-     ~1.2.3 表示 >=1.2.3 <1.3.0
-     ~1.2 表示 >=1.2.0 <1.3.0
-     ~0.2 表示 >=0.2.0 <0.3.0
-     ~1 表示 >=1.0.0 <2.0.0
-     ~0表示 >=0.0.0 <1.0.0
-尖括号:
-     固定左侧第一个非零数字
-     ^1.2.3 := >=1.2.3 <2.0.0
-     ^0.2.3 := >=0.2.3 <0.3.0
-     ^0.0.3 := >=0.0.3 <0.0.4
+// math.js
+ function add(a, b) {
+      return a + b;
+  }
+
+  function multiply(a, b) {
+      return a * b;
+  }
+
+  const PI = 3.14159;
+
+// 方式1
+module.exports = {
+      add: add,
+      multiply: multiply,
+      PI: PI
+};
+
+// 上面的方法可以使用es6的对象简写形式
+// moudle.exports = {
+//     test,
+//     upper
+// }
+
+// 方式2 还可以使用这种方式将要导入的对象作为exports的属性
+module.exports.add = add;
+module.exports.multiply = multiply;
+module.exports.PI = PI;
+
+
+// 方式3
+exports.add = add;
+exports.multiply = multiply;
+exports.PI = PI;
+// 不能使用 exports = test来导出test, 虽然exports和module.exports指向同一个对象
+// 但是exports = xxx并不会导致module.export修改, 因为是引用类型
+// 但是可以使用export.xxx = test会导致module.export修改
 ~~~
 
 
+
+之后你可以使用如下的方式来导入
+
+~~~js
+// main.js
+
+
+// 使用reqire函数来进行导入
+// 使用相对路径, 相对的是require的文件, 而不是项目根目录
+// js后缀可以省略
+const math = require('./math'); 
+console.log(math.add(1, 2));     
+console.log(math.multiply(3, 4)); 
+console.log(math.PI); 
+
+// 你也可以使用绝对路径, 他是相对于项目磁盘根目录的, 而不是项目根目录
+// 如果你的项目在D盘, 那么回去查找 D:\a.js
+const aa = require("/a")
+
+// 当然也可以在导入的时候进行结构赋值
+const {add, multiply} = require('./math')
+
+// 在解构赋值的时候, 可以重命名
+const {add: add1, multiply: multiply1} = require("./math")
+~~~
+
+
+
+
+
+### 其他场景
+
+1. 导出单个变量
+
+   ~~~js
+   // 如果你只想到处一个变量的话, 那么可以使用以下这种方式
+   function test() {
+       console.log("test-a.js.file")
+   }
+   module.exports = test // 直接将module.export设置为test函数
+   ~~~
+
+   后续使用如下方式来使用该文件
+
+   ~~~js
+   var test = require("./a.js")
+   test()
+   ~~~
+
+2. 如果你想导出一个类, 那么可以使用如下的方式
+
+   ~~~js
+   // user.js
+     class User {
+         constructor(name) {
+             this.name = name;
+         }
+         greet() {
+             return `你好, ${this.name}`;
+         }
+     }
+   
+     module.exports = User;
+   
+     // main.js
+     const User = require('./user');
+     const u = new User('张三');
+     console.log(u.greet());  // "你好, 张三"
+   ~~~
+
+3. 你也可以导出一个实例
+
+   ~~~js
+   // config.js
+     class Config {
+         constructor() {
+             this.apiUrl = 'https://api.example.com';
+             this.timeout = 5000;
+         }
+     }
+   
+     module.exports = new Config();  // 导出实例
+   
+     // main.js
+     const config = require('./config');
+     console.log(config.apiUrl);  // 直接用，不需要 new
+   ~~~
+
+4. 有条件的导出
+
+   ~~~js
+   // 根据环境导出不同模块
+     if (process.env.NODE_ENV === 'production') {
+         module.exports = require('./prod');
+     } else {
+         module.exports = require('./dev');
+     }
+   ~~~
+
+
+
+### 动态导入
+
+CommonJS支持动态的导入, 即只在你需要使用的时候, 进行导入
+
+~~~js
+// main.js
+
+  async function loadModule() {
+      // 动态 require, 根据命令行来导入
+      const path = process.argv[2] || './math';
+      const module = require(path);
+      console.log(module.add(1, 2));
+  }
+
+  loadModule();
+~~~
+
+然后通过一下的方式进行执行
+
+~~~shell
+  node main.js ./math  # 传入模块路径
+~~~
+
+
+
+### 导出的原理
+
+实际上你在调用 `require("./a")`的时候, node会拿到a.js中的内容, 然后放到一个函数中
+
+~~~js
+function (exports, require, module, __filename, __dirname) {
+    // 将a文件的内容放到其中
+}
+~~~
+
+然后<font color=red>**同步**</font>去执行这个函数, 所以你在文件中, 可以访问到`exports`, `module`, `__filename`, `__dirname`, 并且exports就是module.exports
+
+函数执行完之后, nodejs会将module.exports作为结果, 导出出去
+
+
+
+**如果你多次require同一个文件, 那么只有第一次的时候会执行**, 然后将结果缓存起来, 后续require都直接返回module.exports
+
+
+
+### 循环引用的问题
+
+~~~js
+ // a.js
+  console.log('a 开始');
+  const b = require('./b');
+  console.log('a 结束, b.msg:', b.msg);
+
+  // b.js
+  console.log('b 开始');
+  const a = require('./a');
+  console.log('b 结束, a.msg:', a.msg);
+  module.exports = { msg: '来自 b' };
+
+  node a.js
+
+  输出：
+  a 开始
+  b 开始
+  b 结束, a.msg: undefined  // a 还没执行完，所以是 undefined
+  a 结束, b.msg: 来自 b
+
+  结论：循环引用可能导致部分属性为 undefined，设计时应避免。
+~~~
+
+
+
+
+
+### 模块的搜索路径
+
+在使用第三方模块的时候, 你首先需要安装第三方模块
+
+~~~shell
+# 安装并记录到package.json的dependencies中
+npm install express (默认等同于--save)
+npm install --save lodash
+npm install --S lodash
+
+# 安装并记录到package.json的devDependencies中
+npm install --save-dev jest
+npm install --D jest
+
+# 安装并记录到package.json的optionalDependencies中
+npm install --save-optional jest
+npm install --O jest
+~~~
+
+上面命令会将模块安装到node_modules目录下
+
+
+
+
+
+然后你在nodejs中使用`const express = require('express');`导入,  那么nodejs
+
+1. 查看是不是内置的fs, path, http这些模块, 如果是的话直接从sdk中查找
+
+2. 如果是相对路径`require("./a")`, 那么会去根据**当前require的脚本的相对路径**去查找对应的
+
+3. 如果是绝对路径`require("/a")`, 那么将**当前项目所在的磁盘作为根目录**, 进行查找
+
+4. 否则他会在当前目录下的`node_module`文件夹中查找对应的模块, 
+
+5. 如果还是没有, 那么会在父目录下的`node_module`中查找,  一直向上查找到磁盘根目录下的`node_module`中
+
+6. 如果还是没有, 那么会去`NODE_PATH`环境变量中查找
+
+7. 如果查找到的是js文件, 那么会执行他, 然后将module.exports作为结果进行导出
+
+   如果查找到的是目录, 那么会去模块下的package.json中查找`main`字段指定的文件, 执行他并进行导出
+
+   ~~~json
+   // package.json
+   {
+     "name": "hello",
+     "version": "1.0.0",
+     "description": "",
+     "main": "./dist/main.js", // 使用require, 引入了hello模块就相当于引入了main.js
+   }
+   ~~~
+
+   如果模块中没有package.json, 或者json中没有指定main/module字段, 那么就会执行目录下的`index.js`, 将module.exports进行导出
+
+   否则导出失败
+
+
+
+### 本地公共模块的导入
+
+如果你本地有公共的模块, 但是不打算将公共模块发布到npm, 有以下几种方式在项目中导入本地公共依赖
+
+#### 方式1：npm link（推荐）
+
+创建公共模块
+
+```
+shared/
+├── package.json
+└── index.js
+```
+
+~~~json
+// shared/package.json
+{
+  "name": "my-shared",
+  "version": "1.0.0",
+  "main": "index.js"
+}
+~~~
+
+~~~js
+// shared/index.js
+function add(a, b) { return a + b; }
+function multiply(a, b) { return a * b; }
+module.exports = { add, multiply };
+~~~
+
+链接到全局
+
+~~~shell
+cd shared
+npm link        # 注册到全局
+~~~
+
+在项目中使用
+
+~~~shell
+cd ../project
+npm link my-shared   # 链接到项目
+~~~
+
+~~~js
+// 项目中使用，和第三方包一样
+const { add } = require('my-shared');
+~~~
+
+取消链接
+
+~~~shell
+cd project
+npm unlink my-shared
+
+cd shared
+npm unlink
+~~~
+
+
+
+#### 方式三：package.json 本地路径（推荐）
+
+```
+projects/
+├── shared/
+│   ├── package.json
+│   └── index.js
+└── my-app/
+    ├── package.json
+    └── main.js
+```
+
+~~~json
+// my-app/package.json
+{
+  "name": "my-app",
+  "dependencies": {
+    "my-shared": "file:../shared"
+  }
+}
+~~~
+
+~~~shell
+cd my-app
+npm install    # 自动把 shared 复制到 node_modules
+~~~
+
+~~~js
+// my-app/main.js
+const { add } = require('my-shared');  // 和正常包一样用
+~~~
+
+优点：写法规范，别人拿到项目 `npm install` 就能装好
+
+缺点：修改 shared 后需要重新 `npm install`
+
+
+
+#### 方式四：workspace（monorepo 推荐）
+
+```
+my-project/
+├── package.json          # 根目录
+├── packages/
+│   ├── shared/           # 公共模块
+│   │   ├── package.json
+│   │   └── index.js
+│   ├── server/           # 后端项目
+│   │   ├── package.json
+│   │   └── main.js
+│   └── web/              # 前端项目
+│       ├── package.json
+│       └── main.js
+```
+
+~~~json
+// 根目录 package.json
+{
+  "name": "my-project",
+  "private": true,
+  "workspaces": ["packages/*"]
+}
+~~~
+
+~~~json
+// packages/shared/package.json
+{
+  "name": "my-shared",
+  "version": "1.0.0",
+  "main": "index.js"
+}
+~~~
+
+~~~json
+// packages/server/package.json
+{
+  "name": "server",
+  "dependencies": {
+    "my-shared": "1.0.0"
+  }
+}
+~~~
+
+~~~shell
+# 根目录一次性安装
+cd my-project
+npm install
+~~~
+
+~~~js
+// packages/server/main.js
+const { add } = require('my-shared');  // 直接用
+~~~
+
+优点：改 shared 代码立即生效，不用重新安装
 
 
 
@@ -793,34 +1102,38 @@ export {aa, bb} from "other.js"
 
 
 
-## 模块的搜索路径
+## 依赖的版本号说明
 
-1. 如果我们导入的是核心模块, 那么nodejs会直接从sdk中加载
+在nodejs中, 每个模块都有版本号, 一般是三个数字   `主版本号.副版本号.补丁号(majro.minor.patch)`
 
-2. 如果是以`/`, `./`, `../`开头, 那么他会根据路径去查找对应的模块, .js文件
+~~~js
+范围指定: 使用< <= > >=
+     >=1.2.7 <1.3 表示只能使用大于等于1.2.7小于1.3.0的版本
+     =1.2.7, 1.2.7  表示只能使用1.2.7版本
+横杆:
+     1.2.3 - 2.3.4 表示 >=1.2.3 <=2.3.4
+     1.2 - 2.3.4 表示 >=1.2.0 <=2.3.4
+     1.2.3 - 2.3 表示 >=1.2.3 <2.4.0
+     1.2.3 - 2 表示 >=1.2.3 <3.0.0
+波浪号:
+     只能修改最后一个非零的数字
+     ~1.2.3 表示 >=1.2.3 <1.3.0
+     ~1.2 表示 >=1.2.0 <1.3.0
+     ~0.2 表示 >=0.2.0 <0.3.0
+     ~1 表示 >=1.0.0 <2.0.0
+     ~0表示 >=0.0.0 <1.0.0
+尖括号:
+     固定左侧第一个非零数字
+     ^1.2.3 := >=1.2.3 <2.0.0
+     ^0.2.3 := >=0.2.3 <0.3.0
+     ^0.0.3 := >=0.0.3 <0.0.4
+~~~
 
-3. 否则他会在当前目录下的`node_module`文件夹中查找对应的模块, 
 
-4. 如果还是没有, 那么会在父目录下的`node_module`中查找,  一直向上查找到磁盘根目录下的`node_module`中
 
-5. 如果还是没有, 那么会去`NODE_PATH`环境变量中查找
 
-6. 如果查找到的是js文件, 那么会执行他
 
-   如果查找到的是模块, 那么会去模块下的package.json中查找`main/module`指定的文件, 然后导入他
 
-   ~~~json
-   // package.json
-   {
-     "name": "hello",
-     "version": "1.0.0",
-     "description": "",
-     "main": "./dist/main.js", // 使用require, 引入了hello模块就相当于引入了main.js
-       "module": "./dist/main.ems.js" // 使用es6的import语法, 那么会使用这个字段
-   }
-   ~~~
-
-   如果模块中没有package.json, 或者json中没有指定main/module字段, 那么就会导入目录下的`index.js`
 
 # Promise
 
@@ -956,8 +1269,17 @@ const p2 = p1.then((data) => {
     
 }) // p1的then方法中也没有处理异常, 那么p2也会跟随p1, PromiseState也会转为rejected, PromiseValue转为"err"
 
-// p2没有后续的处理了, 那么就会抛出异常
-// 并且这个异常用try catch没有办法捕获, 因为状态的转换和异常的抛出都是异步的
+
+// 如果p2后续没有操作了, 没有处理这个异常的话
+//     如果是在浏览器中, 会打印(node:12345) UnhandledPromiseRejectionWarning: Unhandled promise rejection的警告
+//     但是不会影响后续代码的执行
+//     如果是在nodejs中, 如果没有处理这个异常, 会直接导致nodejs进程退出, 并打印
+//     node:internal/process/promises:392
+//          new UnhandledPromiseRejection(reason);
+//     所以这个异常还说很重要的, 必须要处理掉
+
+// 但是如果要处理这个异常的话, 使用普通的try-catch是没有办法捕获的
+// 因为状态的转换和异常都是异步的
 try {
     const p2 = p1.then((data) => {
         
@@ -968,7 +1290,7 @@ try {
 }
 ~~~
 
-如果想要不抛出异常, 就要在then的第二个参数中捕获异常, 或者调用catch方法来处理异常
+如果你想要感知到这个异常, 就要在then的第二个参数中捕获异常, 或者调用catch方法来处理异常
 
 ~~~js
 // 方式1
@@ -1000,6 +1322,28 @@ cosnt p4 = p3.then((data) => {})
 
 
 
+Promise还有一个finally方法, 不管是成功还说异常, 都会执行, 一般放在逻辑的最后
+
+~~~js
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject("err")
+            }, 1000)
+        }).then(value => {
+            console.log(value);
+        }).catch(reason => {
+            console.log(reason);
+        }).finally(() => {
+            console.log("finally")
+        })
+~~~
+
+
+
+
+
+
+
 ## promise解决回调地狱
 
 在promise以前, 如果我们要处理异步操作的结果, 就必须在回调函数中处理
@@ -1015,7 +1359,6 @@ fs.readFile("a.md", (err, data) => {
         // 第二个异步操作的结果出来了, 执行第三个异步操作
     	fs.readFile("c.md", (err, data) => {
     		console.log(data)
-    
 		})
 	})
 })
@@ -1029,7 +1372,7 @@ new Promise((resolve, reject) => {
 		resolve(data)
     })
 }).then((data => {
-    console.log(data)// 处理上一步的结果
+    console.log(data) // 处理上一步的结果
     // 设置下一步的任务
     return new Promise((resolve, reject) => {
 		fs.readFile("b.md", (err, data) => {
@@ -1067,7 +1410,7 @@ new Promise((resolve, reject) => {
 	// 第四步骤
 }).catch(err => {
     console.log(err) // 处理异常
-}
+}).finally(() => {})
          
 // 方式2
 new Promise((resolve, reject) => {
@@ -1078,6 +1421,7 @@ new Promise((resolve, reject) => {
     .then((data) => {}, err=> {}))
     .then((data) => {}, err=> {})
     .then((data) => {}, err=> {})
+	.finally(() => {})
 
 // 方式3
 new Promise((resolve, reject) => {
@@ -1088,6 +1432,7 @@ new Promise((resolve, reject) => {
     .then((data) => {}).catch(err=> {})
     .then((data) => {}).catch(err=> {})
     .then((data) => {}).catch(err=> {})
+	.finally(() => {})
 ~~~
 
 
@@ -1448,7 +1793,7 @@ for (let value of gen1()) {
 
 
 
-## 使用生成器来迭代对象
+## 使用生成器来创建迭代器
 
 如果需要一个对象能够使用`for...of`, 那么该对象需要有一个名叫`Symbol.iterator`的属性, 
 该属性是一个函数, 调用`[Symbol.iterator]`返回一个迭代器对象, 
@@ -1524,7 +1869,7 @@ for (let v of banji) {
 
 ## async
 
-async用来标识一个函数, 调用该函数会返回一个Promise, Promise的状态根据返回值来决定
+async用来标识一个函数, 调用该函数会返回一个Promise, 而不是像其他还说一样返回一个其他类型的值, Promise的状态根据返回值来决定
 
 - 返回值是非 Promise 类型的对象, Promise的PromiseState为resolved, PromiseResult为返回值
 - 返回值是 Promise 对象, Promise的状态和结果与返回的Promise一样
@@ -1561,7 +1906,7 @@ async用来标识一个函数, 调用该函数会返回一个Promise, Promise的
 
 await表示等待一个async函数的结果, 所以右侧的表达式一般为 promise 对象(async函数的执行结果), 但也可以是其它的值
 
-await 只能在async函数中使用, 但是async函数中可以没有await
+**await 只能在async函数中使用**, 但是async函数中可以没有await
 
 - 如果await后面的promise成功了, 那么await会返回promise的PromiseResult
 
@@ -1588,7 +1933,7 @@ async function main() {
 
     //3. 如果promise是失败的状态
     try {
-        let res3 = await await new Promise((resolve, reject) => {
+        let res3 = await new Promise((resolve, reject) => {
             reject("Error");
         });
     } catch (e) {
@@ -1618,6 +1963,36 @@ fs.readFile('./resource/1.html', (err, data1) => {
 });
 ~~~
 
+使用promise改写
+
+~~~js
+  const fs = require('fs').promises;  // Node.js 内置 Promise 版本
+
+  function readFilePromise(path) {
+      return fs.readFile(path, 'utf8');
+  }
+
+  readFilePromise('./resource/1.html')
+      .then(data1 => {
+          return readFilePromise('./resource/2.html')
+              .then(data2 => {
+                  return readFilePromise('./resource/3.html')
+                      .then(data3 => {
+                          console.log(data1 + data2 + data3);
+                      });
+              });
+      });
+
+readFilePromise('./resource/1.html')
+.then(data1 => readFilePromise('./resource/2.html'))
+.then(data2 => readFilePromise('./resource/3.html'))
+.then(data3 => {
+    
+})
+~~~
+
+
+
 而如果使用async和await的方式
 
 ~~~js
@@ -1635,13 +2010,42 @@ async function main(){
         let data2 = await mineReadFile('./resource/2.html');
         let data3 = await mineReadFile('./resource/3.html');
         console.log(data1 + data2 + data3);
-    }catch(e){
+    } catch(e) {
         console.log(e.code);
     }
 }
 
 main();
 ~~~
+
+并行读取
+
+~~~js
+const fs = require('fs').promises;
+
+  async function readFiles() {
+      // 三个文件同时读取，速度更快
+      const [data1, data2, data3] = await Promise.all([
+          fs.readFile('./resource/1.html', 'utf8'),
+          fs.readFile('./resource/2.html', 'utf8'),
+          fs.readFile('./resource/3.html', 'utf8')
+      ]);
+
+      console.log(data1 + data2 + data3);
+  }
+
+  async function main() {
+      try {
+          readFiles();
+      } catch (e) {
+          console.log(e.code);
+      }
+  }
+~~~
+
+
+
+
 
 ### 网络请求
 
@@ -2131,16 +2535,6 @@ https://www.bilibili.com/video/BV1K4411D7Jb/?spm_id_from=333.337.search-card.all
    ~~~
 
    
-
-
-
-
-
-
-
-
-
-
 
 ## 总结
 

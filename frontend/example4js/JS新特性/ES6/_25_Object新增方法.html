@@ -12,7 +12,7 @@
         //1. Object.is 判断两个值是否完全相等 
         console.log(Object.is(120, 120)); // true
         console.log(Object.is(NaN, NaN)); // true
-        console.log(NaN === NaN); // false
+        console.log(NaN === NaN); // false, NaN和任何值都不相等
 
         //2. Object.assign(target, source) 将source所有属性赋值给target, 
         const config1 = {

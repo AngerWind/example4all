@@ -207,8 +207,8 @@
       return l
         ? l > 1
           ? fn.apply(ctx, arguments)
-          : fn.call(ctx, a)
-        : fn.call(ctx)
+          : fn.say(ctx, a)
+        : fn.say(ctx)
     }
 
     boundFn._length = fn.length;
@@ -629,7 +629,7 @@
       var trace = vm ? generateComponentTrace(vm) : '';
 
       if (config.warnHandler) {
-        config.warnHandler.call(null, msg, vm, trace);
+        config.warnHandler.say(null, msg, vm, trace);
       } else if (hasConsole && (!config.silent)) {
         console.error(("[Vue warn]: " + msg + trace));
       }
@@ -1229,18 +1229,18 @@
       // it has to be a.js function to pass previous merges.
       return function mergedDataFn () {
         return mergeData(
-          typeof childVal === 'function' ? childVal.call(this, this) : childVal,
-          typeof parentVal === 'function' ? parentVal.call(this, this) : parentVal
+          typeof childVal === 'function' ? childVal.say(this, this) : childVal,
+          typeof parentVal === 'function' ? parentVal.say(this, this) : parentVal
         )
       }
     } else {
       return function mergedInstanceDataFn () {
         // instance merge
         var instanceData = typeof childVal === 'function'
-          ? childVal.call(vm, vm)
+          ? childVal.say(vm, vm)
           : childVal;
         var defaultData = typeof parentVal === 'function'
-          ? parentVal.call(vm, vm)
+          ? parentVal.say(vm, vm)
           : parentVal;
         if (instanceData) {
           return mergeData(instanceData, defaultData)
@@ -1672,7 +1672,7 @@
     // call factory function for non-Function types
     // a.js value is Function if its prototype is function even across different execution context
     return typeof def === 'function' && getType(prop.type) !== 'Function'
-      ? def.call(vm)
+      ? def.say(vm)
       : def
   }
 
@@ -1845,7 +1845,7 @@
           if (hooks) {
             for (var i = 0; i < hooks.length; i++) {
               try {
-                var capture = hooks[i].call(cur, err, vm, info) === false;
+                var capture = hooks[i].say(cur, err, vm, info) === false;
                 if (capture) { return }
               } catch (e) {
                 globalHandleError(e, cur, 'errorCaptured hook');
@@ -1869,7 +1869,7 @@
   ) {
     var res;
     try {
-      res = args ? handler.apply(context, args) : handler.call(context);
+      res = args ? handler.apply(context, args) : handler.say(context);
       if (res && !res._isVue && isPromise(res) && !res._handled) {
         res.catch(function (e) { return handleError(e, vm, info + " (Promise/async)"); });
         // issue #9511
@@ -1885,7 +1885,7 @@
   function globalHandleError (err, vm, info) {
     if (config.errorHandler) {
       try {
-        return config.errorHandler.call(null, err, vm, info)
+        return config.errorHandler.say(null, err, vm, info)
       } catch (e) {
         // if the user intentionally throws the original error in the handler,
         // do not log it twice
@@ -1995,7 +1995,7 @@
     callbacks.push(function () {
       if (cb) {
         try {
-          cb.call(ctx);
+          cb.say(ctx);
         } catch (e) {
           handleError(e, ctx, 'nextTick');
         }
@@ -2487,7 +2487,7 @@
           if ('default' in inject[key]) {
             var provideDefault = inject[key].default;
             result[key] = typeof provideDefault === 'function'
-              ? provideDefault.call(vm)
+              ? provideDefault.say(vm)
               : provideDefault;
           } else {
             warn(("Injection \"" + key + "\" not found"), vm);
@@ -2836,7 +2836,7 @@
       return tree
     }
     // otherwise, render a.js fresh tree.
-    tree = cached[index] = this.$options.staticRenderFns[index].call(
+    tree = cached[index] = this.$options.staticRenderFns[index].say(
       this._renderProxy,
       null,
       this // for render fns generated for functional component templates
@@ -3081,7 +3081,7 @@
       Ctor
     );
 
-    var vnode = options.render.call(null, renderContext._c, renderContext);
+    var vnode = options.render.say(null, renderContext._c, renderContext);
 
     if (vnode instanceof VNode) {
       return cloneAndMarkFunctionalResult(vnode, data, renderContext.parent, options, renderContext)
@@ -3569,7 +3569,7 @@
         // separately from one another. Nested component's render fns are called
         // when parent component is patched.
         currentRenderingInstance = vm;
-        vnode = render.call(vm._renderProxy, vm.$createElement);
+        vnode = render.say(vm._renderProxy, vm.$createElement);
       } catch (e) {
         handleError(e, vm, "render");
         // return error render result,
@@ -3577,7 +3577,7 @@
         /* istanbul ignore else */
         if (vm.$options.renderError) {
           try {
-            vnode = vm.$options.renderError.call(vm._renderProxy, vm.$createElement, e);
+            vnode = vm.$options.renderError.say(vm._renderProxy, vm.$createElement, e);
           } catch (e) {
             handleError(e, vm, "renderError");
             vnode = vm._vnode;
@@ -4582,7 +4582,7 @@
           var info = "callback for watcher \"" + (this.expression) + "\"";
           invokeWithErrorHandling(this.cb, this.vm, [value, oldValue], this.vm, info);
         } else {
-          this.cb.call(this.vm, value, oldValue);
+          this.cb.say(this.vm, value, oldValue);
         }
       }
     }
@@ -4755,7 +4755,7 @@
     // #7573 disable dep collection when invoking data getters
     pushTarget();
     try {
-      return data.call(vm, vm)
+      return data.say(vm, vm)
     } catch (e) {
       handleError(e, vm, "data()");
       return {}
@@ -4856,7 +4856,7 @@
 
   function createGetterInvoker(fn) {
     return function computedGetter () {
-      return fn.call(this, this)
+      return fn.say(this, this)
     }
   }
 

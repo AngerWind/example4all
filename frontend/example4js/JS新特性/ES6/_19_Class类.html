@@ -13,34 +13,75 @@
          * es5定义一个类
          */
         function Phone(brand, price) {
-            this.brand = brand;
+            this.brand = brand; // 实例属性
             this.price = price;
         }
-        //给所有的Phone添加一个方法, 需要在原型上面添加
-        Phone.prototype.call = function () {
+        // 静态方法, 也可以是实例方法, 取决于是否访问this
+        Phone.prototype.say = function () {
             console.log(`${this.brand}, ${this.price}`);
         }
 
         //实例化对象
         let Huawei = new Phone('华为', 5999);
-        Huawei.call();
+        Huawei.say();
 
 
-        // es6定义一个类
-        class TelePhone {
-            //构造方法 名字不能修改
-            constructor(brand, price) {
-                this.brand = brand;
-                this.price = price;
+        /**
+         * es6的新语法
+         *
+         * !!!!!!!!!!!!!!!!!!!!!
+         * 在es6中, 没有访问控制权限, 只有在es2022中添加了private 访问控制权限
+         * 如果你要使用访问控制权限的话, 那么可以使用ts, 在里面有完整的访问控制权限
+         */
+        class User {
+            // === 静态属性 ===
+            static species = 'Human';        // 静态属性
+            static count = 0;                // 静态属性
+
+            // === 实例属性 ===
+            name = '默认名称';     // 这里只是给实例属性一个默认值, 并且确保这个属性存在
+            age = 0;
+
+            // === 构造函数 ===
+            constructor(name, age) {
+                this.name = name;              // 设置实例属性
+                this.age = age;
+                User.count++;                  // 访问静态属性
             }
-            //方法必须使用该语法, 不能使用 ES5 的对象完整形式
-            call() {
-                console.log(`${this.brand}, ${this.price}`);
+
+            // === 实例方法 ===
+            greet() {
+                console.log(`你好, 我是 ${this.name}`);
+            }
+
+            // === 静态方法 ===
+            static createAnonymous() {
+                return new User('匿名', 0);
+            }
+
+            static getCount() {
+                return User.count;
             }
         }
 
-        let onePlus = new TelePhone("1+", 1999);
-        onePlus.call()
+
+        // 创建实例（调用 constructor）
+        const user1 = new User('张三', 25);
+        const user2 = new User('李四', 30);
+
+        // 调用实例方法
+        user1.greet();              // "你好, 我是 张三"
+
+
+        // 访问实例属性
+        user1.name;                 // "张三"
+        user1.age;                  // 25
+
+        // 调用静态属性/方法
+        User.species;               // "Human"
+        User.getCount();            // 2
+        User.createAnonymous();     // 新建 User 实例
+
     </script>
 </body>
 
