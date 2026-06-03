@@ -608,7 +608,7 @@ const {add: add1, multiply: multiply1} = require("./math")
      console.log(config.apiUrl);  // 直接用，不需要 new
    ~~~
 
-4. 有条件的导出
+4. 有条件的导出和导入
 
    ~~~js
    // 根据环境导出不同模块
@@ -734,10 +734,12 @@ npm install --O jest
 
 6. 如果还是没有, 那么会去`NODE_PATH`环境变量中查找
 
-7. 如果查找到的是js文件, 那么会执行他, 然后将module.exports作为结果进行导出
+7. 如果查找到的是`.js`, `.json`, `.node`文件, 那么会执行他, 然后将module.exports作为结果进行导出
 
-   如果查找到的是目录, 那么会去模块下的package.json中查找`main`字段指定的文件, 执行他并进行导出
+   如果查找到的是目录, 那么会去模块下的package.json中查找`exports`字段, 执行他并进行导出
 
+   如果package.json中没有`exports`字段, 那么就查找main字段, 加载main字段指定的文件
+   
    ~~~json
    // package.json
    {
@@ -745,11 +747,11 @@ npm install --O jest
      "version": "1.0.0",
      "description": "",
      "main": "./dist/main.js", // 使用require, 引入了hello模块就相当于引入了main.js
-   }
+}
    ~~~
 
-   如果模块中没有package.json, 或者json中没有指定main/module字段, 那么就会执行目录下的`index.js`, 将module.exports进行导出
-
+   如果模块中没有package.json, 或者json中没有指定`exports / main`字段, 那么就会回退到执行目录下的`index.js`, 将module.exports进行导出
+   
    否则导出失败
 
 
@@ -943,81 +945,228 @@ const { add } = require('my-shared');  // 直接用
 
 ### 基本语法
 
-导出
+1. 命名导出和导入
 
-~~~js
-// 分别导出
-export let school1 = '尚硅谷';
-export function teach() {
-    console.log("我们可以教给你开发技能");
-}
+   一个模块可以有多个命名导出, 并且逐个导出和批量导出可以混合使用
 
-// 统一导出
-let name = '尚硅谷';
-function findJob() {
-    console.log("我们可以帮助你找工作!!");
-}
-// 导出的时候可以重命名, 防止暴露内部变量的名字
-export { school1 as school, findJob };
+   ~~~js
+   // 逐个导出
+   export const name = 'Alice';
+   export const age = 30;
+   
+    // 批量导出（推荐，更清晰）
+   let school1 = '尚硅谷';
+   function greet() { return 'Hello'; }
+   
+   // 批量导出, 导出的时候可以通过as重命名, 防止暴露内部变量的名字
+   export { school1 as school, greet };
+   ~~~
 
-// 默认导出
-export default {
-    age: 18,
-    change: function(){
-        console.log("我们可以改变你!!");
-    }
-}
+   之后你可以使用如下的语法导入
 
-// 分别导出, 统一导出, 默认导出可以同时使用
-// 分别导出, 统一导出可以有多个, 但是默认导出只能有一个
-~~~
+   (**这里不同require, 必须添加文件后缀**)
 
-导入
+   ~~~js
+   // 方式1: 直接导入
+   import { name, age, school, greet } from './user.js';
+   
+   //方式2:  导入时重命名
+   import { name as userName, age as userAge, school, greet } from './user.js';
+   
+   // 方式3: 导入所有并设置到user上
+   import * as user from './user.js';
+   user.name;  // 'Alice'
+   user.age;   // 30
+   user.greet();
+   ~~~
 
-~~~js
-// es6的导入需要文件后缀, 而require不需要
-// es6的import只能放在文件开始, 而require就是一个函数, 可以随便放
-// 在导入的时候, 可以通过as来重命名
+2. 默认导出和导入
 
-import * as a from "./a.js"
-console.log(a.school, a.name, a.default.age) // 通过module.default来使用默认导出
-a.teach()
-a.findJob()
-a.default change()
+   **一个模块只能有一个默认导出**
 
-// 解构赋值
-import {school as school1, teach, name, findJob as findJob1, default as adefault} from "./a.js" 
-console.log(school1, name, default.age)
-teach()
-findJob1()
-adefault.change()
+   ~~~js
+   // 对于const和let的变量必须先声明, 然后导出
+   // const age = 18;
+   // export default age;
+   
+   // 函数可以直接导出, 也可以先声明, 后导出
+   // export default function greet() {
+   //       return 'Hello';
+   // }
+   
+   // class可以直接导出, 也可以先声明, 后导出
+   // export default class Person {
+   //       constructor(name) {
+   //           this.name = name;
+   //       }
+   //   }
+   
+   // 也可以直接导出一个对象
+   export default {
+       age: 18,
+       change: function(){
+           console.log("我们可以改变你!!");
+       }
+   }
+   ~~~
 
-// 默认导出还可以通过如下的方式来使用
-import adefault from "./a.js"
-adefault.change()
+   你可以使用如下的语法来导入
 
-// import还可以不接受任何值, 这样的目的就是单纯的执行文件
-import "./a.js"
-~~~
+   ~~~js
+   import greet from './greet.js';  // greet 就是默认导出的值，名字可以随意取
+   ~~~
+
+3. 命名导出和默认导出可以同时存在
+
+   ~~~js
+   // 导出
+   export const name = "zhangsan"
+   const age = 18;
+   export {age}
+   
+   export default {
+       greet: function() {return "greet"}
+   }
+   
+   // 导入
+   import User, { name, age } from './user.js';
+     //     ^^^^   ^^^^^^^^^^^
+     //     默认     命名
+   
+     // 也可以用命名空间一起导入
+   import User, * as utils from './module.js';
+   ~~~
+
+4. 副作用导入
+
+   ~~~js
+   // 只执行代码，不导入任何值：
+   
+     import './polyfill.js';
+     import './setup.js';
+   ~~~
+
+5. 聚合导出:  用于将其他模块的导出重新导入, 用于构建模块的统一入口
+
+   ~~~js
+   // 原样重导出
+     export { name, age } from './user.js';
+     export * from './utils.js';             // 导出全部（不包括 default）
+     export * as utils from './utils.js';    // 命名空间重导出
+   
+     // 重导出时重命名
+     export { name as userName } from './user.js';
+   
+     // 将命名导出作为默认导出
+     export { name as default } from './user.js';
+   
+     // 将默认导出作为命名导出
+     export { default as User } from './user.js';
+   ~~~
+
+6. 动态导入
+
+   在esm中, 可以使用import函数来实现动态的导入
+
+   ~~~js
+   // import函数 返回一个 Promise，用于按需加载（代码分割）：
+   
+     const module = await import('./heavy-module.js');
+     module.doSomething();
+   
+     // 也可用 .then()
+     import('./heavy-module.js').then(mod => {
+       mod.doSomething();
+     });
+   
+     // 动态拼接路径
+     const name = 'user';
+     const mod = await import(`./modules/${name}.js`);
+   ~~~
+
+   
+
+
 
 
 
 ### 注意点
 
-所有导出的对象都是const的, 不能修改
+import必须在文件的顶层定义好, 不支持条件导入, 这个在require中是支持的
+
+export不支持动态的导出(export放在for和if中),  这个在cjs中是支持的
+
+导入的绑定是const, 不能重新赋值, 但如果导出的是对象, 那么其属性是可以修改的
+
+命名导入是实时绑定的, 如果导出方修改了变量的值, 那么导出方可以读取到更新后的值
 
 ~~~js
 // 导出
-export let num = 1
-export const addNumber = ()=>{
-    num++
-}
+export let count = 0;
+  export function increment() { count++; }
 
-import {  num , addNumber } from './test.js'
-// num = 2 // 该语句报错, num is read-only, 可以理解为被const修饰了
-addNumber() // 但是可以通过函数修改
-console.log(num) // 2
+  // main.js
+  import { count, increment } from './counter.js';
+  console.log(count);   // 0
+  increment();
+  console.log(count);   // 1  ← 实时绑定，读到了更新后的值
+  count = 10;           // TypeError: Assignment to constant variable.
 ~~~
+
+
+
+
+
+### 模块的搜索路径
+
+1. 如果是使用相对路径和绝对路径, 那么直接查找对应的文件
+
+   相对路径相对于当前文件, 绝对路径相对于磁盘根目录, 这和commonjs的行为一致
+
+   import必须指定文件后缀, 不会给你的自动补全, 这和commonjs不同
+
+   ~~~js
+   import { foo } from './utils.js'
+   import { bar } from '/abs/path/to/module.js'
+   ~~~
+
+2. 如果是URL的形式的话, 那么直接查找对应文件
+
+   ~~~js
+   import { foo } from 'file:///abs/path/to/module.js'
+   import x from 'https://cdn.example.com/lib.js'
+   ~~~
+
+3. 如果导入的是目录的话, 会按照模块的规则来解析
+
+   ~~~js
+   import { foo } from './my-dir'
+   ~~~
+
+   
+
+4. 如果是模块的话, 先看看是不是系统模块, 如果是的话直接返回
+
+   ~~~js
+   import fs from 'node:fs' // 在nodejs中, 如果使用核心模块, 推荐添加node:前缀
+   ~~~
+
+5. 如果不是系统模块的话
+
+   ~~~js
+   import { foo } from 'lodash'
+   ~~~
+
+   从当前项目中查找`./node_modules/lodash`, 如果没有就查找父目录, 直到根目录没有找到就报错
+
+6. 如果找到的话, 那么看看lodash目录中有没有package.json
+
+   - 如果有package.json的话
+     - 看看有没有exports字段, 如果有的话, 按照exports字段指定的规则来加载
+     - 如果没有exports字段的话, 回退到main字段指定的文件来加载
+   - 如果没有exports字段, main字段, 或者没有package.json的话, 那么直接加载模块下的index.js文件
+
+
 
 
 
