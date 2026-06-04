@@ -4,7 +4,7 @@ let a: number;
 // a.js 的类型设置为了number，在以后的使用过程中a的值只能是数字
 a = 10;
 a = 33;
-// a.js = 'hello'; // 此行代码会报错，因为变量a的类型是number，不能赋值字符串
+// a = 'hello'; // 此行代码会报错，因为变量a的类型是number，不能赋值字符串
 let b: string;
 b = 'hello';
 // b = 123;

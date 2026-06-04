@@ -1137,13 +1137,13 @@ export let count = 0;
    import x from 'https://cdn.example.com/lib.js'
    ~~~
 
-3. 如果导入的是目录的话, 会按照模块的规则来解析
+3. 如果导入的是目录的话, 
 
    ~~~js
    import { foo } from './my-dir'
    ~~~
 
-   
+   报错, esm不像cjs一样, 会给你自动查找 `./my-dir/index.js`
 
 4. 如果是模块的话, 先看看是不是系统模块, 如果是的话直接返回
 
@@ -1163,8 +1163,8 @@ export let count = 0;
 
    - 如果有package.json的话
      - 看看有没有exports字段, 如果有的话, 按照exports字段指定的规则来加载
-     - 如果没有exports字段的话, 回退到main字段指定的文件来加载
-   - 如果没有exports字段, main字段, 或者没有package.json的话, 那么直接加载模块下的index.js文件
+     - 如果没有exports字段的话, 回退到module字段指定的文件来加载
+   - 如果没有exports字段, module字段, 或者没有package.json的话, 那么直接加载模块下的index.js文件
 
 
 
@@ -1193,61 +1193,591 @@ export {aa, bb} from "other.js"
 
 
 
+## exports字段的作用
+
+`exports` 是 package.json 中的一个字段，用来**精确控制模块的导出路径**，优先级高于 `main/module`。
+
+`main/module` 只能定义一个入口，而 `exports` 能做到更多。
+
+
+
+### 1. 基本用法（替代 main）
+
+~~~json
+{
+  "main": "./lib/index.js",       // 旧方式，只能指定一个入口
+  "exports": "./lib/index.js"     // 新方式，优先级更高
+}
+~~~
+
+当 `exports` 和 `main` 同时存在时，`exports` 优先。
+
+
+
+### 2. 定义多个入口（子路径导出）
+
+~~~json
+{
+  "exports": {
+    ".": "./lib/index.js",              // 主入口
+    "./utils": "./lib/utils.js",        // 子模块
+    "./constants": "./lib/constants.js"  // 子模块
+  }
+}
+~~~
+
+使用：
+
+~~~js
+const main = require('my-package');              // → ./lib/index.js
+const utils = require('my-package/utils');       // → ./lib/utils.js
+const constants = require('my-package/constants'); // → ./lib/constants.js
+~~~
+
+没有 `exports` 时，用户可以 `require('my-package/lib/internal')` 访问任意内部文件。
+
+**有了 `exports`，只有声明过的路径才能访问，未声明的路径会报错**。
+
+
+
+### 3. 区分 CJS 和 ESM
+
+~~~json
+{
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",    // ESM 导入时用这个
+      "require": "./lib/index.cjs",   // CJS 导入时用这个
+      "default": "./lib/index.js"     // 都不匹配时用这个
+    }
+  }
+}
+~~~
+
+~~~js
+// ESM 项目
+import foo from 'my-package';   // → ./lib/index.mjs
+
+// CJS 项目
+const foo = require('my-package'); // → ./lib/index.cjs
+~~~
+
+这样同一个包可以同时支持 CJS 和 ESM 两种导入方式，并且加载不同的文件。
+
+
+
+### 4. 条件导出（按环境区分）
+
+~~~json
+{
+  "exports": {
+    ".": {
+      "node": "./lib/index.node.js",      // Node.js 环境
+      "browser": "./lib/index.browser.js", // 浏览器环境
+      "default": "./lib/index.js"          // 其他环境
+    }
+  }
+}
+~~~
+
+打包工具（Vite、Webpack）会根据目标环境自动选择对应的文件。
+
+
+
+### 5. 封装内部模块（禁止访问）
+
+~~~json
+{
+  "exports": {
+    ".": "./lib/index.js",
+    "./utils": "./lib/utils.js"
+  }
+}
+~~~
+
+~~~js
+// ✅ 允许
+require('my-package');
+require('my-package/utils');
+
+// ❌ 禁止（没有在 exports 中声明）
+require('my-package/lib/internal');
+require('my-package/lib/secret');
+~~~
+
+**没有 exports 字段时，所有文件都可以被访问。有了 exports，只开放声明的路径。**
+
+这起到了封装的作用，防止用户依赖包的内部实现。
+
+
+
+### 6. 在 CJS 中的行为
+
+在 CJS 中，`exports` 字段的解析规则：
+
+1. 如果 `exports` 是字符串，相当于 `{ ".": "./lib/index.js" }`
+2. 如果 `exports` 是对象，键名以 `.` 开头表示子路径
+3. `require('my-package')` 匹配 `"."` 键
+4. `require('my-package/utils')` 匹配 `"./utils"` 键
+5. 如果匹配到的值是对象，查找 `"require"` 条件
+6. 如果没有 `"require"` 条件，查找 `"default"` 条件
+
+~~~json
+{
+  "exports": {
+    ".": {
+      "require": "./lib/index.cjs",
+      "import": "./lib/index.mjs",
+      "default": "./lib/index.js"
+    }
+  }
+}
+~~~
+
+CJS 使用 `require('my-package')` 时，会匹配 `"require"` 条件，加载 `./lib/index.cjs`。
+
+
+
+### 7. 在 ESM 中的行为
+
+在 ESM 中，`exports` 字段的解析规则与 CJS 类似，但查找顺序不同：
+
+1. 如果匹配到的值是对象，查找 `"import"` 条件
+2. 如果没有 `"import"` 条件，查找 `"default"` 条件
+
+~~~json
+{
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs",
+      "default": "./lib/index.js"
+    }
+  }
+}
+~~~
+
+ESM 使用 `import 'my-package'` 时，会匹配 `"import"` 条件，加载 `./lib/index.mjs`。
+
+
+
+### 8. 完整示例
+
+~~~json
+{
+  "name": "my-package",
+  "version": "1.0.0",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "require": "./lib/index.cjs",
+      "default": "./lib/index.js"
+    },
+    "./utils": {
+      "import": "./lib/utils.mjs",
+      "require": "./lib/utils.cjs"
+    },
+    "./package.json": "./package.json"
+  }
+}
+~~~
+
+~~~js
+// CJS
+const main = require('my-package');          // → ./lib/index.cjs
+const utils = require('my-package/utils');   // → ./lib/utils.cjs
+
+// ESM
+import main from 'my-package';              // → ./lib/index.mjs
+import utils from 'my-package/utils';        // → ./lib/utils.mjs
+~~~
+
+
+
+### 9. 对比总结
+
+| 功能 | `main` | `exports` |
+|------|--------|-----------|
+| 指定主入口 | ✅ | ✅ |
+| 多个子路径导出 | ❌ | ✅ |
+| 区分 CJS/ESM | ❌ | ✅ |
+| 按环境条件导出 | ❌ | ✅ |
+| 封装内部文件 | ❌ | ✅ |
+| 优先级 | 低 | **高** |
+
+**核心作用**：精确控制"哪些文件可以被外部访问"以及"不同环境用哪个文件"。
+
+
+
+
+
 ## CommonJS和ES6的区别
 
-1. 可以理解为**CommonJS导出的是变量的复制, 而ES6导出的是变量的地址**
+### 加载时机不同
 
-   比如如下代码
+cjs是运行时加载的, require本质上是一个函数, 所以他可以写在if, for, try-catch, 函数中, 非常的灵活
 
-   ~~~js
-   // a.js 导出
-   export age = 1
-   export add = () => {
-       age++
-   }
-   
-   // b.js 导入
-   import {age, add} from "./a.js"
-   console.log(age) // 1
-   add()
-   console.log(age) // 2
-   ~~~
+~~~js
+function loadPlugin(name) {
+  return require('./plugins/' + name)
+}
+~~~
 
-   但是在CommonJS中
+包括导出也是, 本质上就是设置module.exports, 所以你可以条件导出
 
-   ~~~js
-   // a.js 导出
-   let age = 1
-   let add = () => {
-       add++
-   }
-   module.exports = {
-       age,
-       add
-   }
-   
-   // b.js 导入
-   var {age, add} = require("./a.js")
-   console.log(age) // 1
-   add()
-   console.log(age) // 1
-   ~~~
+~~~js
+if (...) {
+    module.exports.aa = 18
+}
+~~~
 
-   主要原因是: 
 
-   - CommonJS的导出原理就是在b模块中创建了一个变量age, 等于a模块中的age
 
-     ~~~js
-     let age = age
-     ~~~
+而ESM是编译期 / 静态分析加载, 他的import只能写在模块的顶层
 
-     所以a模块中的age之后再如何变化, 都不会影响b模块中的age
-     
-   - ES6中的导出原理是ES6中内置一个功能叫模块环境记录，它的作用是实时绑定导出内容，**每当导出内容变化，它会删除旧的绑定内容，重新绑定一个新的内容。**
-   
-     ![image-20241231154756722](img/nodejs/image-20241231154756722.png)
-   
-     根据图示，export和import中的变量实际为环境记录模块中的同一个变量，所以当a.js中导出变量发生变化的时候，环境记录模块会删除旧变量，绑定新变量，b.js中的导入也随之变化。
+~~~js
+import { foo } from './foo.js'
+~~~
+
+因为ESM再代码执行前, 要先分析出模块依赖图
+
+不过ESM也支持动态导入
+
+~~~js
+if (needLoad) {
+  const mod = await import('./foo.js')
+}
+~~~
+
+
+
+### 导出的本质不同
+
+在cjs中, 导出的最终对象是module.exports,  所以我们导出就是设置module.exports的属性
+
+~~~js
+// counter.js
+let count = 0
+
+function inc() {
+  count++
+}
+
+module.exports = {
+  count, // 这里本质上是把count的值设置给module.exports.count, 所以这个count和上面的count已经没有关系了
+  inc
+}
+
+
+const counter = require('./counter')
+counter.inc()
+console.log(counter.count) // 0, counter实际上就是module.exports, 但是module.exports.count和count已经没有任何关系了, 所以并不会改变
+~~~
+
+
+
+而ESM的导出是live binding(实时绑定的)
+
+~~~js
+// counter.js
+export let count = 0
+
+export function inc() {
+  count++
+}
+
+import { count, inc } from './counter.js'
+
+console.log(count) // 0
+inc()
+console.log(count) // 1
+~~~
+
+ES6中的导出原理是ES6中内置一个功能叫模块环境记录，它的作用是实时绑定导出内容，**每当导出内容变化，它会删除旧的绑定内容，重新绑定一个新的内容。**
+
+![image-20241231154756722](img/nodejs/image-20241231154756722.png)
+
+根据图示，export和import中的变量实际为环境记录模块中的同一个变量，所以当a.js中导出变量发生变化的时候，环境记录模块会删除旧变量，绑定新变量，b.js中的导入也随之变化。
+
+
+
+
+
+### require是同步的, 而import是异步的
+
+如果你调用require来加载一个文件, 那么他会同步读取, 解析, 执行这个文件
+
+~~~js
+const fs = require('fs')
+const foo = require('./foo')
+~~~
+
+这适合 Node 服务器环境，因为本地文件读取很快，而且 Node 最早就是这么设计的。
+
+
+
+而在ESM中, import是异步加载的, 因为ESM的整体加载流程更接近于
+
+~~~js
+解析模块
+构建依赖图
+加载依赖
+链接模块
+执行模块
+~~~
+
+尤其在浏览器中，模块天然是网络资源，所以它必须适合异步加载。
+
+
+
+### 路径解析不一样
+
+cjs的路径解析比较宽松
+
+~~~js
+require('./foo')
+~~~
+
+Node CJS 会自动尝试：
+
+```
+./foo
+./foo.js
+./foo.json
+./foo.node
+./foo/index.js
+./foo/index.json
+./foo/index.node
+```
+
+所以 CJS 中经常看到：
+
+```
+const router = require('./routes')
+```
+
+如果 `routes/index.js` 存在，就能加载。
+
+
+
+ESM 推荐写完整路径：
+
+```
+import router from './routes/index.js'
+```
+
+而不是：
+
+```
+import router from './routes'
+```
+
+在 Node ESM 中，**相对路径导入目录通常会报 `ERR_UNSUPPORTED_DIR_IMPORT`**，不要依赖它自动找 `index.js`。
+
+所以 Node ESM 里推荐：
+
+```
+import { foo } from './foo.js'
+import router from './routes/index.js'
+```
+
+
+
+### this, \_\_dirname, \__filename不同
+
+CJS 有这些东西
+
+```js
+console.log(__dirname)
+console.log(__filename)
+console.log(module)
+console.log(exports)
+```
+
+CJS 每个模块外面其实被 Node 包了一层函数：
+
+```js
+(function (exports, require, module, __filename, __dirname) {
+  // 你的代码
+})
+```
+
+所以 CJS 里面可以直接用：
+
+```js
+__dirname
+__filename
+require
+module
+exports
+```
+
+ESM 没有这些, ESM 中不能直接用：
+
+```js
+__dirname
+__filename
+require
+module
+exports
+```
+
+要这样写：
+
+```js
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+```
+
+ESM 里有：
+
+```js
+import.meta.url
+```
+
+例如：
+
+```js
+console.log(import.meta.url)
+```
+
+结果类似：
+
+```js
+file:///Users/me/project/src/app.js
+```
+
+
+
+
+
+### 循环依赖不同
+
+循环依赖就是：
+
+```
+a.js 引入 b.js
+b.js 又引入 a.js
+```
+
+CJS 循环依赖：可能拿到未完成的 exports
+
+```
+// a.js
+const b = require('./b')
+console.log('a sees b:', b)
+
+module.exports = {
+  name: 'a'
+}
+// b.js
+const a = require('./a')
+console.log('b sees a:', a)
+
+module.exports = {
+  name: 'b'
+}
+```
+
+CJS 因为是运行时同步执行，所以循环依赖时可能拿到一个“还没完全赋值”的对象。
+
+
+
+ESM 循环依赖：靠 live binding 处理
+
+ESM 在执行前会先建立模块之间的绑定关系，所以循环依赖通常更可预测。
+
+但是如果你在变量初始化前访问它，也会遇到暂时性死区问题：
+
+```
+// a.js
+import { b } from './b.js'
+
+console.log(b)
+
+export const a = 1
+// b.js
+import { a } from './a.js'
+
+export const b = a + 1
+```
+
+也可能报错：
+
+```
+Cannot access 'a' before initialization
+```
+
+所以：
+
+```
+ESM 循环依赖机制更规范
+但不是说 ESM 循环依赖一定没问题
+```
+
+### Tree Shaking 能力不同
+
+这是前端非常重要的区别。
+
+ESM 更适合 Tree Shaking, 因为 ESM 是静态结构：
+
+```
+import { add } from './math.js'
+```
+
+打包器可以提前知道：
+
+```
+你只用了 add
+没用 subtract
+没用 multiply
+```
+
+所以可以把没用的代码删掉。例如：
+
+```
+// math.js
+export function add(a, b) {
+  return a + b
+}
+
+export function subtract(a, b) {
+  return a - b
+}
+```
+
+只用：
+
+```
+import { add } from './math.js'
+```
+
+打包器理论上可以删除 `subtract`。
+
+
+
+CJS 不利于 Tree Shaking, 因为 CJS 太动态：
+
+```
+const name = './math'
+const math = require(name)
+
+math[methodName]()
+```
+
+打包器很难静态判断你到底用了什么。所以：
+
+```
+ESM 更利于前端打包优化
+CJS 更难做彻底 Tree Shaking
+```
+
+
 
 
 
