@@ -20,57 +20,125 @@
   */
   "compilerOptions": {
 
-    // target 用来指定ts被编译为的ES的版本
-    // 'es3', 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'esnext'
+    /**
+     target 指定ts被编译为js后, js使用的语法的版本, 可选值有: 'es3', 'es5', 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'esnext'
+     比如如下代码
+     const fn = () => console.log('hello');
+     async function getData() {
+       const res = await fetch('/api');
+     }
+     如果指定es5, 那么const fn = () => console.log('hello'); 会被转换为 var fn = function(){...}, async/await 转换为generator
+     如果指定es2015的话, 那么const fn = () => {} 被保留, 但是async / await 转换为generator
+     如果指定es2022的话, 那么async/await也会被保留
+    */
     "target": "es2015",
-    // module 指定要使用的模块化的规范
-    // 'none', 'commonjs', 'amd', 'system', 'umd', 'es6', 'es2015', 'es2020', 'esnext'
+    /**
+        module指定ts被编译为js后, 要使用的模块系统, 可选值有: 'none', 'commonjs', 'amd', 'system', 'umd', 'es6', 'es2015', 'es2020', 'esnext'
+        这个根据你实际运行的环境来选择
+
+        比如如下的代码
+        import axios from 'axios';
+        export const name = 'hello';
+        如果是commonjs, 那么会被转换为require("axios")
+        如果是es2015/esnext, 会被转换为 import axios from "axios"
+    */
     "module": "es2015",
-    // lib用来指定项目中要使用的库
-    //'es5', 'es6', 'es2015', 'es7', 'es2016', 'es2017', 'es
-    //2018', 'es2019', 'es2020', 'esnext', 'dom', 'dom.iterable', 'webworker', 'webworker.importscripts', 'webworker.iterable', 'scri
-    //pthost', 'es2015.core', 'es2015.collection', 'es2015.generator', 'es2015.iterable', 'es2015.promise', 'es2015.proxy', 'es2015.r
-    //eflect', 'es2015.symbol', 'es2015.symbol.wellknown', 'es2016.array.include', 'es2017.object', 'es2017.sharedmemory', 'es2017.st
-    //ring', 'es2017.intl', 'es2017.typedarrays', 'es2018.asyncgenerator', 'es2018.asynciterable', 'es2018.intl', 'es2018.promise', '
-    //es2018.regexp', 'es2019.array', 'es2019.object', 'es2019.string', 'es2019.symbol', 'es2020.bigint', 'es2020.promise', 'es2020.s
-    //haredmemory', 'es2020.string', 'es2020.symbol.wellknown', 'es2020.intl', 'esnext.array', 'esnext.symbol', 'esnext.asynciterable
-    //', 'esnext.intl', 'esnext.bigint', 'esnext.string', 'esnext.promise', 'esnext.weakref'
-//    "lib": ["es6", "dom"]
+    /**
+        告诉ts, 在编译的适合, 有哪些全局的api可用
+        如果指定es5, 那么Array, Object, JSON等基础api可用
+        如果指定es2015, 那么Promise, Map, Set, Symbol可用
+        如果es2022, 那么BigInt, Promise.allSettled, 可选链 可用
+        如果DOM, 那么document, window, HTMLElement, fetch可用
+
+        lib会根据target来自动选择, 但是不包含DOM, 如果是前端项目的话, 需要手动加DOM
+    */
+    /**
+        常见的组合如下
+        ┌──────────────────┬────────┬──────────┬───────────────────────────┐
+        │       场景        │ target │  module  │            lib            │
+        ├──────────────────┼────────┼──────────┼───────────────────────────┤
+        │ Node.js 项目      │ ES2020 │ CommonJS │ ES2020                    │
+        ├──────────────────┼────────┼──────────┼───────────────────────────┤
+        │ 前端项目（Vite）    │ ESNext │ ESNext   │ ESNext, DOM, DOM.Iterable │
+        ├──────────────────┼────────┼──────────┼───────────────────────────┤
+        │ 兼容旧浏览器       │ ES5    │ ESNext   │ ES2020, DOM               │
+        └──────────────────┴────────┴──────────┴───────────────────────────┘
+    */
+    "lib": ["es6", "dom"],
 
 
-    // outDir 用来指定编译后文件所在的目录
+    // 指定编译后文件所在的目录
+    // 例如 src/a.ts → dist/a.js
     "outDir": "./dist",
 
     // 将代码合并为一个文件
-    // 设置outFile后，所有的全局作用域中的代码会合并到同一个文件中
-    //"outFile": "./dist/app.js"
+    // 仅支持 AMD 和 System 模块系统，使用 CommonJS/ESNext 时会报错
+    // 设置后，所有全局作用域中的代码会合并到同一个文件中
+    // "outFile": "./dist/app.js"
 
-    // 是否对js文件进行编译，默认是false
-//    "allowJs": true,
-    // 是否检查js代码是否符合语法规范，默认是false
-//    "checkJs": true,
-    // 是否移除注释
+    // ========== 编译行为 ==========
+
+    // 是否对 js 文件进行编译，默认 false
+    // 开启后 .js 文件也会被 TS 编译器处理并输出到 outDir
+    // 在实际开发中, 都有vite/webpack这些打包工具, 他们自己处理文件的引用和编译, 不关心是不是需要将ts也输出到outDir中, 所以设不设置这个都无所谓
+    // 只有在纯tsc项目中, 如果你的代码中有js, 就设置为true, 如果完全是ts代码, 就设置为false
+    // "allowJs": true,
+
+    // 是否检查 js 文件是否符合 TS 语法规范，默认 false
+    // 需要配合 allowJs 使用，可以在 .js 文件中也进行类型检查
+    // "checkJs": true,
+
+    // 是否移除注释，默认 false
+    // 开启后编译输出的 .js 文件中不包含源码中的注释
     "removeComments": true,
-    // 不生成编译后的文件
+
+    // 只执行编译但不生成编译后的 js 文件，默认 false
+    // 适合配合 Babel/esbuild 等工具使用，TS 只做类型检查，编译交给其他工具
+    // Vite 项目中通常设为 true
     "noEmit": false,
 
-
-    // 当有错误时不生成编译后的文件
+    // 当有类型错误时不生成编译后的文件，默认 false
+    // 开启后，只要有任何 TS 错误就不会输出 .js 文件
     "noEmitOnError": true,
 
-    // 所有严格检查的总开关
+    // ========== 严格检查 ==========
+
+    // 所有严格检查的总开关，默认 false
+    // 开启后相当于同时开启以下所有 strict 系列选项：
+    // strictNullChecks, noImplicitAny, noImplicitThis,
+    // alwaysStrict, strictBindCallApply, strictFunctionTypes,
+    // strictPropertyInitialization, useUnknownInCatchVariables
     "strict": true,
 
-    // 用来设置编译后的文件是否使用严格模式，默认false
+    // 编译后的文件是否添加 "use strict"，默认 false
+    // 开启后每个编译输出的 .js 文件顶部会有 "use strict"
     "alwaysStrict": true,
 
-    // 不允许隐式的any类型
+    // 不允许隐式的 any 类型，默认 false
+    // 关闭时: function fn(a) {}          // a 是 any，不报错
+    // 开启时: function fn(a) {}          // ❌ 报错：参数 a 隐式具有 any 类型
+    // 修正:   function fn(a: string) {}  // ✅ 显式标注类型
     "noImplicitAny": true,
 
-    // 不允许不明确类型的this
+    // 不允许不明确类型的 this，默认 false
+    // 关闭时:
+    //   function fn() { console.log(this.name) }  // 不报错
+    // 开启时:
+    //   function fn() { console.log(this.name) }  // ❌ 报错：this 隐式具有 any 类型
+    // 修正:
+    //   function fn(this: { name: string }) { console.log(this.name) }  // ✅
     "noImplicitThis": true,
 
-    // 严格的检查空值
+    // 严格的空值检查，默认 false
+    // 关闭时:
+    //   let a: number = null;     // ✅ 不报错
+    //   let b: string = undefined; // ✅ 不报错
+    // 开启时:
+    //   let a: number = null;      // ❌ 报错：不能将 null 赋值给 number
+    //   let b: string = undefined; // ❌ 报错：不能将 undefined 赋值给 string
+    // 修正:
+    //   let a: number | null = null;       // ✅
+    //   let b: string | undefined = undefined; // ✅
     "strictNullChecks": true
 
 

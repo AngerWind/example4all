@@ -6,11 +6,11 @@ console.log(a);
 
 // a.js = 'hello';
 
-function fn(a: number, b: number){
+function fn(a: number, b: number): number{
     return a + b;
 }
 
-function fn2(this: Window){
+function fn2(this: Window): void{
     alert(this);
 }
 

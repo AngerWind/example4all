@@ -1,13 +1,13 @@
 // 也可以直接使用字面量进行类型声明
-let a: 10;
+let a: 10; // 表示a的值只能是10
 a = 10;
 
 // 可以使用 | 来连接多个类型（联合类型）
-let b: "male" | "female";
+let b: "male" | "female"; // 表示a的值只能是male或者female
 b = "male";
 b = "female";
 
-let c: boolean | string;
+let c: boolean | string; // 表示c的值可以是boolean 或者 string 类型
 c = true;
 c = 'hello';
 
@@ -54,8 +54,10 @@ s = <string>e;
 function fn(): void{
 }
 
-// never 表示永远不会返回结果
-function fn2(): never{
-    throw new Error('报错了！');
+// never 表示这个函数永远不会正常执行完毕, 如果这个函数正常执行完毕了, 那么说明就错了
+// 所以在这个函数中, 要么 while (true) {}, 要么throw抛出异常
+// 这个never比较适合在一些抛出异常的工具函数中使用
+function fn2(message: string): never{
+    throw new Error(`抛出异常了: ${message}`);
 }
 
