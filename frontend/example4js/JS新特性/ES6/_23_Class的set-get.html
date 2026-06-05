@@ -10,22 +10,40 @@
 <body>
     <script>
         // get 和 set  
-        class Phone {
-            get price() {
-                console.log("价格属性被读取了");
-                return 'iloveyou';
+        class Person {
+
+            _name;
+            _age;
+
+            constructor(name, age) {
+                this._name = name;
+                this._age = age;
             }
 
-            set price(newVal) {
-                console.log('价格属性被修改了');
+            // 这个方法和name属性会冲突, 所以name属性按照约定设置为 _name
+            get name() {
+                console.log('get name()执行了！！');
+                return this._name;
+            }
+
+            set name(value) {
+                this._name = value;
+            }
+
+            get age() {
+                return this._age;
+            }
+
+            set age(value) {
+                if (value >= 0) {
+                    this._age = value
+                }
             }
         }
 
-        //实例化对象
-        let s = new Phone();
-
-        console.log(s.price);
-        s.price = 'free';
+        var person = new Person("zhangsan", 18);
+        console.log(person.name); // 这会调用person的name的getter
+        person.age = 18; // 这会调用person的age的setter
     </script>
 </body>
 

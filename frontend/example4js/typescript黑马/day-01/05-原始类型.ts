@@ -8,4 +8,4 @@ let a: null = null
 
 let b: undefined = undefined
 
-let s: symbol = Symbol()
+let s: symbol = Symbol('aa')

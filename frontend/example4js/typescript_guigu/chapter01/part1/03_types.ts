@@ -11,6 +11,23 @@ let c: boolean | string; // 表示c的值可以是boolean 或者 string 类型
 c = true;
 c = 'hello';
 
+
+// 在使用联合类型的时候, 只能使用他们的共有属性, 除非你进行类型断言
+interface Cat {
+    name: string;
+    meow(): void;
+}
+
+interface Dog {
+    name: string;
+    bark(): void;
+}
+
+function process(pet: Cat | Dog) {
+    // pet.meow();  // ❌ 联合类型只能访问共有属性
+    (pet as Cat).meow();  // ✅ 告诉 TS 这是 Cat
+}
+
 // any 表示的是任意类型，一个变量设置类型为any后相当于对该变量关闭了TS的类型检测
 // 使用TS时，不建议使用any类型
 // let d: any;
