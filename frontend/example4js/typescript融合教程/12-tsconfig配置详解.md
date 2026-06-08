@@ -163,7 +163,7 @@ TypeScript 会按该配置检查整个项目。
 }
 ```
 
-`noEmitOnError`：有错误时不输出：
+`noEmitOnError`：类型检查未通过时不输出：
 
 ```json
 {
@@ -208,7 +208,7 @@ function fn(s) {
 }
 ```
 
-开启后，参数 `s` 没有类型会报错：
+开启后，参数 `s` 需要明确类型：
 
 ```ts
 function fn(s: string) {
@@ -233,7 +233,7 @@ if (user) {
 }
 ```
 
-这也是为什么第 2 章修正了 `void` 返回 `null` 的说法。
+开启 `strictNullChecks` 后，函数和变量都要明确处理 `null` 与 `undefined`。
 
 ## 9. strictPropertyInitialization
 
@@ -278,7 +278,7 @@ class User {
 说明：
 
 - `noFallthroughCasesInSwitch`：防止 `switch` 分支漏写 `break`。
-- `noImplicitReturns`：函数不是所有路径都有返回值时报错。
+- `noImplicitReturns`：要求函数的返回路径保持明确。
 - `noUnusedLocals` / `noUnusedParameters`：检查未使用代码。
 - `noImplicitOverride`：重写父类方法时要求写 `override`。
 - `noUncheckedIndexedAccess`：索引访问结果自动包含 `undefined`，更安全。
@@ -322,7 +322,7 @@ React 新 JSX 转换常用：
 }
 ```
 
-虽然本次按要求不生成 React 章节，但黑马资料里的 CRA 配置中已经出现了这个选项。
+前端项目使用 React JSX 时通常会配置这个选项。
 
 ## 13. 类型包控制
 
@@ -401,11 +401,3 @@ Node ESM 项目：
   "include": ["src"]
 }
 ```
-
-## 15. 本章融合来源
-
-本章融合了：
-
-- `typescript_guigu/js-ts.md` 中的 `tsconfig.json` 编译选项。
-- `typescript黑马/day-04/07-React中的常用类型/TS配置文件tsconfig/tsconfig的解释说明.md`。
-- TypeScript 官方 TSConfig Reference。

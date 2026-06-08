@@ -1,5 +1,26 @@
 # TypeScript 与构建工具
 
+## JS 生态中已有的构建工具
+
+Webpack、Babel、Vite、npm scripts 都是 JavaScript 生态中的工具。TypeScript 项目使用它们时，通常是让这些工具负责打包、转译和开发服务器，让 TypeScript 负责类型检查和声明文件输出。
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && vite build"
+  }
+}
+```
+
+常见分工：
+
+- Webpack/Vite/esbuild/swc：处理运行时代码的打包和转译。
+- Babel：做语法降级和 polyfill 配置。
+- `tsc --noEmit`：只做类型检查。
+- `tsc --declaration` 或构建工具的 dts 插件：生成 `.d.ts`。
+
 ## 1. tsc 和构建工具的分工
 
 TypeScript 项目通常有两类任务：
@@ -48,7 +69,7 @@ src/index.ts -> dist/index.d.ts
 
 ## 3. Webpack + TypeScript
 
-硅谷教程中给出了 Webpack + `ts-loader` 的方案。现代 Webpack 写法大致如下：
+Webpack 可以通过 `ts-loader` 处理 TypeScript 文件：
 
 ```bash
 npm install -D webpack webpack-cli webpack-dev-server typescript ts-loader html-webpack-plugin clean-webpack-plugin
@@ -94,7 +115,7 @@ module.exports = {
 };
 ```
 
-教程旧配置里的 `devServer.contentBase` 是 Webpack 4 时代写法，Webpack 5 中应使用 `devServer.static`。
+Webpack 5 中开发服务器静态目录使用 `devServer.static`。
 
 ## 4. ts-loader 和 Babel
 
@@ -238,7 +259,7 @@ TypeScript 的 `target` 主要控制语法降级，不会自动补齐运行时 A
 
 如果需要兼容旧环境，要用 Babel + `core-js` 或框架推荐的 polyfill 方案。
 
-硅谷教程中 Babel 配置里的：
+Babel 配置中的：
 
 ```js
 {
@@ -286,12 +307,3 @@ Node 项目：
   }
 }
 ```
-
-## 11. 本章融合来源
-
-本章融合了：
-
-- `typescript_guigu/js-ts.md` 中的 Webpack、Babel、包说明。
-- `typescript_guigu/chapter01/part3`、`chapter02/part2` 中的 Webpack 项目结构。
-- `typescript黑马/day-04` 中的第三方库、声明文件、CRA `tsconfig` 配置。
-- 现代 TypeScript 项目中 `tsc --noEmit` 与构建工具分工的实践。

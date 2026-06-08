@@ -15,13 +15,13 @@ TypeScript 源码 -> tsc / bundler 编译 -> JavaScript -> 浏览器或 Node.js 
 - 类型检查发生在开发期和编译期。
 - 运行时执行的仍然是 JavaScript。
 
-例如类型断言、接口、泛型约束大多不会生成运行时代码，它们主要帮助编辑器和编译器提前发现错误。
+例如类型断言、接口、泛型约束大多不会生成运行时代码，它们主要帮助编辑器和编译器提前发现类型问题。
 
 ## 2. 为什么要使用 TypeScript
 
 TypeScript 的核心价值不是“让代码更复杂”，而是让大型 JavaScript 项目更容易维护：
 
-- 在编码阶段发现参数、属性、返回值等类型错误。
+- 在编码阶段发现参数、属性、返回值等类型问题。
 - 给编辑器提供更准确的补全、跳转、重构能力。
 - 为函数、对象、模块和第三方库建立清晰契约。
 - 让多人协作时减少“这个值到底是什么结构”的猜测。
@@ -87,7 +87,7 @@ tsc --watch
 
 ## 5. 使用 ts-node 或 tsx
 
-教程中提到 `ts-node`，它可以让 Node.js 项目直接运行 TypeScript 文件：
+`ts-node` 可以让 Node.js 项目直接运行 TypeScript 文件：
 
 ```bash
 npm install -D ts-node typescript
@@ -135,11 +135,3 @@ npx tsc --watch
 ```
 
 `--noEmit` 表示只检查类型，不输出 JavaScript 文件，适合在已有构建工具的项目中使用。
-
-## 7. 本章融合来源
-
-本章融合了：
-
-- `typescript_guigu/js-ts.md` 中的 TypeScript 简介、环境搭建、`ts-node` 使用。
-- `typescript黑马/day-01/01-hello.ts`、`02-hello.ts`、`03-ts代码意外行为演示.ts` 中的入门示例。
-- TypeScript 官方 Handbook 中关于基础类型检查和 `strict` 的说明。

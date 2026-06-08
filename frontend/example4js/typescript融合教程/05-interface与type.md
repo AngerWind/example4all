@@ -76,14 +76,7 @@ type User = {
 };
 ```
 
-教程中的这个示例需要修正：
-
-```ts
-// 错误写法
-type MyArr = (string, number)[];
-```
-
-正确写法：
+数组类型别名常见写法：
 
 ```ts
 type MyTupleArray = [string, number][];
@@ -202,7 +195,7 @@ const obj: PersonDetail = {
 
 ## 7. 交叉类型和接口继承的区别
 
-接口继承遇到冲突属性时会更直接地报错：
+接口继承要求子接口成员与父接口成员保持兼容：
 
 ```ts
 interface A {
@@ -214,9 +207,7 @@ interface A {
 // }
 ```
 
-交叉类型遇到同名函数成员时，函数属性写法和方法签名写法在类型展示上不同，但实际调用时都可能表现出类似重载的效果：
-
-**函数属性写法**（`fn: () => void`）——交叉后是函数类型的交叉：
+交叉类型可能把两个函数签名合成重载式结构：
 
 ```ts
 interface A {
@@ -230,31 +221,9 @@ interface B {
 type C = A & B;
 
 declare const c: C;
-c.fn(1);    // string
-c.fn("a");  // string
+c.fn(1);
+c.fn("a");
 ```
-
-`C["fn"]` 的类型是 `((value: number) => string) & ((value: string) => string)`。它不是用重载签名语法写出来的类型，但调用时可以接受 `number` 或 `string`。
-
-**方法签名写法**（`fn(): void`）——交叉后会合成重载：
-
-```ts
-interface A {
-  fn(value: number): string;
-}
-
-interface B {
-  fn(value: string): string;
-}
-
-type C = A & B;
-
-declare const c: C;
-c.fn(1);    // string
-c.fn("a");  // string
-```
-
-因此，同名函数成员的交叉并不一定会变成不可调用的类型。真正需要警惕的是普通属性类型冲突，这类冲突更容易得到 `never`。
 
 如果是普通属性冲突，交叉后可能得到不可用的 `never`：
 
@@ -279,12 +248,3 @@ type C = A & B;
 ```text
 对象结构优先 interface，类型运算优先 type。
 ```
-
-## 9. 本章融合来源
-
-本章融合了：
-
-- `typescript_guigu/js-ts.md` 中接口、接口和类型别名对比。
-- `typescript_guigu/chapter02/part1/src/06_接口interface和type的区别.ts`。
-- `typescript黑马/day-01/06-对象类型/08-接口.ts`、`09-接口vs类型别名.ts`、`10-接口继承.ts`。
-- `typescript黑马/day-03/16-交叉类型.ts`、`17-交叉类型vs继承.ts`。
