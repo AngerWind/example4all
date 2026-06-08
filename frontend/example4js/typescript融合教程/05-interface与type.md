@@ -80,7 +80,7 @@ type User = {
 
 ```ts
 // 错误写法
-type myArr = (string, number)[];
+type MyArr = (string, number)[];
 ```
 
 正确写法：
@@ -214,7 +214,9 @@ interface A {
 // }
 ```
 
-交叉类型可能把两个函数签名合成重载式结构：
+交叉类型遇到同名函数成员时，函数属性写法和方法签名写法在类型展示上不同，但实际调用时都可能表现出类似重载的效果：
+
+**函数属性写法**（`fn: () => void`）——交叉后是函数类型的交叉：
 
 ```ts
 interface A {
@@ -228,9 +230,31 @@ interface B {
 type C = A & B;
 
 declare const c: C;
-c.fn(1);
-c.fn("a");
+c.fn(1);    // string
+c.fn("a");  // string
 ```
+
+`C["fn"]` 的类型是 `((value: number) => string) & ((value: string) => string)`。它不是用重载签名语法写出来的类型，但调用时可以接受 `number` 或 `string`。
+
+**方法签名写法**（`fn(): void`）——交叉后会合成重载：
+
+```ts
+interface A {
+  fn(value: number): string;
+}
+
+interface B {
+  fn(value: string): string;
+}
+
+type C = A & B;
+
+declare const c: C;
+c.fn(1);    // string
+c.fn("a");  // string
+```
+
+因此，同名函数成员的交叉并不一定会变成不可调用的类型。真正需要警惕的是普通属性类型冲突，这类冲突更容易得到 `never`。
 
 如果是普通属性冲突，交叉后可能得到不可用的 `never`：
 
