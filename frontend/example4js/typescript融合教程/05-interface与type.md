@@ -79,8 +79,10 @@ type User = {
 数组类型别名常见写法：
 
 ```ts
+// 这里表示一个数组类型, 元素是一个元组, 这个元素的第一个属性是string, 第二个元素是number
 type MyTupleArray = [string, number][];
-type MyUnionArray = (string | number)[];
+// 这里表示一个数组类型, 元素可以是string或者number
+type MyUnionArray = (string | number)[]; 
 
 const a: MyTupleArray = [["a", 1]];
 const b: MyUnionArray = ["a", 1];
@@ -100,6 +102,16 @@ type User2 = {
   name: string;
   age: number;
 };
+
+const u1: User1 = {
+    name: "Tom",
+    age: 18
+};
+
+const u2: User2 = {
+    name: "Jerry",
+    age: 20
+};
 ```
 
 二者都可以被类实现：
@@ -117,17 +129,15 @@ class Person implements Singable {
     console.log("sing");
   }
 }
-```
 
-类型别名也可以被 `implements`，前提是它最终描述的是对象结构：
 
-```ts
+// 类型别名也可以被 `implements`，前提是它最终描述的是对象结构：
 type Movable = {
-  move(): void;
+    move(): void;
 };
 
 class Dog implements Movable {
-  move() {}
+    move() {}
 }
 ```
 
@@ -207,7 +217,7 @@ interface A {
 // }
 ```
 
-交叉类型可能把两个函数签名合成重载式结构：
+交叉类型可以把两个函数签名合成重载式结构：
 
 ```ts
 interface A {

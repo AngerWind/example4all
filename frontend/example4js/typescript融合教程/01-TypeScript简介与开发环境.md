@@ -76,12 +76,16 @@ node hello.js
 如果希望监听单个文件：
 
 ```bash
+# 这个命令会堵塞住, 如果你修改了hello.ts, 那么会自动编译成对应的js文件
 tsc hello.ts --watch
 ```
 
 如果希望监听整个项目，应创建 `tsconfig.json`，然后执行：
 
 ```bash
+# 这个命令会读取 tsconfig.json, 然后堵塞住
+# 他会根据 tsconfig.json中的include, exclude, outDir, target等属性自动编译ts文件, 
+# 并将编译后的js文件保存到对应目录下
 tsc --watch
 ```
 

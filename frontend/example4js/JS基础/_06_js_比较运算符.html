@@ -86,7 +86,11 @@
          * !=: 先进行==比较, 再取反
          * ===: 类型不同直接返回false, 类型相同再使用==比较
          * !==: 先进行===比较, 再取反
-         */ 
+         */
+
+        // === 和 !== 有时候也用来判断有没有这个变量, 或者对象有没有这个属性
+        console.log(obj4 === undefined)
+        console.log(obj4.length === undefined)
     </script>
 </head>
 
