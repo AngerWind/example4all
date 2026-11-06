@@ -19,9 +19,10 @@
 
   // 当然你也可以通过如下的方式, 来获取所有的定义了ref的子组件
   onMounted(() => {
-    // 只能在onMounted中使用, 因为在setup执行的时候, 子组件还没有创建
-    console.log(getCurrentInstance().ctx.$refs.title)
-    console.log(getCurrentInstance().ctx.$refs.ren.printMessage)
+
+    // 只能在onMounted, 或者onMounted之后的生命周期中使用, 因为在setup执行的时候, 子组件还没有创建
+    console.log(getCurrentInstance().ctx.$refs.title2)
+    console.log(getCurrentInstance().ctx.$refs.ren.printMessage())
   })
 
 

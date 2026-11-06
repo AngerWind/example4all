@@ -30,7 +30,7 @@ export default {
 </script> 
 ~~~
 
-但是现在在vue3中, 提供了setup语法糖, 你可以在<script>标签上标注一个 setup, 然后在script中编写的代码就等于在setup()中编写的代码, 同时也不需要再setup中return一个对象, 然后才可以在模板中调用属性和方法了
+但是现在在vue3中, 提供了setup语法糖, 你可以在\<script>标签上标注一个 setup, 然后在script中编写的代码就等于在setup()中编写的代码, 同时也不需要再setup中return一个对象, 然后才可以在模板中调用属性和方法了
 
 ~~~vue
 <template>

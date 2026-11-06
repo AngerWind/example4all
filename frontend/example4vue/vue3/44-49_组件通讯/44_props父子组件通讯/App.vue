@@ -2,6 +2,7 @@
 
   <!-- 向子组件发送 参数 -->
   <!-- v-bind="{x:100, y:200}" 等效于 :x=100 :y=200 -->
+  <!-- 这就等效于给子组件传递了 name, age, x, y 四个属性 -->
   <Child :name="name" age="18" v-bind="{x:100, y:200}"></Child>
 </template>
 

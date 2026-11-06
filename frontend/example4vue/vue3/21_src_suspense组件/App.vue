@@ -4,12 +4,13 @@
 
     <!-- 异步组件需要使用Suspense包裹 -->
     <Suspense>
-      <!-- 异步组件准备好时, 展示的内容 -->
+
       <template v-slot:default>
+        <!-- 异步组件准备好时, 展示的内容 -->
         <Child/>
       </template>
       <template v-slot:fallback>
-        <!--退路-->
+        <!--异步组件还没有准备好的时候, 显示这个-->
         <h3>loading...</h3>
       </template>
     </Suspense>

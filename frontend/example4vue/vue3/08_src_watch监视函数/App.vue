@@ -80,6 +80,7 @@ export default {
 
     // 监视ref定义的对象类型, 只能监视value的变化, value的属性的变化监视不到, 换句话说, 只能监视一层
     // 解决办法是: 1: 监视student.value, 2. 开启深度监视
+    // ref本来就是用来定义基础数据类型的, 本来就只监视value的变化, 如果要监视属性的变化, 那么用reactive来定义就可以了, 有点脱裤子放屁
     // watch(student, (nv, ov) => {
     //   console.log(`newValue:${nv}, oldValue:${ov}`);
     // }, {

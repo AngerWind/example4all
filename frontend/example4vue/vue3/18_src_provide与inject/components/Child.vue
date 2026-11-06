@@ -13,7 +13,9 @@ export default {
   name: "Child",
   components: {Son},
   setup() {
-    console.log('@@@@ Car ', inject('car')) // 通过inject来接受父组件通过provide传递过来的key="car"的数据
+    // 通过inject来接受父组件通过provide传递过来的key="car"的数据
+    let car = inject('car')
+    console.log('@@@@ Car ', car)
   }
 }
 </script>

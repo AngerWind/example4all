@@ -10,7 +10,7 @@
         <RouterLink 
           :to="{
             name:'xiang', // 注意这里必须指定name了, 不能再指定path了
-            params:{ // params里面传递的参数不能是对象和数组, 因为这里是路径参数
+            params:{ // params里面传递的参数不能是对象和数组, 因为这里是 **路径参数**
               id:news.id,
               title:news.title,
               content:news.content

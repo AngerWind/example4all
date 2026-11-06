@@ -1,5 +1,6 @@
 <template>
-  <!-- 给子组件传递属性 -->
+
+  <!-- !!! 给子组件传递属性 -->
   <Person :personList="personList" :a="a"/>
 
 </template>

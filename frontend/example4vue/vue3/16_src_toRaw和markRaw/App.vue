@@ -51,7 +51,7 @@ export default {
       person.car = markRaw({
         name: 'benz',
         price: 40
-      }); //在响应式的对象身上添加任何属性都是响应式的，经过markRaw一包装就变成最原始的数据就不会再做响应
+      }); //在响应式的对象身上添加任何属性都是响应式的，经过markRaw一包装就变成最原始的数据就不会再做响应, 这样修改name和price就没有响应式了
     }
 
 

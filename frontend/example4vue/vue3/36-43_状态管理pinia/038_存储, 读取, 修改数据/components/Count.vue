@@ -28,7 +28,7 @@
   // 方式2, 通过$patch方法, 这个方法接受一个对象, 这个对象可以覆盖store中的数据的状态, 适合要修改多个属性时使用
   function minus(){
     countStore.$patch({
-      sum: 10 // 这里指定sum的值, 来覆盖countStore中的sum
+      sum: 10 // 这里指定sum的值, 来覆盖countStore中的sum, 没有传入的变量保持不动
     })
   }
 

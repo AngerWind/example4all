@@ -1,82 +1,249 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-    />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>vue中表单数据的收集</title>
-    <script src="../js/vue.js"></script>
-  </head>
-  <body>
-    <div id="root">
-      <form @submit.prevent="demo">
-        <!-- 输入框: 收集到的是输入框中的文本 -->
-        <label for="demo">账号:</label>
-        账号: <input type="text" id="demo" v-model.trim="userInfo.account" />
-        密码: <input type="password" v-model="userInfo.password" />
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue 2 收集表单数据</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
+    body {
+      color: #333;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+    }
 
-        <!-- 单选框: 收集到的是被选中的单选框的value属性值 -->
-        性别:
-        男:<input type="radio" v-model="userInfo.sex" name="sex" value="male" />
-        女:<input type="radio" v-model="userInfo.sex" name="sex" value="female" />
+    #root {
+      max-width: 640px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
 
+    .form-item {
+      margin-bottom: 18px;
+    }
 
-        <!-- 多选框: 收集到的是被勾选的的多选框的value值的数组 -->
-        爱好:
-        学习<input v-model="userInfo.hobby" type="checkbox" value="study" />
-        打游戏<input v-model="userInfo.hobby" type="checkbox" value="game" />
-        吃饭<input v-model="userInfo.hobby" type="checkbox" value="eat" />
-        <br />
+    .form-item > label {
+      display: inline-block;
+      min-width: 80px;
+    }
 
-        <!-- 下拉框: 收集到的是value属性值 -->
-        所属校区
-        <select v-model="userInfo.city">
+    input[type="text"],
+    input[type="password"],
+    input[type="number"],
+    select,
+    textarea {
+      padding: 6px 8px;
+      font: inherit;
+    }
+
+    fieldset {
+      margin: 0 0 18px;
+      padding: 12px 16px;
+    }
+
+    fieldset label {
+      margin-right: 18px;
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+      resize: vertical;
+    }
+
+    button {
+      padding: 8px 20px;
+      font: inherit;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <h1>收集表单数据</h1>
+
+    <!-- .prevent 阻止表单默认提交行为, 这样就不会提交表单到远程服务器了, 而是改为调用 handleSubmit 方法。 -->
+    <form @submit.prevent="handleSubmit">
+      <!--
+        文本输入框：v-model 收集输入的字符串，
+        .trim 自动去除首尾空白。
+        id 用于关联 label的for, 点击“账号”即可聚焦输入框, 而不用精准的点击输入框
+        name 是原生表单提交时的字段名，
+        placeholder表示提示输入
+      -->
+      <div class="form-item">
+        <label for="account">账号：</label>
+        <input
+          type="text"
+          id="account"
+          name="account"
+          v-model.trim="userInfo.account"
+          placeholder="请输入账号"
+          autocomplete="username"
+        >
+      </div>
+
+      <!-- 密码输入框：type="password" 会隐藏输入内容。 -->
+      <div class="form-item">
+        <label for="password">密码：</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          v-model="userInfo.password"
+          placeholder="请输入密码"
+          autocomplete="current-password"
+        >
+      </div>
+
+      <!--
+        单选框：同一组 radio 使用相同的 name，保证选项互斥。
+        v-model 收集的是当前选中项的 value，初始值由 userInfo.sex 决定。
+      -->
+      <fieldset>
+        <legend>请选择性别</legend>
+
+        <input
+          type="radio"
+          id="male"
+          name="sex"
+          value="male"
+          v-model="userInfo.sex"
+        >
+        <label for="male">男</label>
+
+        <input
+          type="radio"
+          id="female"
+          name="sex"
+          value="female"
+          v-model="userInfo.sex"
+        >
+        <label for="female">女</label>
+      </fieldset>
+
+      <!--
+        多选框组：多个 checkbox 绑定同一个数组。
+        被勾选选项的 value 会加入数组，取消勾选后会从数组中移除。
+      -->
+      <fieldset>
+        <legend>请选择爱好</legend>
+
+        <input
+          type="checkbox"
+          id="hobby-study"
+          name="hobbies"
+          value="study"
+          v-model="userInfo.hobbies"
+        >
+        <label for="hobby-study">学习</label>
+
+        <input
+          type="checkbox"
+          id="hobby-game"
+          name="hobbies"
+          value="game"
+          v-model="userInfo.hobbies"
+        >
+        <label for="hobby-game">打游戏</label>
+
+        <input
+          type="checkbox"
+          id="hobby-eat"
+          name="hobbies"
+          value="eat"
+          v-model="userInfo.hobbies"
+        >
+        <label for="hobby-eat">吃饭</label>
+      </fieldset>
+
+      <!-- 下拉单选框：v-model 收集当前选中 option 的 value。 -->
+      <div class="form-item">
+        <label for="city">所属校区：</label>
+        <select id="city" name="city" v-model="userInfo.city">
           <option value="">请选择校区</option>
           <option value="Beijing">北京</option>
           <option value="Shanghai">上海</option>
           <option value="Shenzhen">深圳</option>
           <option value="Wuhan">武汉</option>
         </select>
-        <br />
+      </div>
 
-        <!-- 勾选框: 搜集到的是 true / false -->
-        <input type="checkbox" v-model="userInfo.ifAgree" />阅读并接受
-          <a href="https://www.google.com.tw">《用户协议》</a>
-        <button>提交数据</button>
+      <!--
+        单个勾选框：v-model 收集布尔值，勾选为 true，取消勾选为 false。
+        因此 userInfo.agreed 的初始值也应使用布尔值。
+      -->
+      <div class="form-item">
+        <input
+          type="checkbox"
+          id="agreement"
+          name="agreement"
+          v-model="userInfo.agreed"
+        >
+        <label for="agreement">我已阅读并接受</label>
+        <a href="https://www.google.com.tw">《用户协议》</a>
+      </div>
 
-        其他信息<textarea v-model.lazy="userInfo.other"></textarea>
-        <br />
-        <!-- 因为年龄是数字, 所以type=number, 同时使用number修饰符, 将收集到的数据转换为有效的数字 -->
-        年龄: <input type="number" v-model.number="userInfo.age" />
-      </form>
-    </div>
-    <script type="text/javascript">
-      Vue.config.productionTip = false;
-      const vm = new Vue({
-        el: "#root",
-        data: {
-          userInfo: {
-            account: "",
-            password: "",
-            sex: "male",
-            age: "",
-            hobby: [], // 因为是多选，所以要用数组
-            city: "",
-            other: "",
-            ifAgree: false, // 因为是勾选框，所以要用布尔值
-          },
-        },
-        methods: {
-          demo() {
-            //json转换为string
-            console.log(JSON.stringify(this.userInfo));
-          },
-        },
-      });
-    </script>
-  </body>
+      <!-- .lazy 表示在 change 事件中同步数据，而不是每次输入时都同步。 -->
+      <div class="form-item">
+        <label for="other">其他信息：</label>
+        <textarea
+          id="other"
+          name="other"
+          rows="4"
+          v-model.lazy="userInfo.other"
+          placeholder="请输入其他信息"
+        ></textarea>
+      </div>
+
+      <!--
+        type="number" 提供数字输入控件，.number 会尝试把输入值转换为数字。
+        如果无法转换，v-model 保留原始字符串；输入框为空时通常得到空字符串。
+      -->
+      <div class="form-item">
+        <label for="age">年龄：</label>
+        <input
+          type="number"
+          id="age"
+          name="age"
+          min="0"
+          v-model.number="userInfo.age"
+          placeholder="请输入年龄"
+        >
+      </div>
+
+      <button type="submit">提交数据</button>
+    </form>
+  </div>
+
+  <script src="../js/vue.js"></script>
+  <script>
+    Vue.config.productionTip = false;
+
+    new Vue({
+      el: '#root',
+      data: {
+        userInfo: {
+          account: '',
+          password: '',
+          sex: 'male',
+          hobbies: [], // 多选框组使用数组保存所有选中项。
+          city: '',
+          agreed: false, // 单个勾选框使用布尔值。
+          other: '',
+          age: ''
+        }
+      },
+      methods: {
+        handleSubmit() {
+          // 转成 JSON 字符串，避免控制台显示的是随后仍会变化的对象引用。
+          console.log('提交的表单数据：', JSON.stringify(this.userInfo, null, 2));
+        }
+      }
+    });
+  </script>
+</body>
 </html>

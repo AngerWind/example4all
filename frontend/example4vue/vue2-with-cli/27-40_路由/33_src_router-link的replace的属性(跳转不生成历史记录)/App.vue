@@ -6,20 +6,50 @@
         <div class="list-group">
 
           <!--
-              浏览器的历史记录是一个stack的形式
+              浏览器的历史记录可以简单理解为一个stack，指针指向当前正在浏览的记录。
+              push：新增一条记录，是router-link默认的跳转方式。
+              replace：替换当前记录，不新增记录，也不会清空其他历史记录。
 
-              当用户跳转到一个页面的时候, 就往stack中压入新页面的地址, 并且将指针指向栈顶的新页面的地址
-              当用户前进后退的时候, 实际上就是移动stack中的指针, 这种模式被称为push模式, 即每访问一个新的页面, 都往其中push一个新记录
+              案例一：第二次跳转使用push
 
-              浏览器还有一种模式, 为replace, 即用户每访问一个新的页面, 就将栈顶的最新记录 !!!替换!!! 为新页面的地址
-              在这种模式下, 会导致页面无法前进和后退, 因为每一次都是替换, 不会生成历史记录, 指针无法移动
+              1. 打开A页面
+                 stack: [A]
+                 当前记录: A
 
-              其实这两种模式可以混合使用, 是push还是replace取决于你点击的router-link中是否有replace这个属性
-              如果有的话就是replace模式, 否则就是默认的push模式
+              2. 第一次跳转，使用push从A跳转到B
+                 stack: [A, B]
+                 当前记录: B
+
+              3. 第二次跳转，使用push从B跳转到C
+                 stack: [A, B, C]
+                 当前记录: C
+
+              4. 点击浏览器后退
+                 C仍然在栈中，指针从C移动到B，所以回到B页面。
+
+
+              案例二：第二次跳转使用replace
+
+              1. 打开A页面
+                 stack: [A]
+                 当前记录: A
+
+              2. 第一次跳转，使用push从A跳转到B
+                 stack: [A, B]
+                 当前记录: B
+
+              3. 第二次跳转，使用replace从B跳转到C
+                 C会替换当前的B，而不是新增一条记录。
+                 stack: [A, C]
+                 当前记录: C
+
+              4. 点击浏览器后退
+                 指针从C移动到A，所以回到A页面。
+                 B已经被C替换，无法再通过浏览器后退回到B。
           -->
 
-          <!-- 这里跳转到 about不会产生历史记录, 跳转到home 就会产生历史记录 -->
-          <router-link class="list-group-item" replace active-class="active" :to="{name: 'about'}">About</router-link>
+          <!-- 跳转到About不会新增历史记录；跳转到Home会新增一条历史记录 -->
+          <router-link class="list-group-item" replace active-class="active" :to="{name: 'regard'}">About</router-link>
           <router-link class="list-group-item" active-class="active" to="/home">Home</router-link>
         </div>
       </div>
