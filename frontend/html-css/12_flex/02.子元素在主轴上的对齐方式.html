@@ -21,16 +21,16 @@
 
             /*  
                 justify-content
-                    - 当父元素空间大于子元素且没有设置自动伸展时, 子元素如何对齐
+                    - 当父元素空间大于子元素且没有设置自动伸展时, 子元素如何在主轴上对齐
                     - 可选值：
                         flex-start 元素沿着主轴起边排列(空白在主轴末尾)       向左对齐
                         flex-end 元素沿着主轴终边排列(空白在主轴开始)         向右对齐
                         center 元素居中排列(空白在主轴两侧)                 居中对其
-                        space-around 空白分布到元素两侧
-                        space-between 空白均匀分布到元素间
-                        space-evenly 空白分布到元素的单侧
+                        space-around 空白分布到元素两侧              |  |元素|    |元素|    |元素|  |
+                        space-between 空白均匀分布到元素间           |元素|    |元素|    |元素|
+                        space-evenly 空白分布到元素的单侧            |    |元素|    |元素|    |
             */
-            justify-content: center;
+            justify-content: space-evenly;
         }
 
         li {
