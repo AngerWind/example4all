@@ -30,34 +30,46 @@
     <script type="text/javascript">
       Vue.config.productionTip = false;
       //el的两种写法
+
+      // 写法1， 直接mount
       // const v = new Vue({
-      //     // el: '#root', //第一种写法
+      //     el: '#root', //第一种写法
       //     data: {
       //         name: '上海'
       //     }
       // });
-      //
-      // // console.log(v);
+
+      // 写法2, 使用mount函数
+      // const v1 = new Vue({
+      //     data: {
+      //         name: '上海'
+      //     }
+      // });
+      // console.log(v1);
       // //关联root容器，用mount方法
       // setTimeout(() => {
-      //     v.$mount('#root'); //第二种写法 挂载到页面上
+      //     v1.$mount('#root'); //第二种写法 挂载到页面上
       // }, 3000)
 
       //data的两种写法
+
       new Vue({
         el: "#root",
-        //data的第一种写法:对象式
+
+        // data的第一种写法:对象式
         // data: {
         //     name: 'shanghai'
         // }
-        //第二种写法: 函数式(返回对象中包含你想渲染的模版数据)
-        //学习组件的时候要是用函数式 这个函数是Vue来调用的
+
+        // 第二种写法: 函数式(返回对象中包含你想渲染的模版数据)
+        // 学习组件的时候要是用函数式 这个函数是Vue来调用的
         // data: () => {
         //    console.log(`@@@@`, this); //此时this是window，因为箭头函数没有自己的this，它向外查找找到的window
         //    return ({
         //         name: 'shanghai'
         //     })
         // }
+
         //尽量不要写成剪头函数，因为会丢失this
         data() {
           console.log("@@@", this); //此时this是Vue

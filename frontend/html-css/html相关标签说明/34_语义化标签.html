@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语义化标签</title>
+    <style>
+        /* 加一点背景色, 方便观察每个标签在页面中的区域, 语义化标签本身没有任何默认样式 */
+        header { background: #ffd6d6; }
+        nav { background: #ffeec8; }
+        main { background: #d6f5d6; }
+        article { background: #d6e4ff; }
+        section { background: #e8d6ff; }
+        aside { background: #ffd6f5; }
+        footer { background: #d6d6d6; }
+    </style>
+</head>
+
+<body>
+    <!--
+        语义化标签: HTML5 新增的一组标签, 功能和 div 完全一样(都是无语义容器, 默认无样式),
+        区别在于标签名本身说明了内容的"含义", 方便搜索引擎和屏幕阅读器理解页面结构。
+        原则: 能用语义标签就别用 div, div 是最后的选择。
+    -->
+
+    <!-- header: 页头, 放 logo、标题、标语等 -->
+    <header>
+        <h1>我的博客</h1>
+    </header>
+
+    <!-- nav: 导航, 包裹导航链接(菜单、目录、分页等) -->
+    <nav>
+        <a href="#">首页</a>
+        <a href="#">文章</a>
+        <a href="#">关于我</a>
+    </nav>
+
+    <!-- main: 页面主体内容, 一个页面只应有一个 main -->
+    <main>
+
+        <!-- article: 独立完整的内容, 比如一篇文章、一篇帖子、一条评论 -->
+        <article>
+            <h2>第一篇文章</h2>
+            <!-- section: 内容的章节/分块, 通常带一个标题 -->
+            <section>
+                <h3>第一节</h3>
+                <p>正文内容……</p>
+            </section>
+            <section>
+                <h3>第二节</h3>
+                <p>正文内容……</p>
+            </section>
+        </article>
+
+        <!-- aside: 侧边栏/附属信息, 比如广告、相关推荐 -->
+        <!-- nav和aside的区别在于, nav一般放在顶部或者左边, 作为导航栏, aside一般是放在右边的侧边栏, 一般内容都是广告, 推荐相关的 -->
+        <aside>
+            <p>热门文章推荐</p>
+        </aside>
+
+    </main>
+
+    <!-- footer: 页脚, 放版权信息、联系方式等 -->
+    <footer>
+        <p>&copy; 2026 我的博客</p>
+    </footer>
+
+    <!--
+        典型页面结构:
+        header
+        nav
+        main
+          ├── article (可有多个, 内部可用 section 分章节)
+          └── aside
+        footer
+    -->
+</body>
+
+</html>

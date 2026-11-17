@@ -41,9 +41,8 @@
         <!-- 简写 -->
         <input type="text" v-model="name" />
 
-        <!-- 你还可以双向绑定其他的属性 -->
-        <!-- 这样name属性变化的时候, 会导致name属性变化, name属性变化也会导致name属性变化 -->
-        <div v-model:name="name" v-model:age="age"></div>
+        <!-- 不要再div上面使用v-model， 没有任何意义， 如果要使用的话， 使用v-bind -->
+        <!-- <div v-model:name="name" v-model:age="age"></div> -->
       </label>
       <br />
 
