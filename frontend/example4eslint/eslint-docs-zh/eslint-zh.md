@@ -1151,15 +1151,16 @@ npx eslint --config eslint.config.ts
 ```
 
 
----
+
+
+
+
 
 ## 配置语言选项（Configure Language Options）
 
 > 原文链接：https://eslint.org/docs/latest/use/configure/language-options
 
-::: tip
-本页介绍如何使用 flat config 格式配置语言选项。
-:::
+
 
 JavaScript 生态系统包含各种各样的运行时、版本、扩展和框架。它们各自可能支持不同的语法和全局变量。ESLint 允许你针对项目中使用的 JavaScript 配置语言选项，例如自定义全局变量。你也可以使用插件来扩展 ESLint，使其支持项目的语言选项。
 
@@ -1188,6 +1189,10 @@ export default defineConfig([
 	},
 ]);
 ```
+
+
+
+
 
 ### 指定解析器选项（Specify Parser Options）
 
@@ -1343,8 +1348,8 @@ ESLint 自带大量[内置规则](https://eslint.org/docs/latest/rules/)，你�
 
 要对规则进行配置, 那么有两种方式
 
-- 在配置文件中配置规则
-- 直接在代码中使用注释来配置规则, 被称为内联
+- 在**配置文件**中配置规则
+- 直接在代码中**使用注释来配置规则**, 被称为内联
 
 
 
@@ -1356,9 +1361,7 @@ ESLint 自带大量[内置规则](https://eslint.org/docs/latest/rules/)，你�
 - `"warn"` 或 `1` - 将该规则作为警告启用（不影响退出码）。通常用于不强制遵守, 即使不遵守也可以通过CI/CD和提交代码,  或者临时关闭某个规则
 - `"error"` 或 `2` - 将该规则作为错误启用（触发时退出码为 1）。通常用于在CI/CD, pre-commit, 拉取请求合并的时候, 要求强制遵守, 因为不遵守的话, ESLint会直接退出, 并且状态码为1
 
-
-
-#### 使用配置文件（Use Configuration Files）
+### 使用配置文件（Use Configuration Files）
 
 要在[配置文件](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-file)中配置规则，使用 `rules` 键以及错误级别和你想使用的任何选项。例如：
 
@@ -1421,9 +1424,7 @@ export default defineConfig([
 
 > 通过内联注释的方式配置的规则具有最高优先级，并在所有配置合并之后才应用。
 
-
-
-#### 使用配置注释（Use configuration comments）
+### 使用配置注释（Use configuration comments）
 
 要在文件内使用配置注释来配置规则，使用以下格式的注释：
 
@@ -1471,10 +1472,11 @@ export default defineConfig([
  */
 ```
 
+
+
 ##### 报告未使用的 `eslint` 内联配置注释（Report unused `eslint` inline config comments）
 
- 随着你的配置文件（eslint.config.js）不断变化，某些内联注释可能变得多余——它配置的内容和配置文件里已经设置的完全一样，没
-  有带来任何改变。这种注释就叫"未使用的内联配置（unused inline config）"。
+ 随着你的配置文件（eslint.config.js）不断变化，某些内联注释可能变得多余——它配置的内容和配置文件里已经设置的完全一样，没有带来任何改变。这种注释就叫"未使用的内联配置（unused inline config）"。
 
  比如配置文件里已经把 curly 设为 "error"：
 
@@ -1516,7 +1518,7 @@ export default defineConfig([
 
 ### 来自插件的规则（Rules from Plugins）
 
-插件中也可以包含一些特有的规则, 如果你想要使用这些规则, 并配置告警登记, 那么在规则 ID 前加上插件命名空间和 `/`。
+插件中也可以包含一些特有的规则, 如果你想要使用这些规则, 并配置告警等级, 那么在规则 ID 前加上插件命名空间和 `/`。
 
 在[配置文件](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-file)中，例如：
 
@@ -1528,9 +1530,15 @@ import { defineConfig } from "eslint/config";
 export default defineConfig([
 	{
 		plugins: {
+            // 这里相当于"example": example
+            // key是插件的名字, 可以随便定义, value是插件对象本身
+            // 按照约定, 插件的npm包名字一般是eslint-plugin-aaa, 那么在导入插件的时候, key就配置为aaa
+            // 之后就可以通过"key/rule_name"来引用插件中的规则了
 			example,
 		},
 		rules: {
+            // 上面plugins中定义的插件, 只是让eslint加载对应的插件, 并不会自动启用插件中的规则
+            // 所以还需要再rules中定义规则的告警等级, 这样才会启用插件
 			"example/rule1": "warn",
 		},
 	},
@@ -1539,32 +1547,61 @@ export default defineConfig([
 
 在这个配置文件中，规则 `example/rule1` 来自名为 `eslint-plugin-example` 的插件。
 
-你也可以在配置注释中使用这种格式，例如：
+你也可以在代码文件中使用注释来定义插件中的规则的告警等级，例如：
 
 ```js
 /* eslint "example/rule1": "error" */
 ```
 
-:::important
-为了在配置注释中使用插件规则，你的配置文件必须加载该插件，并在配置的 `plugins` 对象中指定它。配置注释本身无法加载插件。
-:::
+这种方式必须先在配置文件的plugins中配置example这个插件, 才可以这样
+
+仅仅是使用注释并不会自动加载这个插件
+
+
 
 ### 禁用规则（Disable Rules）
 
+#### 使用配置文件（Use configuration files）
+
+要在[配置文件](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-file)中为一组文件禁用规则，使用一个带有 `files` 键的后续配置对象。例如：
+
+```js
+// eslint.config.js
+import { defineConfig } from "eslint/config";
+
+export default defineConfig([
+	{
+		rules: {
+			"no-unused-expressions": "error",
+		},
+	},
+	{
+		files: ["*-test.js", "*.spec.js"],
+		rules: {
+			"no-unused-expressions": "off", // 禁用no-unused-expressions规则
+		},
+	},
+]);
+```
+
+
+
 #### 使用配置注释（Use configuration comments）
 
-- **谨慎使用。** 内联禁用 ESLint 规则应受到限制，仅在有明确且合理理由的情况下使用。内联禁用规则不应成为解决 lint 错误的默认方案。
-- **记录原因。** 在注释的 `--` 部分之后提供注释，解释禁用特定规则的原因。该文档应说明为什么禁用该规则以及为什么在特定情况下有必要这样做。
-- **临时方案。** 如果禁用注释是作为解决紧迫问题的临时措施而添加的，请创建后续任务以妥善解决根本问题。这可以确保禁用注释在之后被重新审视和解决。
+<font color=red>(不用看这一部分, 直接禁用内联注释)</font>
+
+- **谨慎使用。** 仅在有明确且合理的情况下使用内联注释来禁用eslint的规则, 内联注释不应该成为解决 lint 错误的默认方案。
+- **记录原因。** 使用内联注释禁用eslint规则的时候, 一定要在`--`的后面说明为什么禁用该规则以及为什么在特定情况下有必要这样做。
+- **临时方案。** 如果使用内联注释来禁用规则, 只是为了解决紧迫问题的临时措施, 请创建后续任务以妥善解决根本问题。这可以确保禁用注释在之后被重新审视和解决。
 - **代码审查和结对编程。** 鼓励团队成员定期审查彼此的代码。代码审查可以帮助识别禁用注释背后的原因，并确保它们被恰当使用。
-- **配置。** 只要有可能，优先使用 ESLint 配置文件而不是禁用注释。配置文件可以实现一致的、项目范围的规则处理。
+- **配置。** **<font color=red>只要有可能，优先使用 ESLint 配置文件而不是禁用注释</font>**。配置文件可以实现一致的、项目范围的规则处理。
 
 要禁用文件某一部分的规则警告，使用以下格式的块注释：
 
 ```js
 /* eslint-disable */
 
-alert("foo");
+alert("foo"); // 这中间的部分会禁用所有eslint规则
 
 /* eslint-enable */
 ```
@@ -1580,16 +1617,15 @@ console.log("bar");
 /* eslint-enable no-alert, no-console */
 ```
 
-::: warning
-不带任何特定规则的 `/* eslint-enable */` 会导致所有被禁用的规则被重新启用。
-:::
 
 要禁用整个文件的规则警告，在文件顶部放置一个 `/* eslint-disable */` 块注释：
 
 ```js
-/* eslint-disable */
+/* eslint-disable */   // 禁用所有规则
 
 alert("foo");
+
+/* eslint-enable * */ // 启用所有规则
 ```
 
 你也可以为整个文件禁用或启用特定规则：
@@ -1664,13 +1700,13 @@ foo(); // eslint-disable-line example/rule-name
 foo(); /* eslint-disable-line example/rule-name */
 ```
 
-::: tip
-禁用文件某一部分警告的注释告诉 ESLint 不要报告被禁用代码的规则违规。然而，ESLint 仍会解析整个文件，因此被禁用的代码仍然需要是语法上有效的 JavaScript。
-:::
+> 禁用文件某一部分的规则, 告诉 ESLint即使代码有违规也不要报告。然而，ESLint 仍会解析整个文件，因此被禁用的代码仍然需要语法正确的 JavaScript 代码。
 
 ##### 注释描述（Comment descriptions）
 
-配置注释可以包含描述，以解释为什么禁用或重新启用规则是必要的。描述必须出现在配置之后，并需要通过两个或更多连续的 `-` 字符与配置分隔。例如：
+禁用规则的注释可以包含描述，以解释为什么禁用或重新启用规则是必要的。
+
+描述必须出现在配置之后，并需要通过两个或更多连续的 `-` 字符与配置分隔。例如：
 
 ```js
 // eslint-disable-next-line no-console -- Here's a description about why this configuration is necessary.
@@ -1681,29 +1717,6 @@ console.log("hello");
  * along with some additional information
  **/
 console.log("hello");
-```
-
-#### 使用配置文件（Use configuration files）
-
-要在[配置文件](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-file)中为一组文件禁用规则，使用一个带有 `files` 键的后续配置对象。例如：
-
-```js
-// eslint.config.js
-import { defineConfig } from "eslint/config";
-
-export default defineConfig([
-	{
-		rules: {
-			"no-unused-expressions": "error",
-		},
-	},
-	{
-		files: ["*-test.js", "*.spec.js"],
-		rules: {
-			"no-unused-expressions": "off",
-		},
-	},
-]);
 ```
 
 #### 禁用内联注释（Disable Inline Comments）
@@ -1756,11 +1769,7 @@ export default defineConfig([
 
 > 原文链接：https://eslint.org/docs/latest/use/configure/plugins
 
-::: tip
-本页介绍如何使用 flat config 格式配置插件。
-:::
-
-你可以通过多种不同的方式使用插件来扩展 ESLint。插件可以包含：
+你可以使用插件来扩展eslint, 插件可以包含：
 
 - 自定义规则：验证你的代码是否满足某个预期，以及当不满足预期时该做什么。
 - 自定义配置：有关如何使用这些配置的详细信息，请参阅插件的文档。
@@ -1768,7 +1777,7 @@ export default defineConfig([
 
 ### 配置插件（Configure Plugins）
 
-ESLint 支持使用第三方插件。插件只是符合 ESLint 认可的特定接口的对象。
+ESLint 支持使用第三方插件。插件只是具有特定接口的对象。
 
 要在[配置文件](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-file)中配置插件，使用 `plugins` 键，它包含一个对象，其属性表示插件命名空间，值为插件对象。
 
@@ -1789,9 +1798,9 @@ export default defineConfig([
 ]);
 ```
 
-::: tip
-为插件创建命名空间时，约定是使用不带 `eslint-plugin-` 前缀的 npm 包名。在前面的示例中，`eslint-plugin-example` 被赋予了 `example` 命名空间。
-:::
+> 为插件创建命名空间时，约定是使用不带 `eslint-plugin-` 前缀的 npm 包名。在前面的示例中，`eslint-plugin-example` 被赋予了 `example` 命名空间。
+
+
 
 #### 配置本地插件（Configure a Local Plugin）
 
@@ -1816,36 +1825,45 @@ export default defineConfig([
 
 这里使用了命名空间 `local`，但你也可以使用任何你喜欢的名称。
 
+
+
 #### 配置虚拟插件（Configure a Virtual Plugin）
 
 插件定义可以直接在你的配置中虚拟创建。例如，假设你有一条包含在名为 `my-rule.js` 的文件中的规则，你想在配置中启用它。你可以定义一个虚拟插件来实现，如本例所示：
 
 ```js
 // eslint.config.js
-import myRule from "./rules/my-rule.js";
+import myRule from "./rules/my-rule.js"; // 1. 导入自定义的规则
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
 	{
 		plugins: {
+             // 这里定义了一个名为local的插件, 但是他不是一个真正的插件, 只是一个虚拟的插件
 			local: {
+                // 这个插件包含了一个名为my-rule的规则
 				rules: {
 					"my-rule": myRule,
 				},
 			},
 		},
 		rules: {
+            // 使用虚拟插件中的规则
 			"local/my-rule": "warn",
 		},
 	},
 ]);
 ```
 
-这里，`local` 命名空间用于定义一个虚拟插件。规则 `myRule` 随后在虚拟插件的 `rules` 对象内被命名为 `my-rule`。（插件的完整格式请参见[创建插件](https://eslint.org/docs/latest/extend/plugins)。）然后你可以将该规则引用为 `local/my-rule` 来配置它。
+使用虚拟插件的优点在于, 你不需要创建完整的插件, 只需要创建自定义规则, 然后创建一个虚拟插件, 将你的自定义规则包含进去就可以按照插件的方式来使用你的自定义规则
 
-### 使用插件规则（Use Plugin Rules）
+( 插件的完整格式请参见[创建插件](https://eslint.org/docs/latest/extend/plugins)。）
 
-你可以使用插件中包含的特定规则。为此，在配置对象中使用 `plugins` 键指定插件。`plugins` 键的值是一个对象，其中插件名称是属性名，值是插件对象本身。下面是一个示例：
+
+
+### 使用插件中的规则（Use Plugin Rules）
+
+有些插件会包含规则, 要使用这些规则，可以在配置对象中使用 `plugins` 键指定插件。`plugins` 键的值是一个对象，其中插件名称是属性名，值是插件对象本身。下面是一个示例：
 
 ```js
 // eslint.config.js
@@ -1856,9 +1874,13 @@ export default defineConfig([
 	{
 		files: ["**/*.js"],
 		plugins: {
-			jsdoc: jsdoc,
+            // 让eslint加载这个jsdoc插件
+            // key是插件的名字, 可以随便定义, 但是一般按照约定俗成, 插件是eslint-plugin-jsdoc, 那么插件名字就是去掉eslint-plugin-前缀
+            // values是具体的插件对象
+			jsdoc: jsdoc, 
 		},
 		rules: {
+            // 使用"插件名字/规则名字" 来定义插件中的规则的告警等级
 			"jsdoc/require-description": "error",
 			"jsdoc/check-values": "error",
 		},
@@ -1910,7 +1932,9 @@ export default defineConfig([
 
 此配置对象使用 `jsd` 作为插件前缀，而不是 `jsdoc`。
 
-### 指定处理器（Specify a Processor）
+
+
+### 指定插件中的处理器（Specify a Processor）
 
 插件可以提供处理器。处理器可以从其他类型的文件中提取 JavaScript 代码，然后让 ESLint 检查这些 JavaScript 代码。或者，处理器可以在预处理期间转换 JavaScript 代码。
 
@@ -1931,6 +1955,8 @@ export default defineConfig([
 	},
 ]);
 ```
+
+
 
 处理器可以生成命名代码块，例如 `0.js` 和 `1.js`。ESLint 将这样的命名代码块视为原始文件的子文件。你可以用额外的配置对象为命名代码块指定额外的配置。例如，下面为 markdown 文件中以 `.js` 结尾的命名代码块禁用了 `strict` 规则：
 
@@ -2002,6 +2028,8 @@ export default defineConfig([
 ]);
 ```
 
+
+
 ### 指定语言（Specify a Language）
 
 插件可以提供语言。语言让 ESLint 能够检查 JavaScript 以外的编程语言。要在[配置文件](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-file)中指定语言，使用 `language` 键，并以 `namespace/language-name` 格式指定语言名称。例如，下面对 `*.json` 文件使用来自 `@eslint/json` 的 `json/jsonc` 语言：
@@ -2022,9 +2050,9 @@ export default defineConfig([
 ]);
 ```
 
-::: tip
-当你在配置对象中指定 `language` 时，`languageOptions` 就变成特定于该语言的。每种语言定义自己的 `languageOptions`，因此请查看插件的文档以确定哪些选项可用。
-:::
+> 当你在配置对象中指定 `language` 时，`languageOptions` 就变成特定于该语言的。每种语言定义自己的 `languageOptions`，因此请查看插件的文档以确定哪些选项可用。
+
+
 
 ### 常见问题（Common Problems）
 
@@ -2032,21 +2060,23 @@ export default defineConfig([
 - [插件配置尚未升级到 flat config](https://eslint.org/docs/latest/use/configure/migration-guide#using-eslintrc-configs-in-flat-config)
 
 
----
+
 
 ## 配置解析器（Configure a Parser）
 
 > 原文链接：https://eslint.org/docs/latest/use/configure/parser
 
-::: tip
-本页介绍如何使用 flat config 格式配置解析器。
-:::
 
-你可以使用自定义解析器将 JavaScript 代码转换为抽象语法树（AST），供 ESLint 进行求值。如果你的代码与 ESLint 的默认解析器 Espree 不兼容，你可能需要添加自定义解析器。
+
+你可以使用自定义解析器将 JavaScript 代码转换为抽象语法树（AST），供 ESLint 进行校验。
+
+<font color=red>ESLint使用Espree作为默认的解析器， 如果Espress无法解析你的代码， 那么你可能需要添加自定义解析器。</font>
+
+
 
 ### 配置自定义解析器（Configure a Custom Parser）
 
-在许多情况下，你可以使用 ESLint 自带的[默认解析器](https://github.com/eslint/js/tree/main/packages/espree)来解析你的 JavaScript 代码。你可以选择性地使用 `parser` 属性覆盖默认解析器。`parser` 属性必须是一个符合[解析器接口](https://eslint.org/docs/latest/extend/custom-parsers)的对象。例如，你可以使用 [`@babel/eslint-parser`](https://www.npmjs.com/package/@babel/eslint-parser) 包来让 ESLint 解析实验性语法：
+在许多情况下，你可以使用 ESLint 自带的[默认解析器(espree)](https://github.com/eslint/js/tree/main/packages/espree)来解析你的 JavaScript 代码。你可以选择性地使用 `languageOptions.parser` 属性覆盖默认解析器。`languageOptions.parser` 属性必须是一个符合[解析器接口](https://eslint.org/docs/latest/extend/custom-parsers)的对象。例如，你可以使用 [`@babel/eslint-parser`](https://www.npmjs.com/package/@babel/eslint-parser) 包来让 ESLint 解析实验性语法：
 
 ```js
 // eslint.config.js
@@ -2071,13 +2101,13 @@ export default defineConfig([
 - [@babel/eslint-parser](https://www.npmjs.com/package/@babel/eslint-parser) - 对 [Babel](https://babeljs.io) 解析器的封装，使其与 ESLint 兼容。
 - [@typescript-eslint/parser](https://www.npmjs.com/package/@typescript-eslint/parser) - 将 TypeScript 转换为 ESTree 兼容形式的解析器，使其可以在 ESLint 中使用。
 
-::: warning
-不能保证外部解析器能与 ESLint 正常配合工作。对于仅影响第三方解析器的不兼容性问题，ESLint 不会修复相关 bug。
-:::
+> 不能保证外部解析器能与 ESLint 正常配合工作。对于仅影响第三方解析器的不兼容性问题，ESLint 不会修复相关 bug。
+
+
 
 ### 配置解析器选项（Configure Parser Options）
 
-解析器可以接受选项来改变其行为。`languageOptions.parserOptions` 用于直接向解析器传递选项。这些选项始终是特定于解析器的，因此你需要查阅所使用解析器的文档以了解可用选项。下面是为 Babel ESLint 解析器设置解析器选项的示例：
+解析器可以接受选项来改变其行为。`languageOptions.parserOptions` 用于直接向解析器传递选项。每个解析器的选项都不同，因此你需要查阅所使用解析器的文档以了解可用选项。下面是为 Babel ESLint 解析器设置解析器选项的示例：
 
 ```js
 // eslint.config.js
@@ -2106,42 +2136,62 @@ export default defineConfig([
 :::
 
 
----
+
 
 ## 合并配置（Combine Configs）
 
 > 原文链接：https://eslint.org/docs/latest/use/configure/combine-configs
 
-在许多情况下，你不会从头开始编写 ESLint 配置文件，而是会结合使用预定义配置和可共享配置，再加上你自己的覆盖配置，来创建项目的配置。本页介绍一些可以在配置文件中用来合并配置的模式。
+在许多情况下，你不会从头开始编写 ESLint 配置文件，而是会使用预定义配置和可共享配置，再加上你自己的配置来覆盖前者, 达到自定义的效果，来创建项目的配置。本页介绍一些可以在配置文件中用来合并配置的模式。
 
 ### 应用一个配置对象（Apply a Config Object）
 
-如果你从另一个模块导入一个[配置对象](https://eslint.org/docs/latest/use/core-concepts/glossary#config-object)，你可以通过创建一个带有 `files` 键的新对象，并使用 `extends` 键合入导入对象的其余属性，从而将其仅应用于文件的子集。例如：
+如果你从另一个模块导入一个[配置对象](https://eslint.org/docs/latest/use/core-concepts/glossary#config-object)，你可以通过创建一个带有 `files` 键的新对象，并使用 `extends` 键合入导入这个配置对象的其余属性，从而将其仅应用于特定的文件。例如：
 
 ```js
 // eslint.config.js
-import js from "@eslint/js";
+import js from "@eslint/js"; // 1. 导入js插件对象
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
 	{
-		files: ["**/*.js"],
+		files: ["**/*.js"], // 5. 将这些规则应用到所有的js文件上面
 		plugins: {
-			js,
+			js, // 2. 让eslint加载js插件对象
 		},
-		extends: ["js/recommended"],
+		extends: ["js/recommended"], // 3. recommend会启用一批官方推荐的 JavaScript 规则。
 		rules: {
-			"no-unused-vars": "warn",
+			"no-unused-vars": "warn", // 4. 重新调整特定规则的告警等级
 		},
 	},
 ]);
 ```
 
-这里，`"js/recommended"` 预定义配置首先应用于匹配 `"**/*.js"` 模式的文件，然后再添加所需的 `no-unused-vars` 配置。
+
 
 ### 应用一个配置数组（Apply a Config Array）
 
-如果你从另一个模块导入一个[配置数组](https://eslint.org/docs/latest/use/core-concepts/glossary#config-array)，你可以通过使用 `extends` 键将配置数组（配置对象的数组）仅应用于文件的子集。例如：
+如果你从另一个模块导入一个[配置数组](https://eslint.org/docs/latest/use/core-concepts/glossary#config-array)，你可以通过使用 `extends` 键将配置数组（配置对象的数组）仅应用于文件的子集。
+
+假设 `eslint-config-example` 是一个共享配置包，它导出的内容如下：
+
+```js
+// eslint-config-example/index.js
+export default [
+    {
+        rules: {
+            "no-console": "error",
+        },
+    },
+    {
+        rules: {
+            "eqeqeq": "error",
+        },
+    },
+];
+```
+
+注意，这里导出的是一个数组，而不是一个普通配置对象。那么你可以这样使用这个共享配置包中的配置
 
 ```js
 // eslint.config.js
@@ -2151,7 +2201,7 @@ import { defineConfig } from "eslint/config";
 export default defineConfig([
 	{
 		files: ["**/*.js"],
-		extends: [exampleConfigs],
+		extends: [exampleConfigs], // 继承exampleConfigs中的所有配置, 并只应用于**/*.js文件
 		rules: {
 			"no-unused-vars": "warn",
 		},
@@ -2159,29 +2209,48 @@ export default defineConfig([
 ]);
 ```
 
-这里，`exampleConfigs` 可共享配置首先应用于匹配 `"**/*.js"` 模式的文件，然后另一个配置对象再添加所需的 `no-unused-vars` 配置。
+上面的配置等效于
+
+~~~js
+[
+    {
+        files: ["**/*.js"],
+        rules: {
+            "no-console": "error",
+        },
+    },
+    {
+        files: ["**/*.js"],
+        rules: {
+            "eqeqeq": "error",
+        },
+    },
+    {
+        files: ["**/*.js"],
+        rules: {
+            "no-unused-vars": "warn",
+        },
+    },
+]
+~~~
 
 
----
 
-## 忽略文件（Ignore Files）
+
+
+
+## 全局忽略文件（Ignore Files）
 
 > 原文链接：https://eslint.org/docs/latest/use/configure/ignore
 
-::: tip
-本页介绍如何使用 flat config 格式忽略文件。
-:::
+> 本页介绍如何使用 `globalIgnores()` 函数完全忽略文件和目录。有关非全局忽略的更多信息，请参见[指定 files 和 ignores](https://eslint.org/docs/latest/use/configure/configuration-files#specifying-files-with-files-and-ignores)。有关全局忽略和非全局忽略之间区别的更多信息，请参见[使用 `ignores` 全局忽略文件](https://eslint.org/docs/latest/use/configure/configuration-files#globally-ignoring-files-with-ignores)。
 
-::: tip
-本页介绍如何使用 `globalIgnores()` 函数完全忽略文件和目录。有关非全局忽略的更多信息，请参见[指定 files 和 ignores](https://eslint.org/docs/latest/use/configure/configuration-files#specifying-files-with-files-and-ignores)。有关全局忽略和非全局忽略之间区别的更多信息，请参见[使用 `ignores` 全局忽略文件](https://eslint.org/docs/latest/use/configure/configuration-files#globally-ignoring-files-with-ignores)。
-:::
-
-你可以通过在以下方式中指定一个或多个 glob 模式，来配置 ESLint 在检查时忽略某些文件和目录：
+你可以通过以下方式指定一个或多个 glob 模式，让 ESLint 在检查时忽略某些文件和目录：
 
 - 在你的 `eslint.config.js` 文件中。
 - 在命令行上使用 `--ignore-pattern`。
 
-### 忽略文件（Ignore Files）
+### 全局忽略文件（Ignore Files）
 
 在你的 `eslint.config.js` 文件中，你可以使用 `globalIgnores()` 辅助函数来指示要忽略的文件模式。下面是一个示例：
 
@@ -2189,12 +2258,18 @@ export default defineConfig([
 // eslint.config.js
 import { defineConfig, globalIgnores } from "eslint/config";
 
-export default defineConfig([globalIgnores([".config/*"])]);
+export default defineConfig([
+    globalIgnores([".config/*"]) // 注意这里只匹配一层, .config/sub/index.js不会被忽略
+]);
 ```
 
-此配置指定 `.config` 目录中的所有文件都应被忽略。此模式添加在默认模式之后，默认模式是 `["**/node_modules/", ".git/"]`。
+此配置指定 `.config` 目录中的所有文件都应被忽略。
 
-默认情况下，ESLint 检查匹配 `**/*.js`、`**/*.cjs` 和 `**/*.mjs` 模式的文件。如果你不想让 ESLint 检查这些文件，可以使用 `globalIgnores()` 忽略它们：
+> eslint中已经内置了两个全局忽略的目录 `["**/node_modules/", ".git/"]`。
+
+
+
+默认情况下，ESLint会检查 `**/*.js`、`**/*.cjs` 和 `**/*.mjs` 。如果你不想让 ESLint 检查这些文件，可以使用 `globalIgnores()` 忽略它们：
 
 ```js
 // eslint.config.js
@@ -2205,21 +2280,30 @@ export default defineConfig([
 ]);
 ```
 
-当 `files` 属性中指定了非 JS 文件时，ESLint 仍会检查匹配默认模式的文件。要只检查 `files` 属性中指定的文件，你必须忽略默认文件模式：
+
+
+
+
+当 `files` 属性中指定了非 JS 文件时，ESLint 仍会检查默认的`**/*.js`、`**/*.cjs` 和 `**/*.mjs`文件。
+
+要只检查 `files` 属性中指定的文件，你必须忽略默认文件模式：
 
 ```js
 // eslint.config.js
 import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
+    // 忽略js, cjs, mjs文件
 	globalIgnores(["**/*.js", "**/*.cjs", "**/*.mjs"]),
 	{
-		files: ["**/*.ts"],
+		files: ["**/*.ts"], // 检查ts文件
 		ignores: [".config/**"],
 		rules: {/* ... */},
 	},
 ]);
 ```
+
+
 
 你也可以在命令行上使用 [`--ignore-pattern`](https://eslint.org/docs/latest/use/command-line-interface#--ignore-pattern) 忽略文件，例如：
 
@@ -2227,7 +2311,9 @@ export default defineConfig([
 npx eslint . --ignore-pattern '.config/*'
 ```
 
-### 忽略目录（Ignore Directories）
+
+
+### 全局忽略目录（Ignore Directories）
 
 忽略目录的方式与忽略文件相同，即向 `globalIgnores()` 辅助函数传递一个模式。例如，下面整体忽略 `.config` 目录（意味着文件搜索完全不会进入该目录）：
 
@@ -2235,7 +2321,9 @@ npx eslint . --ignore-pattern '.config/*'
 // eslint.config.js
 import { defineConfig, globalIgnores } from "eslint/config";
 
-export default defineConfig([globalIgnores([".config/"])]);
+export default defineConfig([
+    globalIgnores([".config/"])
+]);
 ```
 
 与 `.gitignore` 不同，像 `.config` 这样的忽略模式只会忽略与配置文件位于同一目录中的 `.config` 目录。如果你想递归地忽略所有名为 `.config` 的目录，需要使用 `**/.config/`，如本例所示：
@@ -2246,6 +2334,8 @@ import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([globalIgnores(["**/.config/"])]);
 ```
+
+
 
 ### 取消忽略文件和目录（Unignore Files and Directories）
 
@@ -2280,6 +2370,8 @@ export default defineConfig([
 ]);
 ```
 
+
+
 如果你想忽略一个目录，但排除该目录下任意层级的特定文件，你还应确保子目录不被忽略。请注意，以 `/` 结尾的模式只匹配目录，而不以 `/` 结尾的模式同时匹配文件和目录，因此不可能写出只忽略文件的单一模式，但你可以用两个模式来实现：一个忽略所有内容，另一个取消忽略子目录。
 
 例如，此配置忽略 `build` 目录内及其下的所有文件，但任意层级下名为 `test.js` 的文件除外：
@@ -2297,6 +2389,8 @@ export default defineConfig([
 ]);
 ```
 
+
+
 如果你想忽略 ESLint 的默认文件模式（`**/*.js`、`**/*.cjs` 和 `**/*.mjs`），同时仍检查特定文件或目录，可以使用否定模式来取消忽略它们：
 
 ```js
@@ -2310,16 +2404,20 @@ export default defineConfig([
 
 此配置忽略所有匹配默认模式的文件，但位于 `src` 目录中的 JavaScript 文件除外。
 
-::: important
-请注意，只有全局 `ignores` 模式可以匹配目录。
-特定于某个配置的 `ignores` 模式只会匹配文件名。
-:::
+>请注意，只有全局 `ignores` 模式可以匹配目录。
+>特定于某个配置的 `ignores` 模式只会匹配文件名。
+
+
 
 你也可以在命令行上使用 [`--ignore-pattern`](https://eslint.org/docs/latest/use/command-line-interface#--ignore-pattern) 取消忽略文件，例如：
 
 ```shell
 npx eslint . --ignore-pattern '!node_modules/'
 ```
+
+
+
+
 
 ### Glob 模式解析（Glob Pattern Resolution）
 
@@ -2328,6 +2426,8 @@ glob 模式的求值方式取决于它们所在的位置和使用方式：
 1. 当在 `eslint.config.js` 文件中使用 `globalIgnores()` 时，glob 模式相对于 `eslint.config.js` 文件求值。
 1. 当在使用 [`--config`](https://eslint.org/docs/latest/use/command-line-interface#-c---config) 命令行选项指定的替代配置文件中使用 `globalIgnores()` 时，glob 模式相对于当前工作目录求值。
 1. 当使用 [`--ignore-pattern`](https://eslint.org/docs/latest/use/command-line-interface#--ignore-pattern) 时，glob 模式相对于当前工作目录求值。
+
+
 
 ### 命名全局忽略配置（Name the Global Ignores Config）
 
@@ -2343,6 +2443,8 @@ export default defineConfig([
 ```
 
 本例中的 `"Ignore Build Directory"` 字符串是为全局忽略创建的配置的名称。这对调试很有用。
+
+
 
 ### 已忽略文件警告（Ignored File Warnings）
 
@@ -2371,6 +2473,8 @@ foo.js
 ```
 
 出现此消息是因为 ESLint 不确定你是否真的想检查该文件。如消息所示，你可以使用 `--no-ignore` 来不使用忽略规则。
+
+
 
 ### 包含 `.gitignore` 文件（Include `.gitignore` Files）
 
@@ -2467,17 +2571,23 @@ export default defineConfig([
 ```
 
 
----
+
 
 ## 调试你的配置（Debug Your Configuration）
 
 > 原文链接：https://eslint.org/docs/latest/use/configure/debug
 
-ESLint 会根据你的配置文件和命令行选项为每个被检查的文件创建一份配置。配置文件越大，就越难确定为什么某个文件没有按预期被检查。为了帮助调试配置，ESLint 提供了几个工具。
+有时候你的eslint的配置很多, 还可能有多个配置文件
+
+如果你不确定为什么某个文件没有被检测, 那么eslint提供了如下几个模式来帮助你调试
+
+
+
+
 
 ### 在调试模式下运行 CLI（Run the CLI in Debug Mode）
 
-**适用场景：** 你不确定是否读取了正确的配置文件。当同一项目中存在多个配置文件时，可能会出现这种情况。
+**适用场景：** 但你的项目有多个eslint配置文件, 而你不知道到底使用的是哪一个的时候
 
 **操作方法：** 带上 [`--debug`](https://eslint.org/docs/latest/use/command-line-interface#--debug) 命令行标志运行 ESLint，并传入要检查的文件，如下所示：
 
@@ -2493,6 +2603,10 @@ eslint:eslint Searching for eslint.config.js +0ms
 eslint:eslint Loading config from C:\Users\nzakas\projects\eslint\eslint\eslint.config.js +5ms
 eslint:eslint Config file URL is file:///C:/Users/nzakas/projects/eslint/eslint/eslint.config.js +0ms
 ```
+
+
+
+
 
 ### 打印文件计算后的配置（Print a File's Calculated Configuration）
 
@@ -2527,6 +2641,8 @@ npx eslint --print-config file.js
 你不会看到 `files`、`ignores` 或 `name` 的条目，因为它们只用于计算最终配置，因此不会出现在结果中。你会看到 ESLint 自身应用的任何默认配置。
 :::
 
+
+
 ### 使用配置检查器（Use the Config Inspector）
 
 **适用场景：** 你不确定配置文件中的某些配置对象是否匹配给定的文件名。
@@ -2544,9 +2660,10 @@ npx eslint --inspect-config
 配置检查器还会显示哪些规则已废弃、你正在使用的可用规则数量等信息。
 
 
----
 
 ## 配置迁移指南（Configuration Migration Guide）
+
+(<font color=red> 这部分不用看,  前一个得儿</font>)
 
 > 原文链接：https://eslint.org/docs/latest/use/configure/migration-guide
 
