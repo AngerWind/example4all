@@ -4,20 +4,36 @@
 const fs = require("fs");
 const path = require("path");
 
-const base = "D:/eslint-docs-zh";
+const base = "D:/code/example4all/frontend/example4eslint/eslint-docs-zh";
 const pairs = [
 	["zh-sections/01-getting-started.md", "en/getting-started.md"],
 	["zh-sections/01b-core-concepts.md", "en/core-concepts.md"],
-	["zh-sections/02-configure-index.md", "en/index.md"],
+	["zh-sections/02-configure-index.md", "en/configure-index.md"],
 	["zh-sections/03-configuration-files.md", "en/configuration-files.md"],
 	["zh-sections/04-language-options.md", "en/language-options.md"],
 	["zh-sections/05-rules.md", "en/rules.md"],
-	["zh-sections/06-plugins.md", "en/plugins.md"],
+	["zh-sections/06-plugins.md", "en/configure-plugins.md"],
 	["zh-sections/07-parser.md", "en/parser.md"],
 	["zh-sections/08-combine-configs.md", "en/combine-configs.md"],
 	["zh-sections/09-ignore.md", "en/ignore.md"],
 	["zh-sections/10-debug.md", "en/debug.md"],
 	["zh-sections/11-migration-guide.md", "en/migration-guide.md"],
+	["zh-sections/20-extend-index.md", "en/index.md"],
+	["zh-sections/21-ways-to-extend.md", "en/ways-to-extend.md"],
+	["zh-sections/22-plugins.md", "en/plugins.md"],
+	["zh-sections/22b-custom-rule-tutorial.md", "en/custom-rule-tutorial.md"],
+	["zh-sections/22c-custom-rules.md", "en/custom-rules.md"],
+	["zh-sections/22d-code-path-analysis.md", "en/code-path-analysis.md"],
+	["zh-sections/22e-selectors.md", "en/selectors.md"],
+	["zh-sections/22f-scope-manager-interface.md", "en/scope-manager-interface.md"],
+	["zh-sections/22g-rule-deprecation.md", "en/rule-deprecation.md"],
+	["zh-sections/22h-custom-processors.md", "en/custom-processors.md"],
+	["zh-sections/22i-languages.md", "en/languages.md"],
+	["zh-sections/22j-plugin-migration-flat-config.md", "en/plugin-migration-flat-config.md"],
+	["zh-sections/23-shareable-configs.md", "en/shareable-configs.md"],
+	["zh-sections/24-custom-formatters.md", "en/custom-formatters.md"],
+	["zh-sections/25-custom-parsers.md", "en/custom-parsers.md"],
+	["zh-sections/26-stats.md", "en/stats.md"],
 ];
 
 function extractHeadings(lines, stripFrontmatter) {
