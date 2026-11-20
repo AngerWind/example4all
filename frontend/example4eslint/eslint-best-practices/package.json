@@ -1,0 +1,45 @@
+{
+  "name": "eslint-best-practices",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "//注释-devDependencies": "devDependencies 内不能再放 // 注释键（npm install 会报 EINVALIDPACKAGENAME），所以注释统一放在这里；npm 会忽略 package.json 根级的未知字段",
+  "//注释-@eslint/css等": "@eslint/css、@eslint/js、@eslint/json、@eslint/markdown、@eslint/shell 分别是 eslint 对 css, js, json, markdown, shell 的支持，只有在需要对上述文件进行 lint 的时候才会安装",
+  "//注释-eslint": "eslint 的核心包",
+  "//注释-globals": "主要用于 eslint 对全局变量的支持，让 eslint 在不同的运行环境下识别不同的全局变量",
+  "//注释-prettier": "最佳实践4: prettier 负责代码格式化（分号/引号/换行等），与 ESLint 分工：ESLint 管代码质量，prettier 管格式",
+  "//注释-eslint-config-prettier": "最佳实践4: 关闭 ESLint 所有与 prettier 冲突的格式化规则，必须放在 eslint.config.mjs 导出数组的最后",
+  "//注释-husky": "最佳实践5: husky 把 git 钩子脚本纳入仓库管理（.husky/ 目录随代码提交），团队共享同一条提交关卡；因本项目的 .git 在 example4all 仓库根目录，prepare 通过 git config core.hooksPath 指向本项目的 .husky/",
+  "//注释-lint-staged": "最佳实践5: lint-staged 只对 git 暂存区的文件执行 lint/format，速度快，配合 husky 的 pre-commit 钩子使用；下方 lint-staged 字段即其配置：提交时对暂存的 js/ts/vue 文件依次执行 eslint 修复和 prettier 格式化，老项目存量代码不受影响，碰过的文件必须干净",
+  "//注释-scripts": "lint 手动全量检查（--cache 加速、警告也算失败）；lint:fix 自动修复；format 用 prettier 格式化；prepare 在 npm install 后自动激活 husky",
+  "scripts": {
+    "//": "--cache表示换成上次lint的结果, 只检查有变化的文件",
+    "lint": "eslint . --cache --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "prepare": "git config core.hooksPath frontend/example4eslint/eslint-best-practices/.husky",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/css": "^2.0.1",
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^2.1.1",
+    "@eslint/markdown": "^9.0.0",
+    "@eslint/shell": "^0.1.2",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0",
+    "prettier": "^3.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7"
+  }
+}

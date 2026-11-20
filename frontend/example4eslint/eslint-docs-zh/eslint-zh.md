@@ -340,9 +340,7 @@ ESLint 配置文件可以命名为以下任意一种：
 - `eslint.config.mts`（需要[额外设置](#typescript-配置文件)）
 - `eslint.config.cts`（需要[额外设置](#typescript-配置文件)）
 
-优先级从高到低
-
-
+**优先级从高到低**
 
 它应该放在项目的根目录中，并导出一个[配置对象](#配置对象)数组。下面是一个示例：
 
@@ -378,6 +376,50 @@ module.exports = defineConfig([
 ]);
 ```
 
+
+
+### 配置文件解析（Configuration File Resolution）
+
+当 ESLint 在命令行上运行时，它通过首先查找包含目标文件的目录，然后向上搜索祖先目录，直到找到 `eslint.config.*` 文件，来确定每个目标文件的配置。
+
+> 这样主要是对 monorepo 的支持，monorepo 中的子目录可以有自己的配置文件。
+
+你可以通过在命令行上使用 `-c` 或 `--config` 选项指定替代配置文件来阻止此搜索，例如：
+
+```shell
+npx eslint --config some-other-file.js "**/*.js"
+```
+
+在这种情况下，ESLint 不会搜索配置文件，而是使用 `some-other-file.js`。
+
+### TypeScript 配置文件（TypeScript Configuration Files）
+
+- 对于 Deno 和 Bun，TypeScript 配置文件受到原生支持；
+
+- 对于 Node.js，你必须在项目中安装 2.2.0 或更高版本的可选 dev 依赖 [`jiti`](https://github.com/unjs/jiti)（ESLint 不会自动安装此依赖）
+
+  ```shell
+  npm install --save-dev jiti
+  ```
+
+  然后你可以创建扩展名为 `.ts`、`.mts` 或 `.cts` 的配置文件，并导出一个[配置对象](#配置对象)数组。
+
+  > ESLint 不会对你的配置文件进行类型检查，也不会应用 `tsconfig.json` 中的任何设置。
+
+- 如果你使用的是 **Node.js >= 22.13.0**，你可以原生加载 TypeScript 配置文件，而无需 [`jiti`](https://github.com/unjs/jiti)。这得益于 [**`--experimental-strip-types`**](https://nodejs.org/docs/latest-v22.x/api/cli.html#--experimental-strip-types) 标志。
+
+  由于此功能仍处于实验阶段，你还必须启用 `unstable_native_nodejs_ts_config` 标志。
+
+  ```bash
+  npx --node-options='--experimental-strip-types' eslint --flag unstable_native_nodejs_ts_config
+  ```
+
+
+
+
+
+
+
 ### 配置对象（Configuration Objects）
 
 每个配置对象包含 ESLint 在一组文件上执行所需的全部信息。每个配置对象由以下属性组成：
@@ -392,7 +434,9 @@ module.exports = defineConfig([
 
 - `ignores` - 一个 glob 模式数组，指示配置对象不应应用于哪些文件。
 
-    如果未指定，配置对象应用于 `files` 匹配的所有文件。如果 `ignores` 在配置对象中没有与其他任何键一起使用，那么这些模式将作为[全局忽略](#使用-ignores-全局忽略文件)，应用于每个配置对象。
+    如果未指定，配置对象应用于 `files` 匹配的所有文件。
+
+    如果 `ignores` 在配置对象中没有与其他任何键一起使用，那么这些模式将作为[全局忽略](#使用-ignores-全局忽略文件)，应用于每个配置对象。
 
 - `extends` - 一个由字符串、配置对象或配置数组组成的数组，包含要应用的额外配置。
 
@@ -406,6 +450,7 @@ module.exports = defineConfig([
     - `parserOptions` - 一个对象，指定直接传递给解析器的 `parse()` 或 `parseForESLint()` 方法的额外选项。可用选项取决于解析器。
     
 - `linterOptions` - 一个对象，包含与 lint 过程相关的设置。
+  
     - `noInlineConfig` - 一个布尔值，指示是否允许内联配置。
     - `reportUnusedDisableDirectives` - 一个严重级别字符串，指示是否以及如何跟踪和报告未使用的禁用和启用指令。为了兼容旧版本，`true` 等同于 `"warn"`，`false` 等同于 `"off"`。（默认值：`"warn"`）
     - `reportUnusedInlineConfigs` - 一个严重级别字符串，指示是否以及如何跟踪和报告未使用的内联配置。（默认值：`"off"`）
@@ -421,6 +466,8 @@ module.exports = defineConfig([
     当指定了 `files` 或 `ignores` 时，这些规则配置仅对匹配的文件可用。
 
 - `settings` - 一个对象，包含应对所有规则可用的信息名称-值对。
+
+
 
 #### 指定 `files` 和 `ignores`（Specify `files` and `ignores`）
 
@@ -1180,42 +1227,6 @@ export default {
 		],
 	},
 };
-```
-
-### 配置文件解析（Configuration File Resolution）
-
-当 ESLint 在命令行上运行时，它通过首先查找包含目标文件的目录，然后向上搜索祖先目录，直到找到 `eslint.config.*` 文件，来确定每个目标文件的配置。此行为改进了对 monorepo 的支持，monorepo 中的子目录可以有自己的配置文件。
-
-你可以通过在命令行上使用 `-c` 或 `--config` 选项指定替代配置文件来阻止此搜索，例如：
-
-```shell
-npx eslint --config some-other-file.js "**/*.js"
-```
-
-在这种情况下，ESLint 不会搜索配置文件，而是使用 `some-other-file.js`。
-
-### TypeScript 配置文件（TypeScript Configuration Files）
-
-对于 Deno 和 Bun，TypeScript 配置文件受到原生支持；对于 Node.js，你必须在项目中安装 2.2.0 或更高版本的可选 dev 依赖 [`jiti`](https://github.com/unjs/jiti)（ESLint 不会自动安装此依赖）：
-
-```shell
-npm install --save-dev jiti
-```
-
-然后你可以创建扩展名为 `.ts`、`.mts` 或 `.cts` 的配置文件，并导出一个[配置对象](#配置对象)数组。
-
-::: important
-ESLint 不会对你的配置文件进行类型检查，也不会应用 `tsconfig.json` 中的任何设置。
-:::
-
-#### 原生 TypeScript 支持（Native TypeScript Support）
-
-如果你使用的是 **Node.js >= 22.13.0**，你可以原生加载 TypeScript 配置文件，而无需 [`jiti`](https://github.com/unjs/jiti)。这得益于 [**`--experimental-strip-types`**](https://nodejs.org/docs/latest-v22.x/api/cli.html#--experimental-strip-types) 标志。
-
-由于此功能仍处于实验阶段，你还必须启用 `unstable_native_nodejs_ts_config` 标志。
-
-```bash
-npx --node-options='--experimental-strip-types' eslint --flag unstable_native_nodejs_ts_config
 ```
 
 
@@ -3515,42 +3526,42 @@ ESLint v9.x 支持已在 [`vscode-eslint`](https://marketplace.visualstudio.com/
 
 如果你符合以上条件，请继续阅读以开始。
 
-## [扩展 ESLint 的方式（Ways to Extend ESLint）](https://eslint.org/docs/latest/extend/ways-to-extend)
+- [扩展 ESLint 的方式（Ways to Extend ESLint）](https://eslint.org/docs/latest/extend/ways-to-extend)
 
-本页总结了扩展 ESLint 的各种方式，以及这些扩展如何协同组合在一起。
+  本页总结了扩展 ESLint 的各种方式，以及这些扩展如何协同组合在一起。
 
-## [创建插件（Create Plugins）](https://eslint.org/docs/latest/extend/plugins)
+- [创建插件（Create Plugins）](https://eslint.org/docs/latest/extend/plugins)
 
-你已经为 ESLint 开发了自定义规则，并希望与社区分享。你可以在 npm 上发布一个 ESLint 插件。
+    你已经为 ESLint 开发了自定义规则，并希望与社区分享。你可以在 npm 上发布一个 ESLint 插件。
 
-## [自定义规则教程（Custom Rule Tutorial）](https://eslint.org/docs/latest/extend/custom-rule-tutorial)
+- [自定义规则教程（Custom Rule Tutorial）](https://eslint.org/docs/latest/extend/custom-rule-tutorial)
 
-一个带你一步步创建 ESLint 自定义规则的教程。
+  一个带你一步步创建 ESLint 自定义规则的教程。
 
-## [自定义规则（Custom Rules）](https://eslint.org/docs/latest/extend/custom-rules)
+- [自定义规则（Custom Rules）](https://eslint.org/docs/latest/extend/custom-rules)
 
-本节介绍如何创建可与 ESLint 一起使用的自定义规则。
+  本节介绍如何创建可与 ESLint 一起使用的自定义规则。
 
-## [自定义格式化器（Custom Formatters）](https://eslint.org/docs/latest/extend/custom-formatters)
+- [自定义格式化器（Custom Formatters）](https://eslint.org/docs/latest/extend/custom-formatters)
 
-本节介绍如何创建自定义格式化器来控制 ESLint 的输出。
+  本节介绍如何创建自定义格式化器来控制 ESLint 的输出。
 
-## [自定义解析器（Custom Parsers）](https://eslint.org/docs/latest/extend/custom-parsers)
+- [自定义解析器（Custom Parsers）](https://eslint.org/docs/latest/extend/custom-parsers)
 
-如果你不想使用 ESLint 的默认解析器，本节介绍如何创建自定义解析器。
+  如果你不想使用 ESLint 的默认解析器，本节介绍如何创建自定义解析器。
 
-## [自定义处理器（Custom Processors）](https://eslint.org/docs/latest/extend/custom-processors)
+- [自定义处理器（Custom Processors）](https://eslint.org/docs/latest/extend/custom-processors)
 
-本节介绍如何使用自定义处理器让 ESLint 处理 JavaScript 以外的文件。
+  本节介绍如何使用自定义处理器让 ESLint 处理 JavaScript 以外的文件。
 
-## [共享配置（Share Configurations）](https://eslint.org/docs/latest/extend/shareable-configs)
+- [共享配置（Share Configurations）](https://eslint.org/docs/latest/extend/shareable-configs)
 
-本节介绍如何将 ESLint 配置打包到 JavaScript 包中并共享。
+  本节介绍如何将 ESLint 配置打包到 JavaScript 包中并共享。
 
 
----
 
-## 扩展 ESLint 的方式（Ways to Extend ESLint）
+
+## 扩展 ESLint的方式 （Ways to Extend ESLint）
 
 > 原文链接：https://eslint.org/docs/latest/extend/ways-to-extend
 
@@ -3558,56 +3569,55 @@ ESLint 是高度可插拔和可配置的。你可以通过多种方式扩展 ESL
 
 本页介绍扩展 ESLint 的各种方式，以及这些扩展如何协同组合在一起。
 
-### 插件（Plugins）
+1. 插件（Plugins）
 
-插件让你可以向项目添加自己的 ESLint 自定义规则和自定义处理器。你可以将插件发布为 npm 模块。
+   插件让你可以向项目添加自己的 ESLint 自定义规则和自定义处理器。你可以将插件发布为 npm 模块。
 
-插件很有用，因为你的项目可能需要一些核心 `eslint` 包中没有包含的 ESLint 配置。例如，如果你在使用像 [React](https://react.dev/) 这样的前端 JavaScript 库，或像 [Vue](https://vuejs.org/) 这样的框架，这些工具的一些特性需要 ESLint 核心规则范围之外的自定义规则。
+   插件很有用，因为你的项目可能需要一些核心 `eslint` 包中没有包含的 ESLint 配置。例如，如果你在使用像 [React](https://react.dev/) 这样的前端 JavaScript 库，或像 [Vue](https://vuejs.org/) 这样的框架，这些工具的一些特性需要 ESLint 核心规则范围之外的自定义规则。
 
-插件通常会搭配一个 ESLint 配置，将插件的一组功能应用到项目中。你也可以在插件中包含配置。
+   插件通常会搭配一个 ESLint 配置，将插件的一组功能应用到项目中。你也可以在插件中包含配置。
 
-例如，[`eslint-plugin-react`](https://www.npmjs.com/package/eslint-plugin-react) 是一个 ESLint 插件，包含专门针对 React 项目的规则。这些规则包括强制统一使用 React 组件生命周期方法、要求渲染动态列表时使用 key prop 等。
+   例如，[`eslint-plugin-react`](https://www.npmjs.com/package/eslint-plugin-react) 是一个 ESLint 插件，包含专门针对 React 项目的规则。这些规则包括强制统一使用 React 组件生命周期方法、要求渲染动态列表时使用 key prop 等。
 
-要了解更多关于创建可包含在插件中的扩展的信息，请参阅以下文档：
+   要了解更多关于创建可包含在插件中的扩展的信息，请参阅以下文档：
 
-- [自定义规则（Custom Rules）](https://eslint.org/docs/latest/extend/custom-rules)
-- [自定义处理器（Custom Processors）](https://eslint.org/docs/latest/extend/custom-processors)
-- [插件中的配置（Configs in Plugins）](https://eslint.org/docs/latest/extend/plugins#configs-in-plugins)
+   - [自定义规则（Custom Rules）](https://eslint.org/docs/latest/extend/custom-rules)
+   - [自定义处理器（Custom Processors）](https://eslint.org/docs/latest/extend/custom-processors)
+   - [插件中的配置（Configs in Plugins）](https://eslint.org/docs/latest/extend/plugins#configs-in-plugins)
 
-要了解更多关于将这些扩展打包成插件的信息，请参阅[创建插件（Plugins）](https://eslint.org/docs/latest/extend/plugins)。
+   要了解更多关于将这些扩展打包成插件的信息，请参阅[创建插件（Plugins）](https://eslint.org/docs/latest/extend/plugins)。
 
-### 可共享配置（Shareable Configs）
+2. 可共享配置（Shareable Configs）
 
-ESLint 可共享配置是预定义的 ESLint 配置，你可以在自己的项目中使用。它们把规则和其他配置打包在一个 npm 包中。凡是可以放在配置文件中的内容，都可以放进可共享配置中。
+   ESLint 可共享配置是预定义的 ESLint 配置，你可以在自己的项目中使用。它们把规则和其他配置打包在一个 npm 包中。凡是可以放在配置文件中的内容，都可以放进可共享配置中。
 
-你可以独立发布可共享配置，也可以将其作为插件的一部分发布。
+   你可以独立发布可共享配置，也可以将其作为插件的一部分发布。
 
-例如，一个流行的可共享配置是 [`eslint-config-airbnb`](https://www.npmjs.com/package/eslint-config-airbnb)，除了一些[解析器选项](https://eslint.org/docs/latest/use/configure/language-options#specifying-parser-options)之外，它还包含各种规则。这是一套为匹配 [Airbnb JavaScript 风格指南](https://github.com/airbnb/javascript)而设计的 ESLint 规则集。通过使用 `eslint-config-airbnb` 可共享配置，你可以在项目中自动强制执行 Airbnb 风格指南，而无需手动配置每条规则。
+   例如，一个流行的可共享配置是 [`eslint-config-airbnb`](https://www.npmjs.com/package/eslint-config-airbnb)，除了一些[解析器选项](https://eslint.org/docs/latest/use/configure/language-options#specifying-parser-options)之外，它还包含各种规则。这是一套为匹配 [Airbnb JavaScript 风格指南](https://github.com/airbnb/javascript)而设计的 ESLint 规则集。通过使用 `eslint-config-airbnb` 可共享配置，你可以在项目中自动强制执行 Airbnb 风格指南，而无需手动配置每条规则。
 
-要了解更多关于创建可共享配置的信息，请参阅[共享配置（Share Configurations）](https://eslint.org/docs/latest/extend/shareable-configs)。
+   要了解更多关于创建可共享配置的信息，请参阅[共享配置（Share Configurations）](https://eslint.org/docs/latest/extend/shareable-configs)。
 
-### 自定义格式化器（Custom Formatters）
+3. 自定义格式化器（Custom Formatters）
 
-自定义格式化器接收 ESLint 的 lint 结果，并以你定义的格式输出结果。自定义格式化器让你以最适合自己需求的格式展示 lint 结果，无论是特定的文件格式、某种展示风格，还是为特定工具优化的格式。只有当[内置格式化器](https://eslint.org/docs/latest/use/formatters/)不能满足你的使用场景时，你才需要创建自定义格式化器。
+   自定义格式化器接收 ESLint 的 lint 结果，并以你定义的格式输出结果。自定义格式化器让你以最适合自己需求的格式展示 lint 结果，无论是特定的文件格式、某种展示风格，还是为特定工具优化的格式。只有当[内置格式化器](https://eslint.org/docs/latest/use/formatters/)不能满足你的使用场景时，你才需要创建自定义格式化器。
 
-例如，自定义格式化器 [eslint-formatter-gitlab](https://www.npmjs.com/package/eslint-formatter-gitlab) 可用于在 [GitLab](https://about.gitlab.com/) 代码质量报告中展示 ESLint 结果。
+   例如，自定义格式化器 [eslint-formatter-gitlab](https://www.npmjs.com/package/eslint-formatter-gitlab) 可用于在 [GitLab](https://about.gitlab.com/) 代码质量报告中展示 ESLint 结果。
 
-要了解更多关于创建自定义格式化器的信息，请参阅[自定义格式化器（Custom Formatters）](https://eslint.org/docs/latest/extend/custom-formatters)。
+   要了解更多关于创建自定义格式化器的信息，请参阅[自定义格式化器（Custom Formatters）](https://eslint.org/docs/latest/extend/custom-formatters)。
 
-### 自定义解析器（Custom Parsers）
+4. 自定义解析器（Custom Parsers）
 
-ESLint 自定义解析器是一种扩展 ESLint 的方式，使其支持对代码中的新语言特性或自定义语法进行 lint。解析器负责接收你的代码，并将其转换为 ESLint 可以分析和检查的抽象语法树（AST）。
+   ESLint 自定义解析器是一种扩展 ESLint 的方式，使其支持对代码中的新语言特性或自定义语法进行 lint。解析器负责接收你的代码，并将其转换为 ESLint 可以分析和检查的抽象语法树（AST）。
 
-ESLint 自带一个内置的 JavaScript 解析器（Espree），但自定义解析器允许你对其他语言进行 lint，或扩展内置解析器的 lint 能力。
+   ESLint 自带一个内置的 JavaScript 解析器（Espree），但自定义解析器允许你对其他语言进行 lint，或扩展内置解析器的 lint 能力。
 
-例如，自定义解析器 [@typescript-eslint/parser](https://typescript-eslint.io/packages/parser) 扩展了 ESLint，使其能够检查 TypeScript 代码。
+   例如，自定义解析器 [@typescript-eslint/parser](https://typescript-eslint.io/packages/parser) 扩展了 ESLint，使其能够检查 TypeScript 代码。
 
-自定义解析器也可以包含在插件中。
+   自定义解析器也可以包含在插件中。
 
-要了解更多关于创建自定义解析器的信息，请参阅[自定义解析器（Custom Parsers）](https://eslint.org/docs/latest/extend/custom-parsers)。
+   要了解更多关于创建自定义解析器的信息，请参阅[自定义解析器（Custom Parsers）](https://eslint.org/docs/latest/extend/custom-parsers)。
 
 
----
 
 ## 创建插件（Create Plugins）
 
@@ -3667,7 +3677,13 @@ export default plugin;
 module.exports = plugin;
 ```
 
-`meta.name` 属性应与你的插件的 npm 包名一致，`meta.version` 属性应与你的插件的 npm 包版本一致。`meta.namespace` 属性应与你希望用户用来访问插件的规则、处理器、语言和配置的前缀一致。命名空间通常是你包名中 `eslint-plugin-` 之后的部分，这就是本例使用 `"example"` 的原因。提供命名空间可以让 `defineConfig()` 函数即使用户在配置文件中指定了不同的命名空间，也能找到你的插件。
+- `meta.name` 属性应与你的插件的 npm 包名一致，
+
+- `meta.version` 属性应与你的插件的 npm 包版本一致。
+
+- `meta.namespace` 属性应与你希望用户用来访问插件的规则、处理器、语言和配置的前缀一致。
+
+  命名空间通常是你包名中 `eslint-plugin-` 之后的部分，这就是本例使用 `"example"` 的原因。提供命名空间可以让 `defineConfig()` 函数即使用户在配置文件中指定了不同的命名空间，也能找到你的插件。
 
 添加名称和版本最简单的方法是从你的 `package.json` 中读取这些信息，如本例所示：
 
@@ -3693,13 +3709,12 @@ const plugin = {
 export default plugin;
 ```
 
-::: tip
-虽然插件名称没有限制，但遵循以下命名约定有助于其他人在 [npm](https://npmjs.com) 上找到你的插件：
+> 虽然插件名称没有限制，但遵循以下命名约定有助于其他人在 [npm](https://npmjs.com) 上找到你的插件：
+>
+> - **无作用域（Unscoped）：** 如果你的 npm 包名不带作用域（不以 `@` 开头），那么插件名应以 `eslint-plugin-` 开头，例如 `eslint-plugin-example`。
+> - **带作用域（Scoped）：** 如果你的 npm 包名带作用域，那么插件名应为 `@<scope>/eslint-plugin-<plugin-name>` 格式，例如 `@jquery/eslint-plugin-jquery`，或者甚至是 `@<scope>/eslint-plugin`，例如 `@jquery/eslint-plugin`。
 
-- **无作用域（Unscoped）：** 如果你的 npm 包名不带作用域（不以 `@` 开头），那么插件名应以 `eslint-plugin-` 开头，例如 `eslint-plugin-example`。
-- **带作用域（Scoped）：** 如果你的 npm 包名带作用域，那么插件名应为 `@<scope>/eslint-plugin-<plugin-name>` 格式，例如 `@jquery/eslint-plugin-jquery`，或者甚至是 `@<scope>/eslint-plugin`，例如 `@jquery/eslint-plugin`。
 
-:::
 
 作为替代方式，你也可以在插件根级暴露 `name` 和 `version` 属性，例如：
 
@@ -3720,9 +3735,9 @@ export default plugin;
 module.exports = plugin;
 ```
 
-::: important
-虽然 `meta` 对象是提供插件名称和版本的首选方式，但这种格式也是可以接受的，保留它是为了向后兼容。
-:::
+> 虽然 `meta` 对象是提供插件名称和版本的首选方式，但这种格式也是可以接受的，保留它是为了向后兼容。
+
+
 
 #### 插件中的规则（Rules in Plugins）
 
@@ -3770,9 +3785,7 @@ export default defineConfig([
 ]);
 ```
 
-::: warning
-不以 `@` 开头的命名空间不能包含 `/`；以 `@` 开头的命名空间可以包含 `/`。例如，`eslint/plugin` 不是有效的命名空间，但 `@eslint/plugin` 是有效的。此限制是为了向后兼容 eslintrc 的插件命名限制。
-:::
+> 不以 `@` 开头的命名空间不能包含 `/`；以 `@` 开头的命名空间可以包含 `/`。例如，`eslint/plugin` 不是有效的命名空间，但 `@eslint/plugin` 是有效的。此限制是为了向后兼容 eslintrc 的插件命名限制。
 
 #### 插件中的处理器（Processors in Plugins）
 
@@ -3970,6 +3983,8 @@ module.exports = plugin;
 
 使用这种方法，两种配置系统都能识别 `"recommended"`。旧配置系统使用 `recommended` 键，而当前配置系统使用 `flat/recommended` 键。`defineConfig()` 辅助函数首先查看 `recommended` 键，如果它格式不正确，则查找 `flat/recommended` 键。这为你提供了一条升级路径：当你不再需要支持旧配置系统时，可以之后将 `flat/recommended` 重命名为 `recommended`。
 
+
+
 ### 测试插件（Testing a Plugin）
 
 ESLint 提供了 [`RuleTester`](https://eslint.org/docs/latest/integrate/nodejs-api#ruletester) 工具，让你可以轻松测试插件的规则。
@@ -3981,6 +3996,8 @@ ESLint 插件也应该被 lint！建议使用以下包的 `recommended` 配置�
 - [eslint](https://www.npmjs.com/package/eslint)
 - [eslint-plugin-eslint-plugin](https://www.npmjs.com/package/eslint-plugin-eslint-plugin)
 - [eslint-plugin-n](https://www.npmjs.com/package/eslint-plugin-n)
+
+
 
 ### 分享插件（Share Plugins）
 
@@ -3998,10 +4015,7 @@ ESLint 插件也应该被 lint！建议使用以下包的 `recommended` 配置�
 
 2. **指定 keywords。** ESLint 插件应在你的 `package.json` 文件中指定 `eslint`、`eslintplugin` 和 `eslint-plugin` 作为 [keywords](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#keywords)。
 
-
----
-
-### 自定义规则教程（Custom Rule Tutorial）
+## 自定义规则教程（Custom Rule Tutorial）
 
 > 原文链接：https://eslint.org/docs/latest/extend/custom-rule-tutorial
 
@@ -4490,10 +4504,7 @@ function incorrectFoo() {
 
 你可以查看[本教程的带注释源代码](https://github.com/eslint/eslint/tree/main/docs/_examples/custom-rule-tutorial-code)。
 
-
----
-
-### 自定义规则（Custom Rules）
+## 自定义规则（Custom Rules）
 
 > 原文链接：https://eslint.org/docs/latest/extend/custom-rules
 
@@ -7001,10 +7012,7 @@ Identifier[name=/^foo/]
 - `url`（`string`）<br>
   指向插件/规则文档的 URL。
 
-
----
-
-### 自定义处理器（Custom Processors）
+## 自定义处理器（Custom Processors）
 
 > 原文链接：https://eslint.org/docs/latest/extend/custom-processors
 
@@ -7215,10 +7223,7 @@ export default defineConfig([
 
 更多细节请参见插件配置文档中的[指定处理器（Specify a Processor）](https://eslint.org/docs/latest/use/configure/plugins#specifying-a-processor)。
 
-
----
-
-### 语言（Languages）
+## 语言（Languages）
 
 > 原文链接：https://eslint.org/docs/latest/extend/languages
 
@@ -7354,10 +7359,7 @@ export default defineConfig([
 
 更多细节请参见插件配置文档中的[指定语言（Specify a Language）](https://eslint.org/docs/latest/use/configure/plugins#specifying-a-language)。
 
-
----
-
-### 插件迁移到 Flat Config（Plugin Migration to Flat Config）
+## 插件迁移到 Flat Config（Plugin Migration to Flat Config）
 
 > 原文链接：https://eslint.org/docs/latest/extend/plugin-migration-flat-config
 
@@ -7685,11 +7687,7 @@ export default defineConfig([
 
 要分享你的 ESLint 配置，请创建一个**可共享配置（shareable config）**。你可以将可共享配置发布到 [npm](https://www.npmjs.com/) 上，让其他人下载并在他们的 ESLint 项目中使用。
 
-本页介绍如何创建和发布可共享配置。
 
-::: tip
-本页介绍如何使用 flat config 格式创建可共享配置。
-:::
 
 ### 创建可共享配置（Create a Shareable Config）
 
@@ -7721,9 +7719,7 @@ export default [
 
 因为 `index.js` 文件就是普通的 JavaScript，所以你可以从文件中读取这些设置，或者动态生成它们。
 
-::: tip
-大多数情况下，你会想从可共享配置中导出一个配置对象数组。不过，你也可以导出单个配置对象。请确保你的文档清楚地展示了如何在 `eslint.config.js` 文件中使用你的可共享配置的示例，以避免用户困惑。
-:::
+> 大多数情况下，你会想从可共享配置中导出一个配置对象数组。不过，你也可以导出单个配置对象。请确保你的文档清楚地展示了如何在 `eslint.config.js` 文件中使用你的可共享配置的示例，以避免用户困惑。
 
 ### 发布可共享配置（Publishing a Shareable Config）
 
@@ -7758,9 +7754,7 @@ export default defineConfig([
 ]);
 ```
 
-::: warning
-可共享配置无法与 ESLint CLI 的 [`--config`](https://eslint.org/docs/latest/use/command-line-interface#-c---config) 标志一起使用。
-:::
+> 可共享配置无法与 ESLint CLI 的 [`--config`](https://eslint.org/docs/latest/use/command-line-interface#-c---config) 标志一起使用。
 
 #### 覆盖可共享配置中的设置（Overriding Settings from Shareable Configs）
 
@@ -7820,13 +7814,9 @@ export default defineConfig([
 ]);
 ```
 
-::: important
-我们强烈建议始终为你的包提供一个默认导出，以避免混淆。
-:::
+> 我们强烈建议始终为你的包提供一个默认导出，以避免混淆。
 
-### 延伸阅读（Further Reading）
 
-- [npm 开发者指南](https://docs.npmjs.com/misc/developers)
 
 
 ---
@@ -7834,6 +7824,8 @@ export default defineConfig([
 ## 自定义格式化器（Custom Formatters）
 
 > 原文链接：https://eslint.org/docs/latest/extend/custom-formatters
+
+(不用看, 没什么用的东西 )
 
 自定义格式化器让你以最适合自己需求的格式展示 lint 结果，无论是特定的文件格式、某种展示风格，还是为特定工具优化的格式。
 
@@ -8210,6 +8202,8 @@ warning no-unused-vars (https://eslint.org/docs/rules/no-unused-vars)
 
 > 原文链接：https://eslint.org/docs/latest/extend/custom-parsers
 
+( 不用看, 太复杂了, 不是小白可以驾驭的 )
+
 ESLint 自定义解析器让你扩展 ESLint，支持对代码中新的非标准 JavaScript 语言特性或自定义语法进行 lint。解析器负责接收你的代码，并将其转换为 ESLint 可以分析和检查的抽象语法树（AST）。
 
 ### 创建自定义解析器（Create a Custom Parser）
@@ -8410,6 +8404,8 @@ module.exports = defineConfig([
 ## 统计数据（Stats Data）
 
 > 原文链接：https://eslint.org/docs/latest/extend/stats
+
+(不用看,  不需要统计数据)
 
 虽然可以通过设置 [TIMING](https://eslint.org/docs/latest/extend/custom-rules#profiling-rule-performance) 环境变量来对一次 ESLint 运行进行整体规则性能分析，但有时获取更*细粒度*的计时数据（每个文件每条规则的 lint 时间）或收集其他感兴趣的指标会很有用——尤其是在开发新的[自定义插件](https://eslint.org/docs/latest/extend/plugins)、评估或基准测试新的语言或规则集时。对于这些用例，你可以选择从 ESLint 收集运行时统计数据。
 

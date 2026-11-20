@@ -1,0 +1,15 @@
+#!/bin/sh
+# pre-commit 钩子：git commit 时由 git 自动触发（工作目录为仓库根）
+# 先进入本项目目录，再运行 lint-staged（只检查本次暂存的 js/ts/vue 文件）
+cd "$(dirname "$0")/.." || exit 1
+
+# 这个命令是npm exec lint-staged, 不是npm run
+# 这个命令会执行node_modules中的lint-staged命令, 然后这个命令会读取package.json根字段中的lint-staged这个对象作为配置
+#  "lint-staged": {
+#    "*.{js,ts,vue}": [
+#      "eslint --fix",
+#      "prettier --write"
+#    ]
+#  },
+# 这个对象的作用就是, husky 会从git的暂存区中获取所有的.js/ts/vue文件, 然后对每一个文件都执行 eslint --fix 和 prettier --writer 命令
+npx lint-staged
