@@ -32,14 +32,12 @@ Prettier 接收你的代码，并在考虑行长的前提下从头重新打印�
 
 例如，以下面的代码为例：
 
-<!-- prettier-ignore -->
 ```js
 foo(arg1, arg2, arg3, arg4);
 ```
 
 它能放在一行里，所以会保持原样。然而，我们都遇到过这种情况：
 
-<!-- prettier-ignore -->
 ```js
 foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne());
 ```
