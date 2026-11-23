@@ -355,14 +355,175 @@ jobs:
 
 3. 使用tab, 而不是空格缩进
 
-   ~~~js
-   const config = {
-     useTabs: false // 默认值false
-   };
-   export default config;
-   ~~~
+   使用`useTabs`进行配置, 默认为false
 
-   
+   注意, 开启后tab只用于**缩进**, 对齐(比如三元表达式的对齐)仍然使用空格, 这种行为被称为SmartTabs
+
+4. 在每个语句的末尾添加分号
+
+   使用`semi`进行配置, 默认为true
+
+   设置为false之后, 只会在可能因为ASI(自动分号插入)而出错的行首添加分号
+
+5. 使用单引号而不是双引号
+
+   使用`singleQuote`进行配置, 默认为false
+
+   这个配置不影响JSX中的引号, JSX由`jsxSingleQuote`单独控制; 另外, 如果字符串里的单引号比双引号多, Prettier会自动改用双引号, 反之亦然
+
+6. 控制对象属性名什么时候需要加引号
+
+   使用`quoteProps`进行配置, 默认为`"as-needed"`, 可选值:
+   - `"as-needed"`: 只在必须加引号的时候才加
+   - `"consistent"`: 只要对象中有一个属性需要加引号, 那么所有属性都加引号
+   - `"preserve"`: 保留你输入时是否加引号
+
+   注意, 在Angular表达式、TypeScript和Flow中, Prettier永远不会去掉数字属性名的引号, 因为在这几种语言里字符串key和数字key是有区别的
+
+7. 在JSX中使用单引号而不是双引号
+
+   使用`jsxSingleQuote`进行配置, 默认为false
+
+8. 在多行结构的末尾添加尾随逗号
+
+   使用`trailingComma`进行配置, 默认为`"all"`(从3.0.0开始默认值由`"es5"`改成了`"all"`), 可选值:
+   - `"all"`: 尽可能添加, 包括函数参数和函数调用
+   - `"es5"`: 只在ES5合法的位置添加(对象、数组等)
+   - `"none"`: 不添加
+
+   单行的数组之类的结构永远不会添加尾随逗号
+
+9. 在对象的花括号内打印空格
+
+   使用`bracketSpacing`进行配置, 默认为true
+
+   true时输出`{ foo: bar }`, false时输出`{foo: bar}`
+
+10. 控制对象字面量如何换行
+
+    使用`objectWrap`进行配置, 默认为`"preserve"`(3.5.0新增), 可选值:
+    - `"preserve"`: 如果左花括号和第一个属性之间有换行, 就保持多行
+    - `"collapse"`: 能放到一行时就放到一行
+
+    默认值`"preserve"`让你可以通过输入时的换行来表达"这个对象我想让它多行"的意图
+
+11. 多行标签的`>`放在最后一行的末尾, 而不是单独占一行
+
+    使用`bracketSameLine`进行配置, 默认为false
+
+    true时`>`跟在最后一个属性的后面, false时`>`单独占一行
+
+    只对HTML、JSX、Vue、Angular的多行元素有效, 自闭合元素不受影响
+
+    另外, `jsxBracketSameLine`这个选项在2.4.0已经废弃, 请使用`bracketSameLine`代替
+
+12. 只有一个参数的箭头函数是否加括号
+
+    使用`arrowParens`进行配置, 默认为`"always"`(2.0.0起默认值由`"avoid"`改为`"always"`), 可选值:
+    - `"always"`: 总是加括号, 如`(x) => x`
+    - `"avoid"`: 能省则省, 如`x => x`
+
+    统一加括号是为了以后添加类型注解、额外参数或者默认值时更方便
+
+13. 只格式化文件中的一段代码
+
+    使用`rangeStart`和`rangeEnd`进行配置, 默认值分别是0和Infinity, 也就是整个文件
+
+    他们接收的是字符偏移量(左闭右开), 最终格式化的范围会扩展成: 从`rangeStart`所在语句的第一行行首开始, 到`rangeEnd`所在语句的末尾结束
+
+    这两个选项一般只在CLI和API中使用, 不适合写在配置文件里
+
+14. 指定解析器
+
+    使用`parser`进行配置, 没有默认值, Prettier会根据文件路径自动推断, 所以一般不需要配置
+
+    常用的可选值有: `"babel"`、`"babel-ts"`、`"typescript"`、`"flow"`、`"babel-flow"`、`"espree"`、`"acorn"`、`"meriyah"`(JS/TS), `"css"`、`"scss"`、`"less"`, `"json"`、`"json5"`、`"jsonc"`、`"json-stringify"`, `"graphql"`, `"markdown"`、`"mdx"`, `"html"`、`"vue"`、`"angular"`、`"lwc"`、`"mjml"`, `"yaml"`
+
+15. 指定文件名, 让Prettier据此推断解析器
+
+    使用`filepath`进行配置, 没有默认值(CLI中对应`--stdin-filepath`)
+
+    这个选项只在CLI和API中有意义, 配置文件中不需要写, 因为配置文件本来就是针对真实文件的
+
+16. 只格式化包含pragma注释的文件
+
+    使用`requirePragma`进行配置, 默认为false
+
+    开启后, 只有文件第一个docblock注释中包含`@prettier`或者`@format`时, 这个文件才会被格式化, 适合在大型的、尚未格式化的老项目中逐步接入Prettier
+
+17. 给已经格式化的文件插入`@format`注释
+
+    使用`insertPragma`进行配置, 默认为false
+
+    它会在文件顶部的docblock注释中插入`@format`标记, 通常和`requirePragma`配合使用
+
+    注意两者同时开启时`requirePragma`优先, `insertPragma`会被忽略; 一般是参与迁移的人用`insertPragma`, 团队其他人用`requirePragma`只处理已经迁移完的文件
+
+18. 检查忽略pragma, 让单个文件跳过格式化
+
+    使用`checkIgnorePragma`进行配置, 默认为false(3.6.0新增)
+
+    开启后, 如果文件第一个注释中包含`@noprettier`或者`@noformat`, 那么这个文件不会被格式化
+
+    因为每次都要检查这个注释, 会有额外的开销, 所以默认不开启
+
+19. 控制markdown中散文(prose)的换行
+
+    使用`proseWrap`进行配置, 默认为`"preserve"`, 可选值:
+    - `"always"`: 超过printWidth就换行
+    - `"never"`: 不换行, 把每个段落合并成一行
+    - `"preserve"`: 保持原样, 不做任何修改
+
+    Prettier默认不动markdown的换行, 因为GitHub评论等场景对换行敏感
+
+20. HTML空白字符的敏感程度
+
+    使用`htmlWhitespaceSensitivity`进行配置, 默认为`"css"`, 可选值:
+    - `"css"`: 尊重CSS的`display`属性的默认值
+    - `"strict"`: 所有标签周围的空白(或者没有空白)都被认为是有意义的
+    - `"ignore"`: 所有标签周围的空白都被认为是无意义的
+
+    这个选项影响HTML、Vue、Angular和Handlebars
+
+21. Vue文件中`<script>`和`<style>`标签内部的代码是否缩进
+
+    使用`vueIndentScriptAndStyle`进行配置, 默认为false
+
+22. 换行符类型
+
+    使用`endOfLine`进行配置, 默认为`"lf"`(2.0.0起默认值由`"auto"`改为`"lf"`), 可选值:
+    - `"lf"`: 只用`\n`, Linux、macOS以及git仓库中的常见形式
+    - `"crlf"`: 使用`\r\n`, Windows上的常见形式
+    - `"cr"`: 只用`\r`, 非常少见
+    - `"auto"`: 保持文件原有的换行符, 同一个文件中混用时, 以第一行之后的换行为准
+
+    Prettier默认使用`lf`, 是为了避免不同操作系统的人协作时产生大量的换行符diff
+
+23. 是否格式化文件里嵌入的其他语言的代码
+
+    使用`embeddedLanguageFormatting`进行配置, 默认为`"auto"`, 可选值:
+    - `"auto"`: 只要能自动识别出来就格式化
+    - `"off"`: 从不自动格式化嵌入的代码
+
+    比如js中标签为`html`的模板字符串、markdown中的代码块, 默认都会被格式化
+
+24. 每个属性单独占一行
+
+    使用`singleAttributePerLine`进行配置, 默认为false
+
+    影响HTML、Vue和JSX
+
+25. 实验性的三元表达式格式化
+
+    使用`experimentalTernaries`进行配置, 默认为false(3.1.0引入)
+
+    开启后会使用"curious ternaries"风格, 把问号放在条件后面; 这是实验性功能, 以后可能会成为默认行为
+
+26. 实验性的运算符位置
+
+    使用`experimentalOperatorPosition`进行配置, 默认为`"end"`(3.5.0引入), 可选值:
+    - `"start"`: 二元表达式换行时, 运算符放在新行的行首
+    - `"end"`: 运算符放在上一行的行尾(默认行为)
 
 # 忽略文件
 
