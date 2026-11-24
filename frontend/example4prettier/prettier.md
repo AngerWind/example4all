@@ -738,7 +738,7 @@ prettier
 
 # Prettier和Git 
 
-
+## Prettier和husky/lint-staged
 
 如果你想要在git commit之前, 运行eslint和prettier, 那么可以按照如下的内容来
 
@@ -791,6 +791,98 @@ husky和lint-staged的原理在于
    命令的执行时从上到下的, 所以js文件先被eslint, 然后prettier格式化
 
    最后husky会将修改后的文件重新调用`git add`添加回暂存区, 然后再执行`git commit`
+
+
+
+## Prettier和simple-git-hooks/lint-staged
+
+simple-git-hooks 是 husky 的一个轻量替代方案, 整个工具只有约100行代码, 配置全部写在package.json中, 不需要额外的`.husky`目录, 适合只需要1~2个简单钩子的项目
+
+如果你想要在git commit之前, 运行eslint和prettier, 那么可以按照如下的内容来
+
+1. 首先确保你已经正确的安装了prettier, 并且将其添加到了`devDependencies`中
+
+2. 安装simple-git-hooks和lint-staged
+
+   ~~~shell
+   npm install --save-dev simple-git-hooks lint-staged
+   ~~~
+
+3. 在package.json中添加如下的配置
+
+   ~~~json
+   {
+     "scripts": {
+       "postinstall": "simple-git-hooks"
+     },
+     "simple-git-hooks": {
+       "pre-commit": "npx lint-staged"
+     },
+     "lint-staged": {
+       "*.js": "eslint --cache --fix",
+       "*.{js,css,md}": "prettier --write"
+     }
+   }
+   ~~~
+
+4. 手动执行一次, 让钩子立即生效(否则要等到下次`npm install`才会激活)
+
+   ~~~shell
+   npx simple-git-hooks
+   ~~~
+
+5. 验证效果
+
+   ~~~shell
+   git add .
+   git commit -m "test"   # 提交前会自动对暂存区的文件执行eslint和prettier
+   ~~~
+
+
+
+simple-git-hooks和lint-staged的原理在于
+
+1. git本身提供了一系列的钩子(hooks), 比如`pre-commit`(提交前)、`commit-msg`(提交信息写入时), 这些钩子本质是`.git/hooks/`目录下的脚本文件, git在对应时机执行它们, 脚本退出码非零时, git就中止这次操作
+
+2. simple-git-hooks的安装/激活方式和husky不同: 它**不改`core.hooksPath`, 而是直接把钩子脚本写入`.git/hooks/`目录**
+
+   执行`npx simple-git-hooks`时, 它会读取package.json中的`simple-git-hooks`配置对象, 然后在`.git/hooks/`目录下生成对应的钩子文件(比如`pre-commit`), 文件内容就是调用你配置的命令(`npx lint-staged`)
+
+3. 当别人拿到你的项目的时候, 会执行`npm install`这个命令来安装依赖, 那么就会触发package.json中的`postinstall`这个命令, 这是npm的一个生命周期的hook, 在`npm install`之后执行
+
+   这个`postinstall`命令会执行`simple-git-hooks`命令, 重新把钩子写入别人本地的`.git/hooks/`目录, 这样别人的项目中, git的hook也被接管了
+
+4. 然后每次git commit之前, 都会执行`.git/hooks/pre-commit`这个脚本, 然后执行其中的`npx lint-staged`这个命令
+
+   这个命令会读取package.json中的lint-staged配置对象
+
+   ~~~txt
+     "lint-staged": {
+       # 获取暂存区中的文件, 过滤出js文件, 然后执行eslint
+       "*.js": "eslint --cache --fix", 
+       # 获取暂存区中的文件, 过滤出js,css,md文件, 然后执行prettier
+       "*.{js,css,md}": "prettier --write" 
+     }
+   ~~~
+
+   命令的执行是从上到下的, 所以js文件先被eslint检查修复, 然后被prettier格式化
+
+   最后lint-staged会将修改后的文件重新调用`git add`添加回暂存区, 然后再执行`git commit`
+
+
+
+simple-git-hooks和husky的对比
+
+| | husky | simple-git-hooks |
+|---|---|---|
+| 接管方式 | 通过`git config core.hooksPath .husky`把钩子目录指向项目内的`.husky`目录 | 直接把钩子脚本写入`.git/hooks/`目录 |
+| 配置位置 | `.husky/`目录, 每个钩子一个文件 | 全部集中在package.json中 |
+| 激活脚本 | `prepare`(husky init自动添加) | `postinstall`(需要手动添加) |
+| 体积/复杂度 | 功能完整, 多一个`.husky`目录 | 约100行代码, 零额外目录 |
+| 钩子被删除后 | 重新执行`npx husky`恢复 | 重新执行`npx simple-git-hooks`恢复 |
+| 适合场景 | 团队项目、需要多个钩子、主流方案 | 个人项目、只需要1~2个简单钩子 |
+
+> 注意: 如果你的项目要发布到npm上, 那么用户安装你的包时也会触发`postinstall`, 可能会影响用户的本地环境, 这种情况请参考simple-git-hooks官方文档中的"Note for npm package developers"部分; 如果项目不发包, 忽略这个注意事项即可
 
 
 
