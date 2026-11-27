@@ -2,29 +2,22 @@
 
 ## 1. interface
 
-`interface` 主要用于描述对象结构：
+`interface` 主要用于描述一个对象的结构：
 
 ```ts
 interface Person {
   name: string;
   age: number;
   sayHi(): void;
+    sayHello: () => void;
 }
 
 const person: Person = {
   name: "jack",
   age: 18,
-  sayHi() {}
+  sayHi() {}, 
+    sayHello: () => {}
 };
-```
-
-也可以描述函数属性：
-
-```ts
-interface Person {
-  name: string;
-  sayHi: () => void;
-}
 ```
 
 ## 2. interface 继承
