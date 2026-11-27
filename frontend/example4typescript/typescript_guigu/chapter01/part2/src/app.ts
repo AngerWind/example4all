@@ -1,4 +1,4 @@
-import { hi } from './m.js'
+import { hi } from './m'
 let a = 10;
 // 这是一个注释
 console.log(hi);

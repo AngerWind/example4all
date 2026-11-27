@@ -90,7 +90,7 @@ const b: MyUnionArray = ["a", 1];
 
 ## 4. interface 与 type 的共同点
 
-二者都可以描述对象：
+二者都可以描述对象类型：
 
 ```ts
 interface User1 {
