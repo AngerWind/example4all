@@ -22,7 +22,9 @@ const person: Person = {
 
 ## 2. interface 继承
 
-接口可以通过 `extends` 继承：
+接口可以通过 `extends` 继承
+
+这里的继承不是java中的继承, 只是说前面的结构在继承的结构中都有, 是一种结构扩展
 
 ```ts
 interface Point2D {
